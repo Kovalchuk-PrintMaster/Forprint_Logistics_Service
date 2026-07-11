@@ -1,4 +1,10 @@
 schema_version: module_report_index_v0_1
 module_id: logistics_service
-
-reports: []
+reports:
+- report_id: logistics_service_bootstrap_and_coordination_foundation_v0_1_completion
+  prompt_id: logistics_service_bootstrap_and_coordination_foundation_v0_1
+  report_file: coordination/reports/completion/logistics_service_bootstrap_and_coordination_foundation_v0_1_completion.md
+  status: completed_in_module
+  created_at: '2026-07-11T21:29:41+03:00'
+  implementation_commit: 2544a71e0220c87b0be7a0be8c3f829b2d09c7ed
+  push_status: pushed

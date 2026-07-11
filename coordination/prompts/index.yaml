@@ -1,15 +1,14 @@
 schema_version: module_prompt_index_v0_1
 module_id: logistics_service
-
 prompts:
-  - prompt_id: logistics_service_bootstrap_and_coordination_foundation_v0_1
-    title: Logistics Service Bootstrap and Coordination Foundation v0.1
-    phase: bootstrap_and_coordination_foundation_v0_1
-    priority: high
-    source: forprint_system_blueprint
-    source_file: coordination/outgoing_prompts/logistics_service/approved/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md
-    file: coordination/prompts/received/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md
-    status: active
-    received_at: "2026-07-11"
-    completion_report: null
-    completion_commit: null
+- prompt_id: logistics_service_bootstrap_and_coordination_foundation_v0_1
+  title: Logistics Service Bootstrap and Coordination Foundation v0.1
+  phase: bootstrap_and_coordination_foundation_v0_1
+  priority: high
+  source: forprint_system_blueprint
+  source_file: coordination/outgoing_prompts/logistics_service/approved/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md
+  file: coordination/prompts/received/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md
+  status: completed_in_module
+  received_at: '2026-07-11'
+  completion_report: coordination/reports/completion/logistics_service_bootstrap_and_coordination_foundation_v0_1_completion.md
+  completion_commit: 2544a71e0220c87b0be7a0be8c3f829b2d09c7ed
