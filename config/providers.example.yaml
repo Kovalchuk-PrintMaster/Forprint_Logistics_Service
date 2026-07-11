@@ -1,0 +1,40 @@
+schema_version: logistics_provider_config_v0_1
+
+non_secret_example: true
+live_provider_writes_enabled: false
+
+providers:
+  - provider_id: nova_poshta
+    display_name: Nova Poshta
+    adapter_status: planned
+    enabled: false
+    live_write_enabled: false
+    credential_environment_variable: FORPRINT_LOGISTICS_NOVA_POSHTA_API_KEY
+
+  - provider_id: ukrposhta
+    display_name: Ukrposhta
+    adapter_status: planned
+    enabled: false
+    live_write_enabled: false
+    credential_environment_variable: FORPRINT_LOGISTICS_UKRPOSHTA_API_TOKEN
+
+  - provider_id: meest
+    display_name: Meest
+    adapter_status: planned
+    enabled: false
+    live_write_enabled: false
+    credential_environment_variable: FORPRINT_LOGISTICS_MEEST_API_TOKEN
+
+  - provider_id: sat
+    display_name: SAT
+    adapter_status: planned
+    enabled: false
+    live_write_enabled: false
+    credential_environment_variable: FORPRINT_LOGISTICS_SAT_API_TOKEN
+
+  - provider_id: generic_courier
+    display_name: Generic Courier Provider
+    adapter_status: conceptual
+    enabled: false
+    live_write_enabled: false
+    credential_environment_variable: null

@@ -1,0 +1,31 @@
+schema_version: document_review_ledger_v0_1
+module_id: logistics_service
+
+documents:
+  - document_id: logistics_service_module_guide
+    path: module_guides/logistics_service.md
+    source: module_guide
+    review_status: acknowledged
+    reviewed_at: 2026-07-11
+    module_commit: null
+    notes:
+      - Canonical ownership, consumed data, provided data and planned contracts reviewed.
+
+  - document_id: logistics_service_bootstrap_prompt
+    path: coordination/outgoing_prompts/logistics_service/approved/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md
+    source: outgoing_prompt
+    review_status: in_progress
+    reviewed_at: 2026-07-11
+    module_commit: null
+    notes:
+      - Bootstrap implementation is in progress.
+      - Live provider writes remain disabled.
+
+  - document_id: module_manifest_schema
+    path: machine/module_manifest_schema.yaml
+    source: blueprint_schema
+    review_status: acknowledged
+    reviewed_at: 2026-07-11
+    module_commit: null
+    notes:
+      - Manifest uses only canonical Blueprint data objects and contracts.

@@ -1,0 +1,85 @@
+schema_version: module_status_v0_1
+
+module_id: logistics_service
+module_name: ForPrint Logistics Service
+module_status: active
+priority: p0
+
+current_phase: bootstrap_and_coordination_foundation_v0_1
+last_completed_step: logistics_repository_and_coordination_skeleton_created
+last_updated: "2026-07-11"
+branch: feature/logistics-bootstrap-coordination-v01
+last_commit: no_commits_yet
+
+checks:
+  make_check: not_run
+  make_check_report: not_run
+  governance_check: not_run
+  coordination_check: requires_recheck
+  tests: not_run
+
+boundary:
+  no_foreign_ownership: true
+  no_production_api: true
+  no_live_write: true
+  no_real_integrations: true
+
+recommended_next_step: implement_provider_neutral_domain_models_adapter_safety_fixtures_and_tests
+
+status: bootstrap_in_progress
+phase: bootstrap_and_coordination_foundation_v0_1
+source_prompt_id: logistics_service_bootstrap_and_coordination_foundation_v0_1
+updated_at: "2026-07-11T18:00:00+03:00"
+implementation_commit: null
+push_status: not_pushed
+
+progress_summary:
+  project_skeleton: partial
+  core_domain_models: not_started
+  provider_adapter_boundary: not_started
+  fixture_support: not_started
+  integration_readiness: not_started
+  documentation: partial
+  coordination: partial
+  confidence: low
+
+integration_contracts:
+  consumed:
+    - contract_id: crm_to_logistics_delivery.v1
+      status: planned
+  provided:
+    - contract_id: logistics_to_crm_delivery_status.v1
+      status: planned
+
+boundaries:
+  live_provider_writes_enabled: false
+  production_api_added: false
+  live_external_integrations_added: false
+  canonical_client_ownership_added: false
+  canonical_order_ownership_added: false
+  accounting_ownership_added: false
+  payment_write_added: false
+  warehouse_stock_mutation_added: false
+  one_c_write_added: false
+  telegram_bot_changes_added: false
+  website_changes_added: false
+  blueprint_repository_written_directly: false
+
+storage:
+  production_database_added: false
+  local_runtime_database_added: false
+  local_non_canonical_fixtures_planned: true
+
+module_specific:
+  provider_neutral_design_required: true
+  shipment_payload_preview_only: true
+  tracking_models_planned: true
+  logistics_notification_events_planned: true
+  real_provider_credentials_present: false
+
+current_step:
+  id: bootstrap_identity_and_coordination
+  status: in_progress
+  next_action: add domain models, provider adapter safety boundary, fixtures, tests and documentation
+
+open_questions: []

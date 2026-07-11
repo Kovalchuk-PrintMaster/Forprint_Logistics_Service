@@ -1,0 +1,47 @@
+module_id: logistics_service
+title: ForPrint Logistics Service
+status: active_development
+implementation_root: /srv/software_development/forprint-project/forprint_logistics_service
+
+blueprint_reference:
+  blueprint_repo: git@github.com:Kovalchuk-PrintMaster/Forprint_System_Blueprint.git
+  module_guide: module_guides/logistics_service.md
+  expected_contract: module_to_inspector_manifest.v1
+
+responsibilities:
+  owns:
+    - delivery_request
+    - delivery_status
+    - logistics_provider_adapter
+
+  consumes:
+    - order
+    - client
+    - package_description
+
+  provides:
+    - delivery_status
+    - delivery_label
+    - delivery_cost_estimate
+
+  must_not_own:
+    - invoice
+    - material_catalog
+    - order
+
+contracts:
+  consumes:
+    - crm_to_logistics_delivery.v1
+
+  provides:
+    - logistics_to_crm_delivery_status.v1
+
+runtime:
+  entrypoints:
+    - make check
+    - make governance-check
+    - make status-report
+  healthcheck: null
+
+reports:
+  status_report: reports/forprint_module_status.json

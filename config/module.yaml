@@ -1,0 +1,42 @@
+schema_version: logistics_module_config_v0_1
+
+module:
+  module_id: logistics_service
+  module_name: ForPrint Logistics Service
+  project_name: forprint-logistics-service
+  repository_directory: forprint_logistics_service
+  development_phase: bootstrap_and_coordination_foundation_v0_1
+
+runtime:
+  default_environment: local
+  service_runtime_enabled: false
+  production_daemon_enabled: false
+
+features:
+  provider_catalog_enabled: true
+  shipment_drafts_enabled: true
+  provider_payload_previews_enabled: true
+  local_recipient_fixtures_enabled: true
+  tracking_models_enabled: true
+  live_provider_writes_enabled: false
+
+safety:
+  dry_run_default: true
+  manual_confirmation_required: true
+  provider_credentials_required_for_preview: false
+  provider_credentials_required_for_live_write: true
+  live_write_requires_future_blueprint_approval: true
+
+ownership:
+  owns_logistics_provider_boundaries: true
+  owns_shipment_drafts: true
+  owns_tracking_truth: true
+  owns_logistics_notification_events: true
+
+  owns_canonical_clients: false
+  owns_canonical_orders: false
+  owns_price_calculation: false
+  owns_payment_truth: false
+  owns_warehouse_stock_truth: false
+  owns_production_tasks: false
+  owns_channel_session_state: false

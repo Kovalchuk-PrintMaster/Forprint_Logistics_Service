@@ -1,0 +1,84 @@
+# Python virtual environments
+.venv/
+.venv_*/
+venv/
+env/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Test, lint and coverage caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# IDE and editor state
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+secrets/*.env
+secrets/*.local
+secrets/*.secret
+secrets/*.json
+secrets/*.pem
+secrets/*.key
+
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local configuration overrides
+config/*.local.yaml
+config/*.local.yml
+config/local.override.yaml
+config/environments/*.local.yaml
+config/environments/*.local.yml
+
+# Local databases and runtime state
+*.db
+*.sqlite
+*.sqlite3
+
+data/*
+!data/.gitkeep
+
+logs/*
+!logs/.gitkeep
+
+state/*
+!state/.gitkeep
+
+tmp/*
+!tmp/.gitkeep
+
+runtime/*
+!runtime/.gitkeep
+
+# Generated operator reports
+reports/*
+!reports/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+# Local operator helper files
+/tmp.py

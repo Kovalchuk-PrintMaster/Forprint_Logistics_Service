@@ -1,0 +1,22 @@
+schema_version: blueprint_source_v0_1
+
+module_id: logistics_service
+target_blueprint_version: 0.7.0
+
+blueprint:
+  local_root: /srv/software_development/forprint-project/forprint_system_blueprint
+  repository: git@github.com:Kovalchuk-PrintMaster/Forprint_System_Blueprint.git
+  module_guide: module_guides/logistics_service.md
+  manifest_schema: machine/module_manifest_schema.yaml
+  outgoing_prompt_index: coordination/outgoing_prompts/logistics_service/index.yaml
+
+active_prompt:
+  prompt_id: logistics_service_bootstrap_and_coordination_foundation_v0_1
+  phase: bootstrap_and_coordination_foundation_v0_1
+  priority: high
+  source_file: coordination/outgoing_prompts/logistics_service/approved/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md
+
+write_boundary:
+  module_may_read_blueprint: true
+  module_may_write_blueprint: false
+  module_reports_remain_in_module_repository: true
