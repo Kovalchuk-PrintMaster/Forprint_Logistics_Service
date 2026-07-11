@@ -66,12 +66,15 @@ def _render_completion_report(packet: dict[str, Any]) -> str:
         "prompt_id": packet["prompt_id"],
         "target_module": packet["module_id"],
         "phase": packet["phase"],
+        "completed_step": packet["completion_id"],
         "status": "completed_in_module",
         "implementation_commit": packet["implementation_commit"],
         "branch": packet["branch"],
         "push_status": packet["push_status"],
         "checks": packet["checks"],
+        "known_warnings": packet.get("known_warnings", []),
         "boundary_confirmation": packet["boundary_confirmation"],
+        "next_questions_for_blueprint": packet["next_questions_for_blueprint"],
     }
 
     frontmatter_text = yaml.safe_dump(
@@ -116,6 +119,10 @@ def _render_completion_report(packet: dict[str, Any]) -> str:
 ## Checks passed
 
 {_markdown_list([f"{name}: {status}" for name, status in packet["checks"].items()])}
+
+## Known warnings
+
+{_markdown_list(packet.get("known_warnings", []))}
 
 ## Instruction sources reviewed
 

@@ -146,6 +146,17 @@ def test_completion_packet_apply_is_idempotent(tmp_path: Path) -> None:
 
     first_changed = apply_completion_packet(packet_path, tmp_path)
 
+    report_path = (
+        tmp_path / "coordination/reports/completion/logistics_service_bootstrap_completion.md"
+    )
+    report_text = report_path.read_text(encoding="utf-8")
+    frontmatter_text = report_text.split("---", maxsplit=2)[1]
+    frontmatter = yaml.safe_load(frontmatter_text)
+
+    assert frontmatter["completed_step"] == ("logistics_bootstrap_completed")
+    assert frontmatter["next_questions_for_blueprint"] == []
+    assert frontmatter["known_warnings"] == []
+
     tracked_paths = (
         "coordination/status/current_status.yaml",
         "coordination/status/current_status.md",
