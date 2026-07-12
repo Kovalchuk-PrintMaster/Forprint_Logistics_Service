@@ -248,13 +248,15 @@ def _update_current_status(
 
     data["status"] = "completed_in_module"
     data["phase"] = packet["phase"]
+    data["source_prompt_id"] = packet["prompt_id"]
+    data["updated_at"] = packet["created_at"]
     data["implementation_commit"] = packet["implementation_commit"]
     data["push_status"] = packet["push_status"]
 
     data["checks"] = {
         "make_check": "ok",
-        "make_check_report": packet["checks"]["check_report"],
-        "governance_check": packet["checks"]["governance_check"],
+        "make_check_report": (packet["checks"]["check_report"]),
+        "governance_check": (packet["checks"]["governance_check"]),
         "coordination_check": "ok",
         "tests": packet["checks"]["tests"],
     }
@@ -270,9 +272,15 @@ def _update_current_status(
         "no_real_integrations": not boundary["live_external_integrations_added"],
     }
 
-    data.setdefault("boundaries", {}).update(boundary)
+    data.setdefault(
+        "boundaries",
+        {},
+    ).update(boundary)
 
-    progress = data.setdefault("progress_summary", {})
+    progress = data.setdefault(
+        "progress_summary",
+        {},
+    )
     progress.update(
         {
             "project_skeleton": "completed",
@@ -282,24 +290,33 @@ def _update_current_status(
             "integration_readiness": "preview_only",
             "documentation": "completed",
             "coordination": "completed",
-            "confidence": "medium",
+            "confidence": "high",
         }
     )
 
     data["current_step"] = {
         "id": packet["completion_id"],
         "status": "completed",
-        "next_action": packet["next_recommended_steps"][0],
+        "next_action": (packet["next_recommended_steps"][0]),
     }
     data["open_questions"] = packet["next_questions_for_blueprint"]
+    data["prompt_progress"] = {
+        "intake": "completed",
+        "implementation": "completed",
+        "tests": "passed",
+        "completion": "completed",
+    }
 
-    return _write_yaml_if_changed(path, data)
+    return _write_yaml_if_changed(
+        path,
+        data,
+    )
 
 
 def _update_prompts_index(
     root: Path,
     packet: dict[str, Any],
-) -> bool:
+) -> list[Path]:
     path = root / "coordination/prompts/index.yaml"
     data = _load_mapping(path)
     prompts = data.get("prompts")
@@ -317,11 +334,69 @@ def _update_prompts_index(
     if matching_prompt is None:
         raise ValueError(f"Prompt is not registered locally: {packet['prompt_id']}")
 
+    changed: list[Path] = []
+
     matching_prompt["status"] = "completed_in_module"
+    matching_prompt["module_execution_status"] = "completed_by_module"
+
+    # Module completion must never claim Blueprint
+    # acceptance. Preserve a real Blueprint review state
+    # when present, otherwise record that review has not
+    # started yet.
+    matching_prompt.setdefault(
+        "blueprint_review_status",
+        "not_started",
+    )
     matching_prompt["completion_report"] = packet["report_path"]
     matching_prompt["completion_commit"] = packet["implementation_commit"]
 
-    return _write_yaml_if_changed(path, data)
+    active_file_value = matching_prompt.pop(
+        "active_file",
+        None,
+    )
+
+    if active_file_value:
+        active_relative = Path(str(active_file_value))
+        active_path = root / active_relative
+
+        archived_relative = Path("coordination/prompts/archived") / active_relative.name
+        archived_path = root / archived_relative
+
+        if active_path.is_file():
+            active_content = active_path.read_text(encoding="utf-8")
+
+            if archived_path.is_file():
+                archived_content = archived_path.read_text(encoding="utf-8")
+
+                if archived_content != active_content:
+                    raise ValueError(f"Active and archived prompt copies differ: {active_relative}")
+            else:
+                archived_path.parent.mkdir(
+                    parents=True,
+                    exist_ok=True,
+                )
+                archived_path.write_text(
+                    active_content,
+                    encoding="utf-8",
+                )
+                changed.append(archived_path)
+
+            active_path.unlink()
+            changed.append(active_path)
+
+        elif not archived_path.is_file():
+            raise ValueError(
+                f"Active prompt file is missing and no archived copy exists: {active_relative}"
+            )
+
+        matching_prompt["archived_file"] = str(archived_relative)
+
+    data["active_prompt_id"] = None
+
+    if _write_yaml_if_changed(path, data):
+        changed.append(path)
+
+    return changed
 
 
 def _update_reports_index(
@@ -371,6 +446,12 @@ def apply_completion_packet(
 
     report_path = project_root / packet["report_path"]
 
+    prompt_changes = _update_prompts_index(
+        project_root,
+        packet,
+    )
+    changed.extend(prompt_changes)
+
     operations = (
         (
             report_path,
@@ -380,28 +461,30 @@ def apply_completion_packet(
             ),
         ),
         (
-            project_root / "coordination/status/current_status.yaml",
-            _update_current_status(project_root, packet),
+            (project_root / "coordination/status/current_status.yaml"),
+            _update_current_status(
+                project_root,
+                packet,
+            ),
         ),
         (
-            project_root / "coordination/prompts/index.yaml",
-            _update_prompts_index(project_root, packet),
+            (project_root / "coordination/reports/index.yaml"),
+            _update_reports_index(
+                project_root,
+                packet,
+            ),
         ),
         (
-            project_root / "coordination/reports/index.yaml",
-            _update_reports_index(project_root, packet),
-        ),
-        (
-            project_root / "coordination/status/current_status.md",
+            (project_root / "coordination/status/current_status.md"),
             _write_text_if_changed(
-                project_root / "coordination/status/current_status.md",
+                (project_root / "coordination/status/current_status.md"),
                 _render_current_status_markdown(packet),
             ),
         ),
         (
-            project_root / "coordination/status/next_questions_for_blueprint.md",
+            (project_root / "coordination/status/next_questions_for_blueprint.md"),
             _write_text_if_changed(
-                project_root / "coordination/status/next_questions_for_blueprint.md",
+                (project_root / "coordination/status/next_questions_for_blueprint.md"),
                 _render_questions(packet),
             ),
         ),
