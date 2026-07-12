@@ -55,6 +55,11 @@ CHECK_COMMANDS: tuple[
         "Preview workflow examples are safe and valid.",
     ),
     (
+        "Local model boundaries",
+        ("make", "local-model-boundary-check"),
+        "Local ownership and safety boundaries are enforced.",
+    ),
+    (
         "Coordination metadata",
         ("make", "coordination-check"),
         "Coordination metadata is valid.",
