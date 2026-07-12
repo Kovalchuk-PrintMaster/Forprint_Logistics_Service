@@ -14,7 +14,7 @@ class LogisticsNotificationType(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class LogisticsNotificationEvent:
-    """Provider-neutral event for downstream notification surfaces."""
+    """Local payload for future channel display."""
 
     event_id: str
     shipment_id: str
@@ -22,6 +22,8 @@ class LogisticsNotificationEvent:
     occurred_at: datetime
     message: str
     attributes: tuple[tuple[str, str], ...] = field(default_factory=tuple)
+    local_payload: bool = True
+    delivery_performed: bool = False
 
     def __post_init__(self) -> None:
         if not self.event_id.strip():
@@ -32,3 +34,9 @@ class LogisticsNotificationEvent:
 
         if not self.message.strip():
             raise ValueError("message must not be empty")
+
+        if not self.local_payload:
+            raise ValueError("Logistics notifications must remain local display payloads")
+
+        if self.delivery_performed:
+            raise ValueError("Telegram, CRM and Website delivery is disabled in this checkpoint")

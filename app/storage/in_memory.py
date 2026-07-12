@@ -6,25 +6,38 @@ from app.domain import (
     RecipientRef,
     ShipmentDraft,
     TrackingEvent,
+    TrackingRequest,
 )
 
 
 class RepositoryReferenceError(ValueError):
-    """Raised when a local draft references unknown repository data."""
+    """Raised when local data references unknown records."""
 
 
 class InMemoryLogisticsRepository:
-    """Safe in-memory implementation of the logistics repository.
-
-    Data exists only for the lifetime of this Python object. The
-    repository performs no filesystem, database or provider API writes.
-    """
+    """Safe process-local logistics repository."""
 
     def __init__(self) -> None:
-        self._providers: dict[str, LogisticsProvider] = {}
-        self._recipients: dict[str, RecipientRef] = {}
-        self._shipment_drafts: dict[str, ShipmentDraft] = {}
-        self._tracking_events: dict[str, TrackingEvent] = {}
+        self._providers: dict[
+            str,
+            LogisticsProvider,
+        ] = {}
+        self._recipients: dict[
+            str,
+            RecipientRef,
+        ] = {}
+        self._shipment_drafts: dict[
+            str,
+            ShipmentDraft,
+        ] = {}
+        self._tracking_requests: dict[
+            tuple[str, str],
+            TrackingRequest,
+        ] = {}
+        self._tracking_events: dict[
+            str,
+            TrackingEvent,
+        ] = {}
         self._notification_events: dict[
             str,
             LogisticsNotificationEvent,
@@ -96,6 +109,29 @@ class InMemoryLogisticsRepository:
     ) -> tuple[ShipmentDraft, ...]:
         return tuple(self._shipment_drafts.values())
 
+    def save_tracking_request(
+        self,
+        request: TrackingRequest,
+    ) -> TrackingRequest:
+        key = (
+            request.provider_id,
+            request.tracking_number,
+        )
+        self._tracking_requests[key] = request
+        return request
+
+    def get_tracking_request(
+        self,
+        provider_id: str,
+        tracking_number: str,
+    ) -> TrackingRequest | None:
+        return self._tracking_requests.get((provider_id, tracking_number))
+
+    def list_tracking_requests(
+        self,
+    ) -> tuple[TrackingRequest, ...]:
+        return tuple(self._tracking_requests.values())
+
     def save_tracking_event(
         self,
         event: TrackingEvent,
@@ -115,11 +151,9 @@ class InMemoryLogisticsRepository:
         provider_id: str | None = None,
         tracking_number: str | None = None,
     ) -> tuple[TrackingEvent, ...]:
-        events = self._tracking_events.values()
-
         return tuple(
             event
-            for event in events
+            for event in self._tracking_events.values()
             if (provider_id is None or event.provider_id == provider_id)
             and (tracking_number is None or event.tracking_number == tracking_number)
         )
@@ -142,8 +176,8 @@ class InMemoryLogisticsRepository:
         *,
         shipment_id: str | None = None,
     ) -> tuple[LogisticsNotificationEvent, ...]:
-        events = self._notification_events.values()
-
         return tuple(
-            event for event in events if (shipment_id is None or event.shipment_id == shipment_id)
+            event
+            for event in self._notification_events.values()
+            if (shipment_id is None or event.shipment_id == shipment_id)
         )

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class RecipientRef:
-    """Reference to a recipient without claiming canonical client ownership."""
+    """Non-canonical logistics reference to a recipient."""
 
     recipient_ref: str
     display_name: str
@@ -18,10 +18,13 @@ class RecipientRef:
         if not self.display_name.strip():
             raise ValueError("display_name must not be empty")
 
+        if not self.non_canonical:
+            raise ValueError("Logistics recipient references must remain non-canonical")
+
 
 @dataclass(frozen=True, slots=True)
 class AddressSnapshot:
-    """Shipment-time address snapshot, not a canonical client address record."""
+    """Shipment-time snapshot, not canonical address ownership."""
 
     country_code: str
     city: str
@@ -29,6 +32,7 @@ class AddressSnapshot:
     postal_code: str | None = None
     address_line_2: str | None = None
     provider_location_ref: str | None = None
+    shipment_time_snapshot: bool = True
 
     def __post_init__(self) -> None:
         if len(self.country_code.strip()) != 2:
@@ -39,3 +43,6 @@ class AddressSnapshot:
 
         if not self.address_line_1.strip():
             raise ValueError("address_line_1 must not be empty")
+
+        if not self.shipment_time_snapshot:
+            raise ValueError("Logistics addresses must remain shipment-time snapshots")
