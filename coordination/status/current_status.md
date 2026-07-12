@@ -1,73 +1,34 @@
 # ForPrint Logistics Service — current status
 
-## Current phase
+## Active Blueprint prompt
 
-`bootstrap_and_coordination_foundation_v0_1`
+- Prompt ID: `logistics_service_boundary_and_local_model_v0_1`
+- Title: Logistics Service Boundary and Local Model Foundation v0.1
+- Phase: `boundary_and_local_model_v0_1`
+- Priority: `high`
+- Branch: `feature/logistics-boundary-local-model-v01`
+- Intake commit baseline: `4c5b06c596423d95d8e943947b8475ae7f9bd11f`
 
-## Module state
+## Local prompt paths
 
-The prompt `logistics_service_bootstrap_and_coordination_foundation_v0_1` is completed inside the module repository.
+- Received copy: `coordination/prompts/received/2026-07-11__logistics_service__boundary_and_local_model_v0_1.md`
+- Active copy: `coordination/prompts/active/2026-07-11__logistics_service__boundary_and_local_model_v0_1.md`
 
-Implementation commit:
+## Intake status
 
-`2544a71e0220c87b0be7a0be8c3f829b2d09c7ed`
+The approved Blueprint prompt was synchronized into the module repository,
+registered in the local prompt index and activated automatically.
 
-Push status:
-
-`pushed`
-
-## Summary
-
-Completed the Logistics Service bootstrap and coordination foundation. The module now contains provider-neutral domain models, a safe preview-only provider adapter boundary, non-canonical local fixtures, structured documentation and tests, Make-first checks, diagnostics and module-side completion packet automation.
-
-## Implemented
-
-- Created the Logistics Service repository skeleton and Python 3.11.2 development contract.
-- Implemented provider-neutral logistics provider, recipient, address, shipment, tracking and notification event models.
-- Implemented a provider adapter boundary for validation, payload preview, capability description and tracking.
-- Disabled live shipment creation and all provider-side write operations.
-- Added synthetic non-canonical recipient fixtures for local testing only.
-- Added architecture, secrets, provider adapter and local test-data policies.
-- Organized scripts, tests, documentation and fixtures into thematic subdirectories.
-- Added project policy validation, JSON and Markdown check reports and bytecode cache cleanup.
-- Added module-side completion packet validation, application and idempotency checks.
-
-## Current outputs
-
-- README.md
-- Makefile
-- forprint_module_manifest.yaml
-- app/domain/
-- app/adapters/providers/
-- config/
-- docs/architecture/
-- docs/development/
-- examples/fixtures/recipients/
-- scripts/coordination/
-- scripts/diagnostics/
-- scripts/validation/
-- tests/unit/
-- tests/contract/
-- tests/coordination/
-- tests/integration/
-- coordination/status/
-- coordination/prompts/index.yaml
-- coordination/reports/index.yaml
+Prompt implementation has not started yet.
 
 ## Safety boundary
 
+- No files were written into the Blueprint repository.
 - Live provider writes remain disabled.
-- No real provider credentials were committed.
-- No canonical client or order ownership was introduced.
-- No payment, warehouse, accounting or 1C mutation was introduced.
-- No files were written directly into the Blueprint repository.
+- No real provider credentials were introduced.
+- No canonical client, order, accounting, payment or warehouse ownership was added.
 
-## Recommended next steps
+## Next step
 
-- Wait for Blueprint review and explicit acceptance of this module completion.
-- Continue only from the next Blueprint-approved Logistics Service prompt.
-- Keep live provider writes and real credentials disabled until explicitly approved.
-
-## Open questions
-
-- Please review this completion report, accept it or return it for corrections, and issue the next approved Logistics Service prompt.
+Inspect the current module implementation and begin the active prompt through
+small tested checkpoints.

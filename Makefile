@@ -19,6 +19,12 @@ PROMPT_INDEX := $(BLUEPRINT_ROOT)/coordination/outgoing_prompts/$(MODULE_ID)/ind
 ACTIVE_PROMPT_DIR := $(BLUEPRINT_ROOT)/coordination/outgoing_prompts/$(MODULE_ID)/approved
 LOCAL_PROMPT_DIR := coordination/prompts/received
 
+LOCAL_ACTIVE_PROMPT_DIR := coordination/prompts/active
+LOCAL_ARCHIVED_PROMPT_DIR := coordination/prompts/archived
+LOCAL_PROMPT_INDEX := coordination/prompts/index.yaml
+BLUEPRINT_PROMPT_INDEX := $(BLUEPRINT_ROOT)/coordination/outgoing_prompts/$(MODULE_ID)/index.yaml
+PROMPT_STATE_SYNC := scripts/coordination/sync_prompt_state.py
+
 MODULE_POLICY := $(BLUEPRINT_ROOT)/coordination/module_policy/$(MODULE_ID)/module_policy.md
 MODULE_DIRECTIVE_INDEX := $(BLUEPRINT_ROOT)/coordination/directives/modules/$(MODULE_ID)/index.yaml
 
@@ -72,6 +78,7 @@ help:
 	@echo "  make blueprint-prompts-list"
 	@echo "  make blueprint-prompts-sync"
 	@echo "  make blueprint-prompt"
+	@echo "  make blueprint-prompt-status"
 	@echo "  make blueprint-standards-list"
 	@echo "  make blueprint-standards-check"
 	@echo "  make module-policy-check"
@@ -139,25 +146,47 @@ blueprint-prompts-check:
 	@test -n "$$(find "$(ACTIVE_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' -print -quit)"
 	@echo "$(COLOR_GREEN)Blueprint prompt queue is readable for $(MODULE_ID).$(COLOR_RESET)"
 
+
 .PHONY: blueprint-prompts-sync
 blueprint-prompts-sync:
-	@mkdir -p "$(LOCAL_PROMPT_DIR)"
-	@test -n "$$(find "$(ACTIVE_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' -print -quit)"
-	@find "$(LOCAL_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' -delete
-	@cp "$(ACTIVE_PROMPT_DIR)"/*.md "$(LOCAL_PROMPT_DIR)/"
-	@echo "$(COLOR_GREEN)Blueprint prompts synchronized into $(LOCAL_PROMPT_DIR).$(COLOR_RESET)"
+	@test -f "$(BLUEPRINT_PROMPT_INDEX)" || \
+		(echo "$(COLOR_RED)Missing Blueprint prompt index: $(BLUEPRINT_PROMPT_INDEX)$(COLOR_RESET)"; exit 1)
+	$(PYTHON) $(PROMPT_STATE_SYNC) \
+		--module-id "$(MODULE_ID)" \
+		--blueprint-index "$(BLUEPRINT_PROMPT_INDEX)" \
+		--blueprint-module-dir "$(BLUEPRINT_ROOT)/coordination/outgoing_prompts/$(MODULE_ID)" \
+		--received-dir "$(LOCAL_PROMPT_DIR)" \
+		--active-dir "$(LOCAL_ACTIVE_PROMPT_DIR)" \
+		--archived-dir "$(LOCAL_ARCHIVED_PROMPT_DIR)" \
+		--local-index "$(LOCAL_PROMPT_INDEX)" \
+		--status-yaml coordination/status/current_status.yaml \
+		--status-md coordination/status/current_status.md \
+		--questions-md coordination/status/next_questions_for_blueprint.md
+
 
 .PHONY: blueprint-prompt
 blueprint-prompt:
-	@test -n "$$(find "$(LOCAL_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' -print -quit)" || \
-		(echo "$(COLOR_RED)No local prompt found. Run make blueprint-prompts-sync.$(COLOR_RESET)"; exit 1)
-	@sed -n '1,320p' "$$(find "$(LOCAL_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' | sort | head -n 1)"
+	@count="$$(find "$(LOCAL_ACTIVE_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' | wc -l)"; \
+		test "$$count" -eq 1 || \
+		(echo "$(COLOR_RED)Expected exactly one active local prompt, found $$count.$(COLOR_RESET)"; exit 1)
+	@cat "$$(find "$(LOCAL_ACTIVE_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' | sort | head -n 1)"
+
 
 .PHONY: blueprint-prompt-check
 blueprint-prompt-check:
-	@test -f "$(PROMPT_INDEX)"
-	@test -f "$(LOCAL_PROMPT_DIR)/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md"
-	@echo "$(COLOR_GREEN)Active local prompt is readable.$(COLOR_RESET)"
+	$(PYTHON) $(PROMPT_STATE_SYNC) \
+		--local-index "$(LOCAL_PROMPT_INDEX)" \
+		--status-yaml coordination/status/current_status.yaml \
+		--received-dir "$(LOCAL_PROMPT_DIR)" \
+		--active-dir "$(LOCAL_ACTIVE_PROMPT_DIR)" \
+		--check-only
+
+
+.PHONY: blueprint-prompt-status
+blueprint-prompt-status:
+	$(PYTHON) $(PROMPT_STATE_SYNC) \
+		--local-index "$(LOCAL_PROMPT_INDEX)" \
+		--status-only
 
 .PHONY: blueprint-standards-list
 blueprint-standards-list:

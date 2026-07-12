@@ -3,30 +3,29 @@ module_id: logistics_service
 module_name: ForPrint Logistics Service
 module_status: active
 priority: p0
-current_phase: bootstrap_and_coordination_foundation_v0_1
+current_phase: boundary_and_local_model_v0_1
 last_completed_step: logistics_service_bootstrap_and_coordination_foundation_v0_1_completed
-last_updated: '2026-07-11'
-branch: feature/logistics-bootstrap-coordination-v01
-last_commit: 2544a71e0220c87b0be7a0be8c3f829b2d09c7ed
+last_updated: '2026-07-12'
+branch: feature/logistics-boundary-local-model-v01
+last_commit: 4c5b06c596423d95d8e943947b8475ae7f9bd11f
 checks:
-  make_check: ok
-  make_check_report: ok
-  governance_check: ok
-  coordination_check: ok
-  tests: ok
+  make_check: not_run
+  make_check_report: not_run
+  governance_check: not_run
+  coordination_check: requires_recheck
+  tests: not_run
 boundary:
   no_foreign_ownership: true
   no_production_api: true
   no_live_write: true
   no_real_integrations: true
-recommended_next_step: Wait for Blueprint review and explicit acceptance of this module
-  completion.
-status: completed_in_module
-phase: bootstrap_and_coordination_foundation_v0_1
-source_prompt_id: logistics_service_bootstrap_and_coordination_foundation_v0_1
-updated_at: '2026-07-11T18:00:00+03:00'
-implementation_commit: 2544a71e0220c87b0be7a0be8c3f829b2d09c7ed
-push_status: pushed
+recommended_next_step: implement_boundary_and_local_model_v0_1
+status: prompt_active
+phase: boundary_and_local_model_v0_1
+source_prompt_id: logistics_service_boundary_and_local_model_v0_1
+updated_at: '2026-07-12T14:41:41+03:00'
+implementation_commit: null
+push_status: not_pushed
 progress_summary:
   project_skeleton: completed
   core_domain_models: completed
@@ -34,7 +33,7 @@ progress_summary:
   fixture_support: completed
   integration_readiness: preview_only
   documentation: completed
-  coordination: completed
+  coordination: active
   confidence: medium
 integration_contracts:
   consumed:
@@ -75,9 +74,12 @@ module_specific:
   logistics_notification_events_planned: true
   real_provider_credentials_present: false
 current_step:
-  id: logistics_service_bootstrap_and_coordination_foundation_v0_1_completed
-  status: completed
-  next_action: Wait for Blueprint review and explicit acceptance of this module completion.
-open_questions:
-- Please review this completion report, accept it or return it for corrections, and
-  issue the next approved Logistics Service prompt.
+  id: logistics_service_boundary_and_local_model_v0_1
+  status: in_progress
+  next_action: inspect current files and implement the active prompt
+open_questions: []
+prompt_progress:
+  intake: completed
+  implementation: not_started
+  tests: not_run
+  completion: not_started

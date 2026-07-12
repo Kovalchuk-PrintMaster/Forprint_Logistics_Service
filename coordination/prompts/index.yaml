@@ -12,3 +12,27 @@ prompts:
   received_at: '2026-07-11'
   completion_report: coordination/reports/completion/logistics_service_bootstrap_and_coordination_foundation_v0_1_completion.md
   completion_commit: 2544a71e0220c87b0be7a0be8c3f829b2d09c7ed
+  sequence: 1
+  module_execution_status: completed_by_module
+  blueprint_review_status: accepted_by_blueprint
+  archived_file: coordination/prompts/archived/2026-07-09__logistics_service__bootstrap_and_coordination_foundation_v0_1.md
+  blueprint_acceptance_commit: null
+  blueprint_accepted_at: '2026-07-11'
+- prompt_id: logistics_service_boundary_and_local_model_v0_1
+  sequence: 2
+  title: Logistics Service Boundary and Local Model Foundation v0.1
+  phase: boundary_and_local_model_v0_1
+  priority: high
+  source: forprint_system_blueprint
+  source_file: coordination/outgoing_prompts/logistics_service/approved/2026-07-11__logistics_service__boundary_and_local_model_v0_1.md
+  file: coordination/prompts/received/2026-07-11__logistics_service__boundary_and_local_model_v0_1.md
+  status: active
+  received_at: '2026-07-11'
+  module_execution_status: ready_for_module_pull
+  blueprint_review_status: not_started
+  active_file: coordination/prompts/active/2026-07-11__logistics_service__boundary_and_local_model_v0_1.md
+  completion_report: null
+  completion_commit: null
+  blueprint_acceptance_commit: null
+  blueprint_accepted_at: null
+active_prompt_id: logistics_service_boundary_and_local_model_v0_1

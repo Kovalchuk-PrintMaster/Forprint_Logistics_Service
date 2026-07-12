@@ -30,3 +30,13 @@ remain Blueprint-owned actions.
 
 Coordination YAML files must be valid, contain no unresolved placeholders and
 be checked before commit.
+
+## Automated prompt lifecycle
+
+- `prompts/received/` stores all synchronized approved prompts.
+- `prompts/active/` stores exactly one current prompt.
+- `prompts/archived/` stores previous inactive prompts.
+- `prompts/index.yaml` is updated by prompt intake automation.
+
+Use `make blueprint-prompts-sync` instead of editing prompt metadata
+manually.
