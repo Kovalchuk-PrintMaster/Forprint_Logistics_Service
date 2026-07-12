@@ -1,0 +1,22 @@
+schema_version: logistics_notification_preview_v0_1
+non_canonical: true
+preview_only: true
+live_provider_write: false
+
+notification_event:
+  event_id: notification_event_001
+  shipment_id: shipment_preview_001
+  event_type: tracking_status_changed
+  occurred_at: "2026-07-12T14:00:00+03:00"
+  message: Synthetic shipment tracking status changed.
+  attributes:
+    provider_id: nova_poshta_local_example
+    tracking_number: LOCAL-TRACK-001
+    normalized_status: arrived
+  local_payload: true
+  delivery_performed: false
+
+intended_display_surfaces:
+  - telegram_bot
+  - crm
+  - website

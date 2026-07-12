@@ -96,6 +96,8 @@ help:
 	@echo "  make check"
 	@echo "  make logistics-check"
 	@echo "  make check-report"
+	@echo "  make local-model-examples-check"
+	@echo "  make logistics-model-preview"
 	@echo "  make status-report"
 	@echo "  make report-status"
 	@echo ""
@@ -389,8 +391,18 @@ check:
 	$(MAKE) lint
 	$(MAKE) format-check
 	$(MAKE) project-policy-check
+	$(MAKE) local-model-examples-check
 	$(MAKE) test
 	$(MAKE) coordination-check
+
+
+.PHONY: local-model-examples-check
+local-model-examples-check:
+	$(PYTHON) -m scripts.validation.check_local_model_examples
+
+.PHONY: logistics-model-preview
+logistics-model-preview:
+	$(PYTHON) -m scripts.previews.preview_local_logistics_model
 
 .PHONY: logistics-check
 logistics-check:
