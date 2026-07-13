@@ -60,6 +60,11 @@ CHECK_COMMANDS: tuple[
         "Local ownership and safety boundaries are enforced.",
     ),
     (
+        "Test address book",
+        ("make", "test-address-book-check"),
+        ("Synthetic address book fixtures and preview are safe."),
+    ),
+    (
         "Coordination metadata",
         ("make", "coordination-check"),
         "Coordination metadata is valid.",

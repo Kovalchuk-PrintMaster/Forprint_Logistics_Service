@@ -1,0 +1,120 @@
+schema_version: logistics_test_address_book_v0_1
+
+non_canonical: true
+preview_only: true
+live_provider_write: false
+synthetic_data: true
+real_customer_data: false
+
+purpose: local synthetic logistics address book testing only
+
+ownership:
+  canonical_client_owner_claimed: false
+  canonical_address_owner_claimed: false
+  logistics_reference_only: true
+
+entries:
+  - entry_id: test_address_kyiv_local
+    entry_kind: kyiv_local
+    synthetic_data: true
+    real_customer_data: false
+    non_canonical: true
+    logistics_reference_only: true
+    source_system: local_fixture
+
+    recipient:
+      recipient_ref: test_recipient_kyiv_local
+      display_name: Synthetic Kyiv Local Recipient
+      phone: null
+      source_system: local_fixture
+      non_canonical: true
+
+    aliases:
+      - тестовий отримувач
+      - київський отримувач
+      - локальний отримувач
+
+    search_tokens:
+      - київ
+      - локальний
+      - synthetic local
+
+    area_hint: київ
+
+    address:
+      country_code: UA
+      city: Kyiv
+      address_line_1: Synthetic Local Street 1
+      address_line_2: null
+      postal_code: "00000"
+      provider_location_ref: null
+
+  - entry_id: test_address_warehouse
+    entry_kind: warehouse
+    synthetic_data: true
+    real_customer_data: false
+    non_canonical: true
+    logistics_reference_only: true
+    source_system: local_fixture
+
+    recipient:
+      recipient_ref: test_recipient_warehouse
+      display_name: Synthetic Warehouse Recipient
+      phone: null
+      source_system: local_fixture
+      non_canonical: true
+
+    aliases:
+      - склад
+      - тестовий склад
+      - складський отримувач
+
+    search_tokens:
+      - warehouse
+      - складська зона
+      - лівий берег
+
+    area_hint: складська зона
+
+    address:
+      country_code: UA
+      city: Kyiv
+      address_line_1: Synthetic Warehouse Road 2
+      address_line_2: null
+      postal_code: "00000"
+      provider_location_ref: null
+
+  - entry_id: test_address_office
+    entry_kind: office
+    synthetic_data: true
+    real_customer_data: false
+    non_canonical: true
+    logistics_reference_only: true
+    source_system: local_fixture
+
+    recipient:
+      recipient_ref: test_recipient_office
+      display_name: Synthetic Office Recipient
+      phone: null
+      source_system: local_fixture
+      non_canonical: true
+
+    aliases:
+      - офіс
+      - тестовий офіс
+      - офісний отримувач
+
+    search_tokens:
+      - office
+      - центр
+      - київський офіс
+
+    area_hint: центр
+
+    address:
+      country_code: UA
+      city: Kyiv
+      address_line_1: Synthetic Office Avenue 3
+      address_line_2: null
+      postal_code: "00000"
+      provider_location_ref: null

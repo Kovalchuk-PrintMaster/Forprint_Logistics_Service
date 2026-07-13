@@ -98,6 +98,8 @@ help:
 	@echo "  make check-report"
 	@echo "  make local-model-examples-check"
 	@echo "  make local-model-boundary-check"
+	@echo "  make test-address-book-check"
+	@echo "  make test-address-book-preview"
 	@echo "  make logistics-model-preview"
 	@echo "  make status-report"
 	@echo "  make report-status"
@@ -394,6 +396,7 @@ check:
 	$(MAKE) project-policy-check
 	$(MAKE) local-model-examples-check
 	$(MAKE) local-model-boundary-check
+	$(MAKE) test-address-book-check
 	$(MAKE) test
 	$(MAKE) coordination-check
 
@@ -406,6 +409,14 @@ local-model-examples-check:
 .PHONY: local-model-boundary-check
 local-model-boundary-check:
 	$(PYTHON) -m scripts.validation.check_local_model_boundaries
+
+.PHONY: test-address-book-check
+test-address-book-check:
+	$(PYTHON) -m scripts.validation.check_test_address_book
+
+.PHONY: test-address-book-preview
+test-address-book-preview:
+	$(PYTHON) -m scripts.previews.preview_test_address_book
 
 .PHONY: logistics-model-preview
 logistics-model-preview:
