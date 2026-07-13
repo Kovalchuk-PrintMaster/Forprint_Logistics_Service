@@ -693,67 +693,192 @@ def validate_prompt_state(
 ) -> list[str]:
     errors: list[str] = []
 
-    active_files = sorted(active_dir.glob("*.md"))
-
-    if len(active_files) != 1:
-        errors.append("coordination/prompts/active must contain exactly one Markdown prompt")
-
     try:
         local_index = load_mapping(local_index_path)
     except (OSError, ValueError, yaml.YAMLError) as exc:
-        return [str(exc)]
+        return [f"Unable to read local prompt index: {exc}"]
 
-    prompts = local_index.get("prompts", [])
+    try:
+        status = load_mapping(status_yaml_path)
+    except (OSError, ValueError, yaml.YAMLError) as exc:
+        return [f"Unable to read current status: {exc}"]
+
+    prompts = local_index.get("prompts")
 
     if not isinstance(prompts, list):
         return ["Local prompt index prompts must be a list"]
 
-    active_entries = [
-        prompt
-        for prompt in prompts
-        if isinstance(prompt, dict) and prompt.get("status") == "active"
-    ]
+    project_root = local_index_path.resolve().parents[2]
 
-    if len(active_entries) != 1:
-        errors.append("Local prompt index must contain exactly one active prompt entry")
+    prompt_entries = [prompt for prompt in prompts if isinstance(prompt, dict)]
 
-    if len(active_files) == 1 and len(active_entries) == 1:
-        active_file = active_files[0]
-        entry = active_entries[0]
+    prompt_ids: list[str] = []
 
-        expected_active = entry.get("active_file")
-        project_root = local_index_path.resolve().parents[2]
-        actual_active = relative_path(
-            active_file,
-            project_root,
-        )
+    for entry in prompt_entries:
+        prompt_id = entry.get("prompt_id")
 
-        if expected_active != actual_active:
-            errors.append("Active prompt file does not match index active_file")
+        if not isinstance(prompt_id, str) or not prompt_id.strip():
+            errors.append("Every prompt entry must contain a non-empty prompt_id")
+            continue
+
+        prompt_ids.append(prompt_id)
 
         received_value = entry.get("file")
 
-        if not isinstance(received_value, str):
-            errors.append("Active prompt entry has no received file")
-        else:
-            received_file = project_root / received_value
+        if not isinstance(received_value, str) or not received_value.strip():
+            errors.append(f"Prompt {prompt_id} has no received file path")
+            continue
 
-            if not received_file.is_file():
-                errors.append("Active prompt received file is missing")
-            elif file_hash(active_file) != file_hash(received_file):
-                errors.append("Active prompt differs from received copy")
+        received_path = project_root / received_value
 
-        try:
-            status = load_mapping(status_yaml_path)
-        except (
-            OSError,
-            ValueError,
-            yaml.YAMLError,
-        ) as exc:
-            errors.append(str(exc))
+        if not received_path.is_file():
+            errors.append(f"Received prompt file is missing for {prompt_id}: {received_value}")
+
+    if len(prompt_ids) != len(set(prompt_ids)):
+        errors.append("Local prompt index contains duplicate prompt_id values")
+
+    active_files = sorted(active_dir.glob("*.md"))
+    active_entries = [entry for entry in prompt_entries if entry.get("status") == "active"]
+
+    active_prompt_id = local_index.get("active_prompt_id")
+    status_value = status.get("status")
+
+    active_mode = bool(
+        active_files
+        or active_entries
+        or active_prompt_id is not None
+        or status_value == "prompt_active"
+    )
+
+    if active_mode:
+        if len(active_files) != 1:
+            errors.append(
+                "coordination/prompts/active must "
+                "contain exactly one Markdown prompt "
+                "in active mode"
+            )
+
+        if len(active_entries) != 1:
+            errors.append(
+                "Local prompt index must contain exactly one active prompt entry in active mode"
+            )
+
+        if not isinstance(active_prompt_id, str) or not active_prompt_id.strip():
+            errors.append("active_prompt_id must identify the active prompt in active mode")
+
+        if status_value != "prompt_active":
+            errors.append("Current status must be prompt_active when an active prompt exists")
+
+        if len(active_files) == 1 and len(active_entries) == 1:
+            active_file = active_files[0]
+            entry = active_entries[0]
+            entry_prompt_id = entry.get("prompt_id")
+
+            if active_prompt_id != entry_prompt_id:
+                errors.append("active_prompt_id does not match the active prompt entry")
+
+            if status.get("source_prompt_id") != entry_prompt_id:
+                errors.append("Current status source_prompt_id does not match the active prompt")
+
+            expected_active = entry.get("active_file")
+
+            if (
+                not isinstance(
+                    expected_active,
+                    str,
+                )
+                or not expected_active.strip()
+            ):
+                errors.append("Active prompt entry has no active_file path")
+            else:
+                expected_active_path = project_root / expected_active
+
+                if expected_active_path.resolve() != active_file.resolve():
+                    errors.append("Active prompt file does not match index active_file")
+
+            received_value = entry.get("file")
+
+            if isinstance(received_value, str):
+                received_file = project_root / received_value
+
+                if received_file.is_file() and file_hash(active_file) != file_hash(received_file):
+                    errors.append("Active prompt differs from its received copy")
+
+        return errors
+
+    # Terminal mode is valid after module completion:
+    # no active file, no active entry and no active ID.
+    if active_files:
+        errors.append(
+            "Completed prompt state must not contain files in coordination/prompts/active"
+        )
+
+    if active_entries:
+        errors.append("Completed prompt state must not contain an active prompt index entry")
+
+    if active_prompt_id is not None:
+        errors.append("active_prompt_id must be null when no prompt is active")
+
+    if status_value not in TERMINAL_LOCAL_STATUSES:
+        errors.append("No active prompt exists, but current status is not a terminal prompt status")
+
+    source_prompt_id = status.get("source_prompt_id")
+
+    if not isinstance(source_prompt_id, str) or not source_prompt_id.strip():
+        errors.append("Terminal current status must contain source_prompt_id")
+        return errors
+
+    matching_entries = [
+        entry for entry in prompt_entries if entry.get("prompt_id") == source_prompt_id
+    ]
+
+    if len(matching_entries) != 1:
+        errors.append("Terminal current status must match exactly one prompt index entry")
+        return errors
+
+    entry = matching_entries[0]
+    entry_status = entry.get("status")
+
+    if entry_status not in TERMINAL_LOCAL_STATUSES:
+        errors.append("Terminal prompt index entry must have a terminal local status")
+
+    if "active_file" in entry:
+        errors.append("Terminal prompt entry must not retain active_file")
+
+    archived_value = entry.get("archived_file")
+
+    if not isinstance(archived_value, str) or not archived_value.strip():
+        errors.append("Terminal prompt entry must contain archived_file")
+    else:
+        archived_file = project_root / archived_value
+
+        if not archived_file.is_file():
+            errors.append(f"Archived prompt file is missing: {archived_value}")
         else:
-            if status.get("source_prompt_id") != entry.get("prompt_id"):
-                errors.append("current_status source_prompt_id does not match active prompt")
+            received_value = entry.get("file")
+
+            if isinstance(received_value, str):
+                received_file = project_root / received_value
+
+                if received_file.is_file() and file_hash(archived_file) != file_hash(received_file):
+                    errors.append("Archived prompt differs from its received copy")
+
+    if entry_status == "completed_in_module":
+        if entry.get("module_execution_status") != "completed_by_module":
+            errors.append(
+                "Completed module prompt must record module_execution_status as completed_by_module"
+            )
+
+        if not entry.get("completion_report"):
+            errors.append("Completed module prompt must contain completion_report")
+
+        if not entry.get("completion_commit"):
+            errors.append("Completed module prompt must contain completion_commit")
+
+    prompt_progress = status.get("prompt_progress")
+
+    if isinstance(prompt_progress, dict) and prompt_progress.get("completion") != "completed":
+        errors.append("Terminal prompt status must record prompt_progress.completion as completed")
 
     return errors
 
