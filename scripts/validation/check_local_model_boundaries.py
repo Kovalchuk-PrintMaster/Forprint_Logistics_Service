@@ -12,32 +12,44 @@ from scripts.previews.preview_local_logistics_model import (
     build_local_model_preview,
     load_workflow_examples,
 )
+from scripts.validation.check_test_address_book import (
+    run_validation as run_test_address_book_validation,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 REQUIRED_PATHS = (
+    "app/domain/address_book.py",
     "app/domain/events.py",
     "app/domain/providers.py",
     "app/domain/recipients.py",
     "app/domain/shipments.py",
     "app/domain/tracking.py",
+    "app/services/address_book_service.py",
     "app/services/notification_event_service.py",
     "app/services/shipment_draft_service.py",
     "app/services/tracking_event_service.py",
     "app/storage/in_memory.py",
     "app/storage/repositories.py",
+    "examples/fixtures/address_book/test_address_book.yaml",
+    "examples/workflows/address_book_lookup_preview.yaml",
     "examples/workflows/shipment_draft_preview.yaml",
     "examples/workflows/tracking_request_preview.yaml",
     "examples/workflows/notification_event_preview.yaml",
     "scripts/previews/preview_local_logistics_model.py",
+    "scripts/previews/preview_test_address_book.py",
+    "scripts/validation/check_test_address_book.py",
     "docs/architecture/boundaries/local_logistics_model_boundary.md",
+    "docs/architecture/boundaries/test_address_book_boundary.md",
     "docs/development/testing/local_logistics_model_preview.md",
+    "docs/development/testing/local_test_data_policy.md",
 )
 
 SCANNED_PYTHON_DIRECTORIES = (
     "app/services",
     "app/storage",
     "scripts/previews",
+    "scripts/validation",
 )
 
 FORBIDDEN_IMPORT_PREFIXES = (
@@ -356,6 +368,39 @@ def check_runtime_preview(
     )
 
 
+def check_test_address_book_boundary(
+    root: Path,
+) -> BoundaryCheckResult:
+    try:
+        findings = run_test_address_book_validation(
+            root / "examples/fixtures/address_book/test_address_book.yaml",
+            root / "examples/workflows/address_book_lookup_preview.yaml",
+        )
+    except (
+        FileNotFoundError,
+        OSError,
+        ValueError,
+        yaml.YAMLError,
+    ) as exc:
+        return result(
+            "Test address book boundary",
+            False,
+            str(exc),
+        )
+
+    return result(
+        "Test address book boundary",
+        not findings,
+        (
+            "Synthetic address book lookup, "
+            "snapshot and shipment preview "
+            "remain local and non-canonical."
+            if not findings
+            else "Found: " + ", ".join(findings)
+        ),
+    )
+
+
 def run_boundary_checks(
     root: Path = PROJECT_ROOT,
 ) -> list[BoundaryCheckResult]:
@@ -364,6 +409,7 @@ def run_boundary_checks(
         check_external_import_boundary(root),
         check_workflow_safety(root),
         check_runtime_preview(root),
+        check_test_address_book_boundary(root),
     ]
 
 

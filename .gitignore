@@ -82,3 +82,7 @@ reports/*
 Thumbs.db
 # Local operator helper files
 /tmp.py
+
+# Local owner-maintained recipient data
+runtime/address_book/owner_recipients.yaml
+runtime/address_book/*.local.yaml

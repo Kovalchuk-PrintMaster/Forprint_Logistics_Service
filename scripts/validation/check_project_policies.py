@@ -9,6 +9,8 @@ import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
+LOCAL_OWNER_ADDRESS_BOOK_PATH = "runtime/address_book/owner_recipients.yaml"
+
 FORBIDDEN_PLACEHOLDERS = (
     "{now}",
     "{branch}",
@@ -24,6 +26,7 @@ FORBIDDEN_PLACEHOLDERS = (
 REQUIRED_PATHS = (
     "forprint_module_manifest.yaml",
     ".env.example",
+    ".gitignore",
     "config/module.yaml",
     "config/providers.example.yaml",
     "coordination/status/current_status.yaml",
@@ -32,8 +35,11 @@ REQUIRED_PATHS = (
     "coordination/prompts/index.yaml",
     "coordination/reports/index.yaml",
     "examples/fixtures/recipients/test_recipients.yaml",
+    "examples/fixtures/address_book/test_address_book.yaml",
+    "examples/workflows/address_book_lookup_preview.yaml",
     "docs/architecture/adapters/provider_adapter_policy.md",
     "docs/architecture/boundaries/logistics_service_boundary.md",
+    "docs/architecture/boundaries/test_address_book_boundary.md",
     "docs/development/configuration/secrets_policy.md",
     "docs/development/testing/local_test_data_policy.md",
 )
@@ -85,6 +91,8 @@ def _check_yaml_files(root: Path) -> PolicyResult:
         "coordination/reports/index.yaml",
         "coordination/status/current_status.yaml",
         "examples/fixtures/recipients/test_recipients.yaml",
+        "examples/fixtures/address_book/test_address_book.yaml",
+        "examples/workflows/address_book_lookup_preview.yaml",
     )
 
     try:
@@ -149,6 +157,91 @@ def _check_fixture_boundary(root: Path) -> PolicyResult:
         "Non-canonical fixture",
         passed,
         "Recipient fixture is explicitly local and non-canonical.",
+    )
+
+
+def _check_address_book_fixture_boundary(
+    root: Path,
+) -> PolicyResult:
+    fixture = _load_yaml(root / "examples/fixtures/address_book/test_address_book.yaml")
+
+    if not isinstance(fixture, dict):
+        return _result(
+            "Synthetic address book fixture",
+            False,
+            "Fixture root must be a mapping.",
+        )
+
+    entries = fixture.get("entries", [])
+
+    if not isinstance(entries, list):
+        return _result(
+            "Synthetic address book fixture",
+            False,
+            "Fixture entries must be a list.",
+        )
+
+    required_kinds = {
+        "kyiv_local",
+        "warehouse",
+        "office",
+    }
+    actual_kinds: set[str] = set()
+    entries_are_safe = True
+
+    for entry in entries:
+        if not isinstance(entry, dict):
+            entries_are_safe = False
+            continue
+
+        actual_kinds.add(str(entry.get("entry_kind", "")))
+        recipient = entry.get("recipient")
+
+        if not isinstance(recipient, dict):
+            entries_are_safe = False
+            continue
+
+        entries_are_safe = (
+            entries_are_safe
+            and entry.get("synthetic_data") is True
+            and entry.get("real_customer_data") is False
+            and entry.get("non_canonical") is True
+            and entry.get("logistics_reference_only") is True
+            and recipient.get("non_canonical") is True
+            and recipient.get("phone") is None
+            and str(
+                recipient.get(
+                    "recipient_ref",
+                    "",
+                )
+            ).startswith("test_recipient_")
+            and str(
+                recipient.get(
+                    "display_name",
+                    "",
+                )
+            ).startswith("Synthetic ")
+        )
+
+    passed = (
+        fixture.get("non_canonical") is True
+        and fixture.get("preview_only") is True
+        and fixture.get("live_provider_write") is False
+        and fixture.get("synthetic_data") is True
+        and fixture.get("real_customer_data") is False
+        and len(entries) == 3
+        and required_kinds == actual_kinds
+        and entries_are_safe
+    )
+
+    return _result(
+        "Synthetic address book fixture",
+        passed,
+        (
+            "Committed address book entries are "
+            "synthetic, non-canonical and free "
+            "of private recipient data."
+        ),
     )
 
 
@@ -271,6 +364,68 @@ def _check_tracked_secret_files(root: Path) -> PolicyResult:
     )
 
 
+def _check_local_owner_address_book_policy(
+    root: Path,
+) -> PolicyResult:
+    ignored = subprocess.run(
+        [
+            "git",
+            "check-ignore",
+            "--quiet",
+            "--",
+            LOCAL_OWNER_ADDRESS_BOOK_PATH,
+        ],
+        cwd=root,
+        check=False,
+    )
+    tracked = subprocess.run(
+        [
+            "git",
+            "ls-files",
+            "--error-unmatch",
+            "--",
+            LOCAL_OWNER_ADDRESS_BOOK_PATH,
+        ],
+        cwd=root,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    tracked_directory = subprocess.run(
+        [
+            "git",
+            "ls-files",
+            "--",
+            "runtime/address_book",
+        ],
+        cwd=root,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    boundary_text = (root / "docs/architecture/boundaries/test_address_book_boundary.md").read_text(
+        encoding="utf-8"
+    )
+    policy_text = (root / "docs/development/testing/local_test_data_policy.md").read_text(
+        encoding="utf-8"
+    )
+
+    passed = (
+        ignored.returncode == 0
+        and tracked.returncode != 0
+        and not tracked_directory.stdout.strip()
+        and LOCAL_OWNER_ADDRESS_BOOK_PATH in boundary_text
+        and LOCAL_OWNER_ADDRESS_BOOK_PATH in policy_text
+    )
+
+    return _result(
+        "Local owner address book",
+        passed,
+        ("Owner-maintained recipient data uses a documented Git-ignored and untracked local path."),
+    )
+
+
 def run_policy_checks(root: Path = PROJECT_ROOT) -> list[PolicyResult]:
     return [
         _check_required_paths(root),
@@ -278,10 +433,12 @@ def run_policy_checks(root: Path = PROJECT_ROOT) -> list[PolicyResult]:
         _check_manifest_boundary(root),
         _check_live_write_disabled(root),
         _check_fixture_boundary(root),
+        _check_address_book_fixture_boundary(root),
         _check_env_example(root),
         _check_flat_directory_policy(root),
         _check_coordination_placeholders(root),
         _check_tracked_secret_files(root),
+        _check_local_owner_address_book_policy(root),
     ]
 
 
