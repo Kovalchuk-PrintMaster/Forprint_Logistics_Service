@@ -15,3 +15,10 @@ reports:
   created_at: '2026-07-12T22:29:02+03:00'
   implementation_commit: 3b724d0d1dea9c5c5a95940bb61233fc3cdbb1f8
   push_status: pushed
+- report_id: logistics_service_test_address_book_v0_1_completion
+  prompt_id: logistics_service_test_address_book_v0_1
+  report_file: coordination/reports/completion/logistics_service_test_address_book_v0_1_completion.md
+  status: completed_in_module
+  created_at: '2026-07-13T23:17:47+03:00'
+  implementation_commit: 259f84714e421fab193a8ee494731c7f5a974854
+  push_status: pushed
