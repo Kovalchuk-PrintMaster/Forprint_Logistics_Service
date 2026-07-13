@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from app.domain import (
+    AddressBookEntry,
     LogisticsNotificationEvent,
     LogisticsProvider,
     RecipientRef,
@@ -49,6 +50,37 @@ class LogisticsRepository(Protocol):
         self,
     ) -> tuple[RecipientRef, ...]:
         """Return all recipient references."""
+
+    def save_address_book_entry(
+        self,
+        entry: AddressBookEntry,
+    ) -> AddressBookEntry:
+        """Save a local non-canonical address entry."""
+
+    def get_address_book_entry(
+        self,
+        entry_id: str,
+    ) -> AddressBookEntry | None:
+        """Return a local address book entry."""
+
+    def list_address_book_entries(
+        self,
+    ) -> tuple[AddressBookEntry, ...]:
+        """Return all local address book entries."""
+
+    def find_address_book_entries(
+        self,
+        query: str,
+        *,
+        city_or_area_hint: str | None = None,
+    ) -> tuple[AddressBookEntry, ...]:
+        """Search local address book entries."""
+
+    def find_address_book_entries_by_recipient_ref(
+        self,
+        recipient_ref: str,
+    ) -> tuple[AddressBookEntry, ...]:
+        """Find entries for a recipient reference."""
 
     def save_shipment_draft(
         self,

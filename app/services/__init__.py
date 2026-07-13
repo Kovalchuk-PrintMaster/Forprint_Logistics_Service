@@ -1,4 +1,10 @@
-from app.services.errors import LocalModelSafetyError
+from app.services.address_book_service import (
+    AddressBookEntryNotFoundError,
+    AddressBookService,
+)
+from app.services.errors import (
+    LocalModelSafetyError,
+)
 from app.services.notification_event_service import (
     NotificationEventService,
 )
@@ -10,6 +16,8 @@ from app.services.tracking_event_service import (
 )
 
 __all__ = [
+    "AddressBookEntryNotFoundError",
+    "AddressBookService",
     "LocalModelSafetyError",
     "NotificationEventService",
     "ShipmentDraftService",

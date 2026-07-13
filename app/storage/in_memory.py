@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from app.domain import (
+    AddressBookEntry,
     LogisticsNotificationEvent,
     LogisticsProvider,
     RecipientRef,
     ShipmentDraft,
     TrackingEvent,
     TrackingRequest,
+    normalize_lookup_token,
 )
 
 
@@ -25,6 +27,10 @@ class InMemoryLogisticsRepository:
         self._recipients: dict[
             str,
             RecipientRef,
+        ] = {}
+        self._address_book_entries: dict[
+            str,
+            AddressBookEntry,
         ] = {}
         self._shipment_drafts: dict[
             str,
@@ -79,6 +85,52 @@ class InMemoryLogisticsRepository:
     ) -> tuple[RecipientRef, ...]:
         return tuple(self._recipients.values())
 
+    def save_address_book_entry(
+        self,
+        entry: AddressBookEntry,
+    ) -> AddressBookEntry:
+        self.save_recipient(entry.recipient)
+        self._address_book_entries[entry.entry_id] = entry
+        return entry
+
+    def get_address_book_entry(
+        self,
+        entry_id: str,
+    ) -> AddressBookEntry | None:
+        return self._address_book_entries.get(entry_id)
+
+    def list_address_book_entries(
+        self,
+    ) -> tuple[AddressBookEntry, ...]:
+        return tuple(self._address_book_entries.values())
+
+    def find_address_book_entries(
+        self,
+        query: str,
+        *,
+        city_or_area_hint: str | None = None,
+    ) -> tuple[AddressBookEntry, ...]:
+        return tuple(
+            entry
+            for entry in (self._address_book_entries.values())
+            if entry.matches(
+                query,
+                city_or_area_hint=(city_or_area_hint),
+            )
+        )
+
+    def find_address_book_entries_by_recipient_ref(
+        self,
+        recipient_ref: str,
+    ) -> tuple[AddressBookEntry, ...]:
+        normalized_ref = normalize_lookup_token(recipient_ref)
+
+        return tuple(
+            entry
+            for entry in (self._address_book_entries.values())
+            if normalize_lookup_token(entry.recipient.recipient_ref) == normalized_ref
+        )
+
     def save_shipment_draft(
         self,
         draft: ShipmentDraft,
@@ -125,7 +177,12 @@ class InMemoryLogisticsRepository:
         provider_id: str,
         tracking_number: str,
     ) -> TrackingRequest | None:
-        return self._tracking_requests.get((provider_id, tracking_number))
+        return self._tracking_requests.get(
+            (
+                provider_id,
+                tracking_number,
+            )
+        )
 
     def list_tracking_requests(
         self,
@@ -153,7 +210,7 @@ class InMemoryLogisticsRepository:
     ) -> tuple[TrackingEvent, ...]:
         return tuple(
             event
-            for event in self._tracking_events.values()
+            for event in (self._tracking_events.values())
             if (provider_id is None or event.provider_id == provider_id)
             and (tracking_number is None or event.tracking_number == tracking_number)
         )
@@ -175,9 +232,12 @@ class InMemoryLogisticsRepository:
         self,
         *,
         shipment_id: str | None = None,
-    ) -> tuple[LogisticsNotificationEvent, ...]:
+    ) -> tuple[
+        LogisticsNotificationEvent,
+        ...,
+    ]:
         return tuple(
             event
-            for event in self._notification_events.values()
+            for event in (self._notification_events.values())
             if (shipment_id is None or event.shipment_id == shipment_id)
         )
