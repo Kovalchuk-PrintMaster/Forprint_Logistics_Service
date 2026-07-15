@@ -9,6 +9,8 @@ from app.domain.events import (
 from app.domain.provider_contracts import (
     AddressValidationRequest,
     AddressValidationResult,
+    DeliveryQuoteLookupRequest,
+    DeliveryQuoteLookupResult,
     DryRunExecutionMetadata,
     DryRunPayloadEnvelope,
     ProviderCapabilityDescription,
@@ -49,6 +51,8 @@ __all__ = [
     "AddressSnapshot",
     "AddressValidationRequest",
     "AddressValidationResult",
+    "DeliveryQuoteLookupRequest",
+    "DeliveryQuoteLookupResult",
     "DryRunExecutionMetadata",
     "DryRunPayloadEnvelope",
     "LogisticsNotificationEvent",

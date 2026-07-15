@@ -1,58 +1,55 @@
 # Provider Adapter Contract
 
-## Purpose
+## Authoritative boundary
 
-Logistics Service keeps one provider-neutral contract for future
-parcel, postal, freight, taxi and local courier adapters.
+Logistics Service has one provider-neutral adapter hierarchy:
 
-The existing boundary under `app/adapters/providers/base.py`
-remains authoritative. This contract foundation refines its typed
-domain vocabulary rather than creating another adapter hierarchy.
+```text
+app/adapters/providers/base.py
+ProviderAdapter
+```
 
-## Capability semantics
+Provider-specific adapters must refine this boundary. They must not
+introduce a competing base class or provider-specific public
+contract.
 
-`ProviderCapability` describes provider-neutral functionality.
+## Capability discovery
 
-`ProviderOperation` describes a requested operation.
+Provider-neutral discovery uses:
 
-`LogisticsProvider.capability_support()` and
-`LogisticsProvider.operation_support()` always return an explicit
-`ProviderCapabilitySupport` result.
+```text
+ProviderCapability
+ProviderOperation
+ProviderCapabilitySupport
+ProviderCapabilityDescription
+```
 
-Unsupported operations are represented explicitly. They are not
-inferred from missing dictionary keys or provider-specific values.
+Every capability has an explicit supported or unsupported result.
 
-`LIVE_SHIPMENT_CREATION` is always unavailable in this checkpoint.
+Live shipment creation is always unavailable.
 
-## Typed requests and results
+## Typed adapter operations
 
-The provider-neutral contract includes typed models for:
+`ProviderAdapter` defines typed boundaries for:
 
-- recipient validation;
-- address validation;
-- shipment payload preview;
-- read-only tracking lookup;
-- provider capability description;
-- dry-run execution metadata.
+```text
+validate_recipient()
+validate_address()
+build_shipment_payload_preview()
+track()
+lookup_delivery_quote()
+TrackingLookupRequest
+TrackingLookupResult
+```
 
-Provider-specific details may exist only inside the safe payload
-preview portion of `DryRunPayloadEnvelope`.
+Loose provider dictionaries are not the public service boundary.
 
-## Dry-run envelope
+Provider-specific preview details may exist only inside
+`DryRunPayloadEnvelope`.
 
-`DryRunPayloadEnvelope` records:
+## Dry-run invariants
 
-- provider ID;
-- provider-neutral operation;
-- schema version;
-- correlation reference;
-- normalized input summary;
-- provider payload preview;
-- validation messages;
-- warnings;
-- generated preview artifacts.
-
-Its invariants require:
+Every provider-neutral execution keeps:
 
 ```text
 preview_only = true
@@ -60,43 +57,52 @@ live_write = false
 provider_call_performed = false
 ```
 
-Sensitive payload keys such as tokens, passwords, credentials,
-authorization values and raw provider responses are rejected.
+Sensitive credentials, authorization values, tokens and raw
+provider responses must not cross the adapter boundary.
 
-## Error taxonomy
+## Delivery quote boundary
 
-`ProviderErrorCode` defines the provider-neutral machine-readable
+`DeliveryQuoteLookupRequest` and
+`DeliveryQuoteLookupResult` reserve a read-only typed boundary for
+future provider quote support.
+
+The current base adapter returns an explicit
+`unsupported_capability` result.
+
+It does not perform a quote API call and does not calculate the
+final customer price.
+
+## Provider errors
+
+`ProviderErrorCode` is the machine-readable provider-neutral error
 taxonomy.
 
-`ProviderError` provides:
+`ProviderError` exposes safe text, retryability and typed provider
+context without exposing raw sensitive values.
 
-- a safe human-readable message;
-- explicit retryability;
-- optional provider and operation context;
-- safe metadata keys;
-- rendering that excludes raw metadata values.
+## Live-write prohibition
 
-Provider-specific errors may later be normalized into this taxonomy.
-Raw sensitive responses must not cross the adapter boundary.
+The `ProviderAdapter` method create_shipment() is final.
 
-## Deferred adapter refinement
+It always raises `LiveProviderWriteDisabledError` with:
 
-A later checkpoint in the same prompt will update
-`ProviderAdapter` to consume and return these typed contracts.
+```text
+code = live_write_disabled
+retryable = false
+operation = live_shipment_creation
+```
 
-Registry/resolver behavior, synthetic multi-provider fixtures,
-preview workflow and compact reporting alignment remain separate
-tested checkpoints.
+No live shipment, TTN, courier, taxi or provider-side mutation is
+implemented.
 
-## Safety boundary
+## Deferred work
 
-This contract does not permit:
+The following remains deferred:
 
-- provider HTTP or SDK calls;
-- real credentials;
-- real tracking calls;
-- shipment or TTN creation;
-- courier or taxi booking;
-- provider-side writes;
-- canonical client or order ownership;
-- final customer price ownership.
+- provider registry or resolver;
+- synthetic multi-provider fixtures;
+- provider adapter preview workflow;
+- real tracking or quote calls;
+- provider SDK or HTTP integration;
+- compact reporting alignment;
+- final delivery price calculation.

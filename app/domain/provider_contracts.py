@@ -265,6 +265,36 @@ def _validate_safe_items(
 
 
 @dataclass(frozen=True, slots=True)
+class DeliveryQuoteLookupRequest:
+    """Provider-neutral future quote lookup request."""
+
+    provider_id: str
+    execution: DryRunExecutionMetadata
+    normalized_input_summary: tuple[
+        tuple[str, str],
+        ...,
+    ] = field(default_factory=tuple)
+
+    def __post_init__(self) -> None:
+        if not self.provider_id.strip():
+            raise ValueError("provider_id must not be empty")
+
+        if self.execution.operation is not ProviderOperation.DELIVERY_QUOTE_LOOKUP:
+            raise ValueError("Delivery quote request uses the wrong operation")
+
+        _validate_safe_items(
+            self.normalized_input_summary,
+            field_name="normalized_input_summary",
+        )
+
+        object.__setattr__(
+            self,
+            "provider_id",
+            self.provider_id.strip(),
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class DryRunPayloadEnvelope:
     provider_id: str
     schema_version: str
@@ -340,6 +370,45 @@ class ShipmentPayloadPreviewResult:
     @property
     def successful(self) -> bool:
         return not self.errors
+
+
+@dataclass(frozen=True, slots=True)
+class DeliveryQuoteLookupResult:
+    """Read-only provider-neutral quote lookup result."""
+
+    provider_id: str
+    execution: DryRunExecutionMetadata
+    available: bool
+    service_options: tuple[
+        tuple[tuple[str, str], ...],
+        ...,
+    ] = field(default_factory=tuple)
+    errors: tuple[ProviderError, ...] = field(default_factory=tuple)
+
+    def __post_init__(self) -> None:
+        if not self.provider_id.strip():
+            raise ValueError("provider_id must not be empty")
+
+        if self.execution.operation is not ProviderOperation.DELIVERY_QUOTE_LOOKUP:
+            raise ValueError("Delivery quote result uses the wrong operation")
+
+        if self.available and self.errors:
+            raise ValueError("An available quote result must not contain errors")
+
+        if not self.available and self.service_options:
+            raise ValueError("An unavailable quote result must not contain service options")
+
+        for option in self.service_options:
+            _validate_safe_items(
+                option,
+                field_name="service_option",
+            )
+
+        object.__setattr__(
+            self,
+            "provider_id",
+            self.provider_id.strip(),
+        )
 
 
 @dataclass(frozen=True, slots=True)
