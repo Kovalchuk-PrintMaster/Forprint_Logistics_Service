@@ -61,6 +61,14 @@ FORBIDDEN_IMPORT_PREFIXES = (
     "urllib",
 )
 
+
+LOCAL_MODEL_PREVIEW_FILENAMES = frozenset(
+    {
+        "preview_local_logistics_model.py",
+        "preview_test_address_book.py",
+    }
+)
+
 SENSITIVE_KEY_NAMES = {
     "access_token",
     "api_key",
@@ -99,10 +107,18 @@ def module_is_forbidden(module_name: str) -> bool:
     )
 
 
-def find_forbidden_imports(
+def scanned_python_paths(
     root: Path,
-) -> tuple[str, ...]:
-    findings: list[str] = []
+) -> tuple[Path, ...]:
+    """Return Python files belonging to local-model layers.
+
+    The local-model boundary checker must not treat every preview
+    script as part of the local model. Provider-adapter previews
+    belong to the adapter contract layer and have their own
+    validation workflow.
+    """
+
+    paths: list[Path] = []
 
     for relative_directory in SCANNED_PYTHON_DIRECTORIES:
         directory = root / relative_directory
@@ -110,30 +126,47 @@ def find_forbidden_imports(
         if not directory.is_dir():
             continue
 
-        for path in sorted(directory.rglob("*.py")):
-            try:
-                tree = ast.parse(
-                    path.read_text(encoding="utf-8"),
-                    filename=str(path),
-                )
-            except (OSError, SyntaxError) as exc:
-                findings.append(f"{path.relative_to(root)}: cannot parse: {exc}")
-                continue
+        directory_paths = sorted(directory.rglob("*.py"))
 
-            for node in ast.walk(tree):
-                modules: tuple[str, ...] = ()
+        if relative_directory == "scripts/previews":
+            directory_paths = [
+                path for path in directory_paths if (path.name in LOCAL_MODEL_PREVIEW_FILENAMES)
+            ]
 
-                if isinstance(node, ast.Import):
-                    modules = tuple(alias.name for alias in node.names)
-                elif isinstance(
-                    node,
-                    ast.ImportFrom,
-                ):
-                    modules = (node.module or "",)
+        paths.extend(directory_paths)
 
-                for module_name in modules:
-                    if module_is_forbidden(module_name):
-                        findings.append(f"{path.relative_to(root)}:{node.lineno}: {module_name}")
+    return tuple(paths)
+
+
+def find_forbidden_imports(
+    root: Path,
+) -> tuple[str, ...]:
+    findings: list[str] = []
+
+    for path in scanned_python_paths(root):
+        try:
+            tree = ast.parse(
+                path.read_text(encoding="utf-8"),
+                filename=str(path),
+            )
+        except (OSError, SyntaxError) as exc:
+            findings.append(f"{path.relative_to(root)}: cannot parse: {exc}")
+            continue
+
+        for node in ast.walk(tree):
+            modules: tuple[str, ...] = ()
+
+            if isinstance(node, ast.Import):
+                modules = tuple(alias.name for alias in node.names)
+            elif isinstance(
+                node,
+                ast.ImportFrom,
+            ):
+                modules = (node.module or "",)
+
+            for module_name in modules:
+                if module_is_forbidden(module_name):
+                    findings.append(f"{path.relative_to(root)}:{node.lineno}: {module_name}")
 
     return tuple(findings)
 

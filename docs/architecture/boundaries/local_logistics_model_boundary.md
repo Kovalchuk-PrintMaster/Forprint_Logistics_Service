@@ -125,3 +125,31 @@ The following remains explicitly deferred:
 - production persistence;
 - real credentials;
 - automatic notification delivery.
+
+## Boundary checker scope
+
+`check_local_model_boundaries.py` protects only the local model
+dependency layers:
+
+- `app/services/`;
+- `app/storage/`;
+- `preview_local_logistics_model.py`;
+- `preview_test_address_book.py`;
+- the existing local validation entrypoints.
+
+Other scripts under `scripts/previews/` are not automatically local
+model components.
+
+In particular,
+`preview_provider_adapter_contract.py` belongs to the provider
+adapter contract layer. It may import the provider adapter package
+and is validated independently by:
+
+```text
+make provider-contract-check
+make provider-contract-preview
+```
+
+This scope distinction does not weaken the local model boundary:
+provider adapter imports remain forbidden in local services, local
+storage and the designated local-model previews.

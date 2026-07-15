@@ -11,6 +11,14 @@ from app.adapters.providers.registry import (
     ProviderRegistryEntry,
     normalize_provider_id,
 )
+from app.adapters.providers.synthetic import (
+    SYNTHETIC_PROVIDER_PROFILES,
+    SyntheticProviderAdapter,
+    SyntheticProviderClass,
+    SyntheticProviderProfile,
+    build_synthetic_provider_adapters,
+    build_synthetic_provider_registry,
+)
 
 __all__ = [
     "DuplicateProviderRegistrationError",
@@ -21,5 +29,11 @@ __all__ = [
     "ProviderRegistry",
     "ProviderRegistryDescription",
     "ProviderRegistryEntry",
+    "SYNTHETIC_PROVIDER_PROFILES",
+    "SyntheticProviderAdapter",
+    "SyntheticProviderClass",
+    "SyntheticProviderProfile",
+    "build_synthetic_provider_adapters",
+    "build_synthetic_provider_registry",
     "normalize_provider_id",
 ]

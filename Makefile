@@ -438,6 +438,7 @@ check:
 	$(MAKE) local-model-examples-check
 	$(MAKE) local-model-boundary-check
 	$(MAKE) test-address-book-check
+	$(MAKE) provider-contract-check
 	$(MAKE) test
 	$(MAKE) coordination-check
 
@@ -462,6 +463,14 @@ test-address-book-preview:
 .PHONY: logistics-model-preview
 logistics-model-preview:
 	$(PYTHON) -m scripts.previews.preview_local_logistics_model
+
+.PHONY: provider-contract-check
+provider-contract-check:
+	$(PYTHON) -m scripts.validation.check_provider_adapter_contract
+
+.PHONY: provider-contract-preview
+provider-contract-preview:
+	$(PYTHON) -m scripts.previews.preview_provider_adapter_contract
 
 .PHONY: logistics-check
 logistics-check:
