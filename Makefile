@@ -65,6 +65,10 @@ endif
 help:
 	@echo "$(COLOR_BOLD)$(MODULE_NAME) Make targets$(COLOR_RESET)"
 	@echo ""
+	@echo "Operator workflow:"
+	@echo "  make module-start"
+	@echo "  make module-sync"
+	@echo ""
 	@echo "Bootstrap and development:"
 	@echo "  make install"
 	@echo "  make env-check"
@@ -112,6 +116,43 @@ help:
 
 # =============================================================================
 # 01 Help / navigation FINISH
+# =============================================================================
+
+
+
+# =============================================================================
+# 02 Operator entrypoints / Blueprint-first workflow START
+# =============================================================================
+
+# Purpose: prepare Logistics Service for approved Blueprint prompt execution.
+# Result: current Blueprint sources are checked, approved prompts are
+# synchronized locally, coordination is validated and the active prompt
+# is displayed. The Blueprint repository remains read-only.
+.PHONY: module-start
+module-start:
+	$(MAKE) blueprint-check
+	$(MAKE) blueprint-standards-check
+	$(MAKE) blueprint-sync-directives
+	$(MAKE) blueprint-prompts-sync
+	$(MAKE) coordination-check
+	$(MAKE) status-report
+	$(MAKE) blueprint-prompt
+
+# Purpose: synchronize module-visible Blueprint state without reading the
+# active prompt as an execution instruction.
+# Result: Blueprint paths, standards and prompt queue are checked and
+# synchronized into module-owned coordination records.
+.PHONY: module-sync
+module-sync:
+	$(MAKE) blueprint-check
+	$(MAKE) blueprint-standards-check
+	$(MAKE) blueprint-sync-directives
+	$(MAKE) blueprint-prompts-sync
+	$(MAKE) coordination-check
+	$(MAKE) status-report
+
+# =============================================================================
+# 02 Operator entrypoints / Blueprint-first workflow FINISH
 # =============================================================================
 
 

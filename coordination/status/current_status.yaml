@@ -3,30 +3,29 @@ module_id: logistics_service
 module_name: ForPrint Logistics Service
 module_status: active
 priority: p0
-current_phase: test_address_book_v0_1
+current_phase: provider_adapter_contract_v0_1
 last_completed_step: logistics_service_test_address_book_v0_1_completed
-last_updated: '2026-07-13'
-branch: feature/logistics-test-address-book-v01
-last_commit: 259f84714e421fab193a8ee494731c7f5a974854
+last_updated: '2026-07-15'
+branch: feature/logistics-provider-adapter-contract-v01
+last_commit: ba0c2e1dcf1e0f552786af45ef71e3130e630204
 checks:
-  make_check: ok
-  make_check_report: ok
-  governance_check: ok
-  coordination_check: ok
-  tests: ok
+  make_check: not_run
+  make_check_report: not_run
+  governance_check: not_run
+  coordination_check: requires_recheck
+  tests: not_run
 boundary:
   no_foreign_ownership: true
   no_production_api: true
   no_live_write: true
   no_real_integrations: true
-recommended_next_step: Wait for Blueprint review and explicit acceptance or correction
-  request for this module completion.
-status: completed_in_module
-phase: test_address_book_v0_1
-source_prompt_id: logistics_service_test_address_book_v0_1
-updated_at: '2026-07-13T23:17:47+03:00'
-implementation_commit: 259f84714e421fab193a8ee494731c7f5a974854
-push_status: pushed
+recommended_next_step: implement_provider_adapter_contract_v0_1
+status: prompt_active
+phase: provider_adapter_contract_v0_1
+source_prompt_id: logistics_service_provider_adapter_contract_v0_1
+updated_at: '2026-07-15T12:29:34+03:00'
+implementation_commit: null
+push_status: not_pushed
 progress_summary:
   project_skeleton: completed
   core_domain_models: completed
@@ -34,8 +33,8 @@ progress_summary:
   fixture_support: completed
   integration_readiness: preview_only
   documentation: completed
-  coordination: completed
-  confidence: high
+  coordination: active
+  confidence: medium
 integration_contracts:
   consumed:
   - contract_id: crm_to_logistics_delivery.v1
@@ -79,15 +78,12 @@ module_specific:
   logistics_notification_events_planned: true
   real_provider_credentials_present: false
 current_step:
-  id: logistics_service_test_address_book_v0_1_completed
-  status: completed
-  next_action: Wait for Blueprint review and explicit acceptance or correction request
-    for this module completion.
-open_questions:
-- Please review the Logistics Service test address book completion report, accept
-  it or return it for corrections, and issue the next approved prompt.
+  id: logistics_service_provider_adapter_contract_v0_1
+  status: in_progress
+  next_action: inspect current files and implement the active prompt
+open_questions: []
 prompt_progress:
   intake: completed
-  implementation: completed
-  tests: passed
-  completion: completed
+  implementation: not_started
+  tests: not_run
+  completion: not_started

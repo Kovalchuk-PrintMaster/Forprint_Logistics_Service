@@ -46,10 +46,27 @@ prompts:
   status: completed_in_module
   received_at: '2026-07-13'
   module_execution_status: completed_by_module
-  blueprint_review_status: not_started
+  blueprint_review_status: accepted_by_blueprint
   completion_report: coordination/reports/completion/logistics_service_test_address_book_v0_1_completion.md
   completion_commit: 259f84714e421fab193a8ee494731c7f5a974854
   blueprint_acceptance_commit: null
-  blueprint_accepted_at: null
+  blueprint_accepted_at: '2026-07-14'
   archived_file: coordination/prompts/archived/2026-07-13__logistics_service__test_address_book_v0_1.md
-active_prompt_id: null
+- prompt_id: logistics_service_provider_adapter_contract_v0_1
+  sequence: 4
+  title: Logistics Service Provider Adapter Contract v0.1
+  phase: provider_adapter_contract_v0_1
+  priority: high
+  source: forprint_system_blueprint
+  source_file: coordination/outgoing_prompts/logistics_service/approved/2026-07-14__logistics_service__provider_adapter_contract_v0_1.md
+  file: coordination/prompts/received/2026-07-14__logistics_service__provider_adapter_contract_v0_1.md
+  status: active
+  received_at: '2026-07-14'
+  module_execution_status: ready_for_module_pull
+  blueprint_review_status: not_started
+  active_file: coordination/prompts/active/2026-07-14__logistics_service__provider_adapter_contract_v0_1.md
+  completion_report: null
+  completion_commit: null
+  blueprint_acceptance_commit: null
+  blueprint_accepted_at: null
+active_prompt_id: logistics_service_provider_adapter_contract_v0_1
