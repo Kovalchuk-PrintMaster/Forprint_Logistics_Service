@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -19,6 +20,7 @@ ANSI_BOLD = "\033[1m"
 ANSI_GREEN = "\033[32m"
 ANSI_YELLOW = "\033[33m"
 ANSI_RED = "\033[31m"
+ANSI_CYAN = "\033[36m"
 
 CHECK_COMMANDS: tuple[
     tuple[str, tuple[str, ...], str],
@@ -57,12 +59,17 @@ CHECK_COMMANDS: tuple[
     (
         "Local model boundaries",
         ("make", "local-model-boundary-check"),
-        "Local ownership and safety boundaries are enforced.",
+        "Local ownership and dependency boundaries are enforced.",
     ),
     (
         "Test address book",
         ("make", "test-address-book-check"),
-        ("Synthetic address book fixtures and preview are safe."),
+        "Synthetic address book fixtures and preview are safe.",
+    ),
+    (
+        "Provider contract",
+        ("make", "provider-contract-check"),
+        "Provider adapters remain typed, preview-only and non-live.",
     ),
     (
         "Coordination metadata",
@@ -80,6 +87,7 @@ class CheckResult:
     duration_seconds: float
     details: str
     command: list[str]
+    diagnostics_path: str | None = None
 
 
 def normalize_status(status: str) -> str:
@@ -194,11 +202,22 @@ def colorize(
     return f"{color}{value}{ANSI_RESET}"
 
 
+def diagnostics_slug(value: str) -> str:
+    slug = re.sub(
+        r"[^a-z0-9]+",
+        "_",
+        value.strip().casefold(),
+    ).strip("_")
+
+    return slug or "check"
+
+
 def run_command(
     name: str,
     command: Sequence[str],
     expected: str,
     project_root: Path,
+    diagnostics_dir: Path | None = None,
 ) -> CheckResult:
     started = time.monotonic()
     environment = os.environ.copy()
@@ -215,22 +234,56 @@ def run_command(
 
     duration = time.monotonic() - started
 
-    output = "\n".join(
-        part.strip()
-        for part in (
-            completed.stdout,
-            completed.stderr,
+    output = (
+        "\n".join(
+            part.strip()
+            for part in (
+                completed.stdout,
+                completed.stderr,
+            )
+            if part.strip()
         )
-        if part.strip()
+        or "No command output."
     )
+
+    diagnostics_path: str | None = None
+
+    if diagnostics_dir is not None:
+        diagnostics_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        log_path = diagnostics_dir / f"{diagnostics_slug(name)}.log"
+
+        log_path.write_text(
+            "\n".join(
+                [
+                    f"Check: {name}",
+                    f"Command: {' '.join(command)}",
+                    f"Expected: {expected}",
+                    f"Return code: {completed.returncode}",
+                    "",
+                    output,
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        try:
+            diagnostics_path = str(log_path.relative_to(project_root))
+        except ValueError:
+            diagnostics_path = str(log_path)
 
     return CheckResult(
         name=name,
         expected=expected,
         status=("OK" if completed.returncode == 0 else "FAILED"),
         duration_seconds=round(duration, 4),
-        details=output or "No command output.",
+        details=output,
         command=list(command),
+        diagnostics_path=diagnostics_path,
     )
 
 
@@ -239,9 +292,11 @@ def build_json_report(
     generated_at: str,
 ) -> dict[str, Any]:
     return {
+        "schema_version": ("logistics_service_check_report_v0_2"),
         "module_id": "logistics_service",
         "generated_at": generated_at,
         "overall_status": overall_status(results),
+        "diagnostics_directory": "reports/diagnostics",
         "checks": [asdict(result) for result in results],
     }
 
@@ -253,32 +308,18 @@ def build_markdown_report(
     report_status = overall_status(results)
 
     rows = [
-        "| Check | Expected | Status | Time |",
-        "|---|---|---:|---:|",
+        ("| Check | Expected | Status | Time | Diagnostics |"),
+        "|---|---|---:|---:|---|",
     ]
 
     for result in results:
+        diagnostics = f"`{result.diagnostics_path}`" if result.diagnostics_path else "—"
+
         rows.append(
             f"| {result.name} | {result.expected} | "
             f"{markdown_status_text(result.status)} | "
-            f"{result.duration_seconds:.4f}s |"
-        )
-
-    details: list[str] = []
-
-    for result in results:
-        details.extend(
-            [
-                f"## {result.name}",
-                "",
-                (f"- Status: `{normalize_status(result.status)}`"),
-                (f"- Command: `{' '.join(result.command)}`"),
-                "",
-                "```text",
-                result.details,
-                "```",
-                "",
-            ]
+            f"{result.duration_seconds:.4f}s | "
+            f"{diagnostics} |"
         )
 
     return "\n".join(
@@ -287,10 +328,10 @@ def build_markdown_report(
             "",
             f"- Generated at: `{generated_at}`",
             f"- Overall status: `{report_status}`",
+            "- Diagnostics: `reports/diagnostics/`",
             "",
             *rows,
             "",
-            *details,
         ]
     )
 
@@ -363,26 +404,20 @@ def build_console_summary(
         for column in range(len(headers))
     ]
 
-    lines: list[str] = []
-
-    title = "ForPrint Logistics Service — check report"
-    lines.append(
+    lines: list[str] = [
         colorize(
-            title,
-            ANSI_BOLD,
+            ("ForPrint Logistics Service — check report"),
+            ANSI_CYAN,
             use_color,
-        )
-    )
-    lines.append("")
-
-    lines.append(
+        ),
+        "",
         _border(
             "┌",
             "┬",
             "┐",
             widths,
-        )
-    )
+        ),
+    ]
 
     header_cells = [
         _format_cell(
@@ -404,7 +439,6 @@ def build_console_summary(
         ]
 
     lines.append("│" + "│".join(header_cells) + "│")
-
     lines.append(
         _border(
             "├",
@@ -445,12 +479,11 @@ def build_console_summary(
         )
     )
 
-    normalized_statuses = [normalize_status(result.status) for result in results]
+    statuses = [normalize_status(result.status) for result in results]
 
-    passed_count = normalized_statuses.count("OK")
-    warning_count = sum(status in {"WARN", "SKIPPED"} for status in normalized_statuses)
-    failed_count = normalized_statuses.count("FAILED")
-
+    passed_count = statuses.count("OK")
+    warning_count = sum(status in {"WARN", "SKIPPED"} for status in statuses)
+    failed_count = statuses.count("FAILED")
     report_status = overall_status(results)
 
     lines.extend(
@@ -476,19 +509,37 @@ def build_console_summary(
     return "\n".join(lines)
 
 
-def _print_console_summary(
+def build_full_console_output(
     results: Sequence[CheckResult],
-) -> None:
-    print(
+    *,
+    use_color: bool,
+) -> str:
+    sections = [
         build_console_summary(
             results,
-            use_color=color_enabled(),
+            use_color=use_color,
         )
-    )
+    ]
+
+    for result in results:
+        sections.extend(
+            [
+                "",
+                "═" * 78,
+                (f"{result.name}: {plain_status_text(result.status)}"),
+                "Command: " + " ".join(result.command),
+                ("Diagnostics: " + (result.diagnostics_path or "not written")),
+                "─" * 78,
+                result.details,
+            ]
+        )
+
+    return "\n".join(sections)
 
 
 def run_checks(
     project_root: Path,
+    diagnostics_dir: Path | None = None,
 ) -> list[CheckResult]:
     return [
         run_command(
@@ -496,41 +547,38 @@ def run_checks(
             command,
             expected,
             project_root,
+            diagnostics_dir,
         )
         for name, command, expected in CHECK_COMMANDS
     ]
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(
-        description=("Run Logistics Service checks and generate reports.")
+def remove_stale_diagnostics(
+    diagnostics_dir: Path,
+) -> None:
+    diagnostics_dir.mkdir(
+        parents=True,
+        exist_ok=True,
     )
-    parser.add_argument(
-        "--project-root",
-        type=Path,
-        default=PROJECT_ROOT,
-    )
-    parser.add_argument(
-        "--list-checks",
-        action="store_true",
-    )
-    args = parser.parse_args()
 
-    if args.list_checks:
-        for name, command, _expected in CHECK_COMMANDS:
-            print(f"{name}: {' '.join(command)}")
+    for stale_log in diagnostics_dir.glob("*.log"):
+        stale_log.unlink()
 
-        return 0
 
-    project_root = args.project_root.resolve()
+def write_reports(
+    *,
+    project_root: Path,
+    results: Sequence[CheckResult],
+    generated_at: str,
+) -> tuple[Path, Path]:
     reports_dir = project_root / "reports"
     reports_dir.mkdir(
         parents=True,
         exist_ok=True,
     )
 
-    generated_at = datetime.now(UTC).isoformat()
-    results = run_checks(project_root)
+    json_path = reports_dir / "logistics_service_check_report.json"
+    markdown_path = reports_dir / "logistics_service_check_report.md"
 
     json_report = build_json_report(
         results,
@@ -540,9 +588,6 @@ def main() -> int:
         results,
         generated_at,
     )
-
-    json_path = reports_dir / "logistics_service_check_report.json"
-    markdown_path = reports_dir / "logistics_service_check_report.md"
 
     json_path.write_text(
         json.dumps(
@@ -559,13 +604,90 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    _print_console_summary(results)
+    return json_path, markdown_path
 
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description=("Run Logistics Service checks and generate stable reports.")
+    )
+    parser.add_argument(
+        "--project-root",
+        type=Path,
+        default=PROJECT_ROOT,
+    )
+    parser.add_argument(
+        "--list-checks",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--full",
+        action="store_true",
+        help=("Print full command outputs after the compact summary."),
+    )
+    args = parser.parse_args()
+
+    if args.list_checks:
+        for name, command, _expected in CHECK_COMMANDS:
+            print(f"{name}: {' '.join(command)}")
+
+        return 0
+
+    project_root = args.project_root.resolve()
+    diagnostics_dir = project_root / "reports" / "diagnostics"
+
+    remove_stale_diagnostics(diagnostics_dir)
+
+    generated_at = datetime.now(UTC).isoformat()
+    results = run_checks(
+        project_root,
+        diagnostics_dir,
+    )
+
+    json_path, markdown_path = write_reports(
+        project_root=project_root,
+        results=results,
+        generated_at=generated_at,
+    )
+
+    use_color = color_enabled()
+
+    if args.full:
+        output = build_full_console_output(
+            results,
+            use_color=use_color,
+        )
+    else:
+        output = build_console_summary(
+            results,
+            use_color=use_color,
+        )
+
+    print(output)
     print("")
-    print(f"JSON report: {json_path}")
-    print(f"Markdown report: {markdown_path}")
+    print(
+        colorize(
+            f"JSON report: {json_path}",
+            ANSI_CYAN,
+            use_color,
+        )
+    )
+    print(
+        colorize(
+            f"Markdown report: {markdown_path}",
+            ANSI_CYAN,
+            use_color,
+        )
+    )
+    print(
+        colorize(
+            (f"Diagnostics directory: {diagnostics_dir}"),
+            ANSI_CYAN,
+            use_color,
+        )
+    )
 
-    return 1 if json_report["overall_status"] == "FAILED" else 0
+    return 1 if overall_status(results) == "FAILED" else 0
 
 
 if __name__ == "__main__":

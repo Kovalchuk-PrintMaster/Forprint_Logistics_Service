@@ -480,6 +480,10 @@ logistics-check:
 check-report:
 	$(PYTHON) $(CHECK_REPORT_RUNNER)
 
+.PHONY: check-report-full
+check-report-full:
+	$(PYTHON) $(CHECK_REPORT_RUNNER) --full
+
 # =============================================================================
 # 05 Syntax / formatting / tests FINISH
 # =============================================================================
@@ -518,6 +522,7 @@ report-clean:
 	@rm -f \
 		reports/logistics_service_check_report.json \
 		reports/logistics_service_check_report.md
+	@rm -rf reports/diagnostics
 	@echo "$(COLOR_GREEN)Generated check reports removed.$(COLOR_RESET)"
 
 # =============================================================================
