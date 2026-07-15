@@ -15,6 +15,13 @@ reports:
   created_at: '2026-07-12T22:29:02+03:00'
   implementation_commit: 3b724d0d1dea9c5c5a95940bb61233fc3cdbb1f8
   push_status: pushed
+- report_id: logistics_service_provider_adapter_contract_v0_1_completion
+  prompt_id: logistics_service_provider_adapter_contract_v0_1
+  report_file: coordination/reports/completion/logistics_service_provider_adapter_contract_v0_1_completion.md
+  status: completed_in_module
+  created_at: '2026-07-15T19:35:58+03:00'
+  implementation_commit: 245fea7c868be675b844885a55070712cfa81db2
+  push_status: pushed
 - report_id: logistics_service_test_address_book_v0_1_completion
   prompt_id: logistics_service_test_address_book_v0_1
   report_file: coordination/reports/completion/logistics_service_test_address_book_v0_1_completion.md
