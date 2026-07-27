@@ -2,107 +2,156 @@
 
 ## Authoritative boundary
 
-Logistics Service has one provider-neutral adapter hierarchy:
+Logistics Service keeps one provider-neutral adapter hierarchy:
 
 ```text
 app/adapters/providers/base.py
 ProviderAdapter
 ```
 
-Provider-specific adapters must refine this boundary. They must not
-introduce a competing base class or provider-specific public
-contract.
+Provider-specific adapters refine this boundary. They must not create a
+competing adapter base or a provider-specific public contract.
 
-## Capability discovery
+## Policy sources
 
-Provider-neutral discovery uses:
+Blueprint standards are referenced from the Blueprint repository and are not
+copied into Logistics Service.
+
+| Purpose | Source | Authority |
+|---|---|---|
+| provider-adapter local rules | `docs/architecture/adapters/provider_adapter_policy.md` | module-local specialization |
+| prompt execution and reporting | `coordination/standards/governance/module_prompt_execution_and_reporting_protocol.md` | Blueprint canonical standard |
+| check-report behavior | `coordination/standards/testing_and_check_report_standard.md` | Blueprint canonical standard |
+| recovery and documentation gate | `coordination/standards/governance/documentation_and_recovery_gate.md` | Blueprint canonical standard |
+| operator and Make workflow | `coordination/standards/make_command_standard.md` | Blueprint canonical standard |
+| module Make target contract | `coordination/standards/module_make_target_contract.md` | Blueprint canonical standard |
+
+The local provider-adapter policy specializes module operation only. It cannot
+weaken Blueprint reporting, recovery, Make workflow or safety requirements.
+
+## Preserved contract
+
+The accepted implementation preserves:
+
+- typed provider request and result contracts;
+- deterministic provider registry and resolver;
+- synthetic parcel, postal, freight and taxi/courier adapters;
+- deterministic preview envelopes;
+- typed provider error taxonomy;
+- preview-only and dry-run behavior;
+- `preview_only = true`;
+- `live_write = false`;
+- `provider_call_performed = false`;
+- final `create_shipment()` live-write guard.
+
+## Typed operations
+
+The public typed boundary explicitly includes:
 
 ```text
-ProviderCapability
-ProviderOperation
-ProviderCapabilitySupport
-ProviderCapabilityDescription
-```
-
-Every capability has an explicit supported or unsupported result.
-
-Live shipment creation is always unavailable.
-
-## Typed adapter operations
-
-`ProviderAdapter` defines typed boundaries for:
-
-```text
+ProviderAdapter
 validate_recipient()
 validate_address()
 build_shipment_payload_preview()
-track()
-lookup_delivery_quote()
 TrackingLookupRequest
 TrackingLookupResult
+DeliveryQuoteLookupRequest
+DeliveryQuoteLookupResult
+DryRunPayloadEnvelope
+ProviderErrorCode
 ```
 
-Loose provider dictionaries are not the public service boundary.
-
-Provider-specific preview details may exist only inside
-`DryRunPayloadEnvelope`.
-
-## Dry-run invariants
-
-Every provider-neutral execution keeps:
+Unsupported operations return the typed provider-neutral state:
 
 ```text
-preview_only = true
-live_write = false
-provider_call_performed = false
+unsupported_capability
 ```
 
-Sensitive credentials, authorization values, tokens and raw
-provider responses must not cross the adapter boundary.
+Loose provider dictionaries are not the public module boundary.
 
-## Delivery quote boundary
+## Registry and synthetic adapters
 
-`DeliveryQuoteLookupRequest` and
-`DeliveryQuoteLookupResult` reserve a read-only typed boundary for
-future provider quote support.
+Registry implementation:
 
-The current base adapter returns an explicit
-`unsupported_capability` result.
+```text
+app/adapters/providers/registry.py
+```
 
-It does not perform a quote API call and does not calculate the
-final customer price.
+Synthetic contract fixtures:
 
-## Provider errors
+```text
+app/adapters/providers/synthetic.py
+```
 
-`ProviderErrorCode` is the machine-readable provider-neutral error
-taxonomy.
+Synthetic adapters are local fixtures. They are not real provider
+integrations.
 
-`ProviderError` exposes safe text, retryability and typed provider
-context without exposing raw sensitive values.
+## Deterministic preview envelope
+
+Every provider preview records provider identity, schema version, operation,
+correlation reference, normalized input, payload preview, warnings, errors and
+explicit safety metadata.
+
+Credentials, authorization data and raw provider responses must not cross the
+adapter boundary.
+
+## Error taxonomy
+
+`ProviderErrorCode` and `ProviderError` provide safe provider-neutral errors.
+
+Unavailable providers and invalid provider responses remain typed. A future
+real transport timeout must be normalized through the same safe error
+boundary, but no HTTP transport exists in this closeout.
 
 ## Live-write prohibition
 
-The `ProviderAdapter` method create_shipment() is final.
-
-It always raises `LiveProviderWriteDisabledError` with:
+The contract preserves the exact invariant:
 
 ```text
-code = live_write_disabled
-retryable = false
-operation = live_shipment_creation
+create_shipment() is final
 ```
 
-No live shipment, TTN, courier, taxi or provider-side mutation is
-implemented.
+`create_shipment()` is final and raises
+`LiveProviderWriteDisabledError`.
+
+No shipment, TTN, courier, taxi or provider-side mutation is implemented.
+
+## Operations and recovery
+
+```text
+docs/operations/provider_adapter_contract_runbook.md
+docs/operations/provider_adapter_contract_recovery.md
+```
+
+Reporting-specific recovery remains separate:
+
+```text
+docs/operations/check_reporting_recovery.md
+```
+
+## Module validation gate
+
+```make
+module-validate:
+	$(MAKE) check-report-full
+	$(MAKE) governance-check
+	$(MAKE) report-clean
+	$(MAKE) status-report
+```
+
+The target composes existing targets only, does not invoke itself and does not
+enable external writes.
 
 ## Deferred work
 
-The following remains deferred:
+The following requires a new Blueprint-approved prompt:
 
-- provider registry or resolver;
-- synthetic multi-provider fixtures;
-- provider adapter preview workflow;
-- real tracking or quote calls;
-- provider SDK or HTTP integration;
-- compact reporting alignment;
-- final delivery price calculation.
+- real provider credentials;
+- provider SDK or HTTP transport;
+- real tracking or quote integrations;
+- provider-specific transport timeout mapping;
+- live shipment or TTN creation;
+- courier or taxi booking;
+- automatic provider selection;
+- final customer delivery price calculation;
+- production database, queue or worker integration.

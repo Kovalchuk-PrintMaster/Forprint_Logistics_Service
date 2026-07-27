@@ -2,17 +2,16 @@
 report_id: logistics_service_provider_adapter_contract_v0_1_governance_closeout
 prompt_id: logistics_service_provider_adapter_contract_v0_1
 target_module: logistics_service
-report_type: governance_closeout
-status: governance_closeout_ready
+report_type: acceptance_closeout
+status: ready_for_blueprint_review
 review_commit: db614b72173ac9ad387cfdd76adae7dfacc519ab
 branch: feature/logistics-provider-adapter-contract-v01
-canonical_blueprint_module_policy: /srv/software_development/forprint-project/forprint_system_blueprint/coordination/module_policy/logistics_service/module_policy.md
-canonical_blueprint_module_policy_state: absent
 functional_failures: 0
-environment_limitations: 1
-result: GOVERNANCE_CLOSEOUT_READY
+result: READY_FOR_BLUEPRINT_REVIEW
+base_commit: 4c58be61529a8e8b715b94adb8f7c28691e6da43
+implementation_commit: 245fea7c868be675b844885a55070712cfa81db2
+completion_commit: db614b72173ac9ad387cfdd76adae7dfacc519ab
 ---
-
 # Logistics Service Provider Adapter Contract v0.1 — Governance Closeout
 
 ## Scope
@@ -223,3 +222,70 @@ It was not merged, deleted or renamed.
 ```text
 RESULT: GOVERNANCE_CLOSEOUT_READY
 ```
+
+<!-- provider-adapter-acceptance-closeout:start -->
+## Acceptance closeout final evidence
+
+### Policy authority
+
+| Purpose | Source | Authority |
+|---|---|---|
+| provider-adapter local rules | `docs/architecture/adapters/provider_adapter_policy.md` | module-local specialization |
+| prompt execution and reporting | `coordination/standards/governance/module_prompt_execution_and_reporting_protocol.md` | Blueprint canonical standard |
+| check-report behavior | `coordination/standards/testing_and_check_report_standard.md` | Blueprint canonical standard |
+| recovery and documentation gate | `coordination/standards/governance/documentation_and_recovery_gate.md` | Blueprint canonical standard |
+| operator and Make workflow | `coordination/standards/make_command_standard.md` | Blueprint canonical standard |
+| module Make target contract | `coordination/standards/module_make_target_contract.md` | Blueprint canonical standard |
+
+Only these verified Blueprint standards are referenced. They are not copied into the
+Logistics repository.
+
+The provider-specific local policy remains:
+
+```text
+docs/architecture/adapters/provider_adapter_policy.md
+```
+
+It is a module-local specialization, not a Blueprint policy.
+
+### Documentation and recovery
+
+```text
+docs/operations/provider_adapter_contract_runbook.md
+docs/operations/provider_adapter_contract_recovery.md
+```
+
+### Exact validation results
+
+```text
+provider-contract-check: exit 0
+check-report: 10/10, exit 0
+check-report-full: 10/10, exit 0
+governance-check: exit 0
+module-validate: exit 0
+pytest collected: 131
+pytest passed: 131
+focused provider tests passed: 37
+git diff --check: exit 0
+```
+
+`module-validate` completed the required cleanup. Generated check-report JSON, Markdown and
+diagnostic logs were absent afterward.
+
+### Preserved safety boundary
+
+- provider functionality was not expanded;
+- no real provider calls were added;
+- no credential or HTTP transport was added;
+- no tracking or quote integration was added;
+- no shipment write was added;
+- `live_write = false`;
+- `provider_call_performed = false`;
+- the feature branch remains unmerged.
+
+### Decision
+
+```text
+RESULT: READY_FOR_BLUEPRINT_REVIEW
+```
+<!-- provider-adapter-acceptance-closeout:end -->

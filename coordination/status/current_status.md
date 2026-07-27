@@ -73,3 +73,80 @@ Completed the provider-neutral Logistics Service adapter contract foundation wit
 ## Open questions
 
 - Please review the Logistics Service Provider Adapter Contract v0.1 completion report, accept it or return it for corrections, and issue or activate the next approved Logistics Service prompt.
+
+<!-- provider-adapter-acceptance-closeout:start -->
+## Acceptance closeout
+
+```text
+status: ready_for_blueprint_review
+branch: feature/logistics-provider-adapter-contract-v01
+implementation_commit: 245fea7c868be675b844885a55070712cfa81db2
+completion_commit: db614b72173ac9ad387cfdd76adae7dfacc519ab
+acceptance_closeout_base_commit: 4c58be61529a8e8b715b94adb8f7c28691e6da43
+```
+
+The provider implementation was preserved. This closeout adds only documentation, recovery,
+Make workflow and evidence.
+
+### Policy sources
+
+| Purpose | Source | Authority |
+|---|---|---|
+| provider-adapter local rules | `docs/architecture/adapters/provider_adapter_policy.md` | module-local specialization |
+| prompt execution and reporting | `coordination/standards/governance/module_prompt_execution_and_reporting_protocol.md` | Blueprint canonical standard |
+| check-report behavior | `coordination/standards/testing_and_check_report_standard.md` | Blueprint canonical standard |
+| recovery and documentation gate | `coordination/standards/governance/documentation_and_recovery_gate.md` | Blueprint canonical standard |
+| operator and Make workflow | `coordination/standards/make_command_standard.md` | Blueprint canonical standard |
+| module Make target contract | `coordination/standards/module_make_target_contract.md` | Blueprint canonical standard |
+
+Blueprint standards are referenced and not copied.
+
+### Operator and recovery documentation
+
+```text
+docs/operations/provider_adapter_contract_runbook.md
+docs/operations/provider_adapter_contract_recovery.md
+```
+
+### Module validation
+
+```make
+module-validate:
+	$(MAKE) check-report-full
+	$(MAKE) governance-check
+	$(MAKE) report-clean
+	$(MAKE) status-report
+```
+
+### Exact evidence
+
+```text
+check-report: 10/10
+check-report-full: 10/10
+pytest collected: 131
+pytest passed: 131
+focused provider tests passed: 37
+provider-contract-check exit: 0
+governance-check exit: 0
+module-validate exit: 0
+git diff --check exit: 0
+```
+
+### Safety state
+
+- `preview_only = true`;
+- `live_write = false`;
+- `provider_call_performed = false`;
+- no real provider calls;
+- no credentials;
+- no HTTP transport;
+- no live tracking or quote integration;
+- no shipment write;
+- no competing adapter hierarchy;
+- feature branch not merged.
+
+### Next action
+
+Wait for final Blueprint acceptance review. Do not merge and do not begin a new provider
+implementation front.
+<!-- provider-adapter-acceptance-closeout:end -->

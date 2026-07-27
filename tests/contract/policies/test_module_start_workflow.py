@@ -73,3 +73,58 @@ def test_help_exposes_module_workflow() -> None:
 
     assert '@echo "  make module-start"' in text
     assert '@echo "  make module-sync"' in text
+    assert '@echo "  make module-validate"' in text
+
+
+def test_module_validate_composes_existing_safe_targets() -> None:
+    text = MAKEFILE_PATH.read_text(encoding="utf-8")
+    recipe = target_recipe_lines(
+        text,
+        "module-validate",
+    )
+
+    assert recipe == (
+        "$(MAKE) check-report-full",
+        "$(MAKE) governance-check",
+        "$(MAKE) report-clean",
+        "$(MAKE) status-report",
+    )
+    assert "$(MAKE) module-validate" not in recipe
+
+    for target in (
+        "check-report-full",
+        "governance-check",
+        "report-clean",
+        "status-report",
+    ):
+        assert f"{target}:" in text
+
+    forbidden_tokens = (
+        "curl ",
+        "wget ",
+        "requests.",
+        "httpx.",
+        "create_shipment",
+        "live_write=true",
+        "live_write = true",
+        "credentials",
+    )
+    recipe_text = "\n".join(recipe).lower()
+
+    for token in forbidden_tokens:
+        assert token not in recipe_text
+
+    report_clean_text = "\n".join(
+        target_recipe_lines(
+            text,
+            "report-clean",
+        )
+    )
+
+    assert "reports/logistics_service_check_report.json" in (report_clean_text)
+    assert "reports/logistics_service_check_report.md" in (report_clean_text)
+    assert "reports/diagnostics" in report_clean_text
+    assert recipe[-2:] == (
+        "$(MAKE) report-clean",
+        "$(MAKE) status-report",
+    )

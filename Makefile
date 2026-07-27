@@ -68,6 +68,7 @@ help:
 	@echo "Operator workflow:"
 	@echo "  make module-start"
 	@echo "  make module-sync"
+	@echo "  make module-validate"
 	@echo ""
 	@echo "Bootstrap and development:"
 	@echo "  make install"
@@ -149,6 +150,16 @@ module-sync:
 	$(MAKE) blueprint-sync-directives
 	$(MAKE) blueprint-prompts-sync
 	$(MAKE) coordination-check
+	$(MAKE) status-report
+
+# Purpose: run the canonical module-level validation and cleanup flow.
+# Result: full checks and governance pass, generated reports are removed,
+# and current module status is displayed without external writes.
+.PHONY: module-validate
+module-validate:
+	$(MAKE) check-report-full
+	$(MAKE) governance-check
+	$(MAKE) report-clean
 	$(MAKE) status-report
 
 # =============================================================================
