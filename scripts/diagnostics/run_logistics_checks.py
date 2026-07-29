@@ -72,6 +72,11 @@ CHECK_COMMANDS: tuple[
         "Provider adapters remain typed, preview-only and non-live.",
     ),
     (
+        "Tracking events",
+        ("make", "tracking-events-check"),
+        ("Tracking events and notification projections remain deterministic and non-live."),
+    ),
+    (
         "Coordination metadata",
         ("make", "coordination-check"),
         "Coordination metadata is valid.",

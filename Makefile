@@ -106,6 +106,8 @@ help:
 	@echo "  make test-address-book-check"
 	@echo "  make test-address-book-preview"
 	@echo "  make logistics-model-preview"
+	@echo "  make tracking-events-check"
+	@echo "  make tracking-events-preview"
 	@echo "  make status-report"
 	@echo "  make report-status"
 	@echo ""
@@ -450,6 +452,7 @@ check:
 	$(MAKE) local-model-boundary-check
 	$(MAKE) test-address-book-check
 	$(MAKE) provider-contract-check
+	$(MAKE) tracking-events-check
 	$(MAKE) test
 	$(MAKE) coordination-check
 
@@ -482,6 +485,18 @@ provider-contract-check:
 .PHONY: provider-contract-preview
 provider-contract-preview:
 	$(PYTHON) -m scripts.previews.preview_provider_adapter_contract
+
+# Purpose: validate the provider-neutral tracking event contract.
+# Result: taxonomy, transitions, idempotency and safety checks pass.
+.PHONY: tracking-events-check
+tracking-events-check:
+	$(PYTHON) -m scripts.validation.check_tracking_events_contract
+
+# Purpose: show the synthetic tracking and notification handoff preview.
+# Result: a deterministic local preview is printed and written under reports/.
+.PHONY: tracking-events-preview
+tracking-events-preview:
+	$(PYTHON) -m scripts.previews.preview_tracking_events_contract
 
 .PHONY: logistics-check
 logistics-check:

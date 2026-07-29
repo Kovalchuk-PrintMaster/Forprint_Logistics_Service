@@ -1,0 +1,94 @@
+schema_version: logistics_tracking_events_fixture_v0_1
+fixture_id: synthetic_tracking_events_v0_1
+synthetic_data: true
+real_customer_data: false
+preview_only: true
+live_write: false
+provider_call_performed: false
+telegram_api_call_performed: false
+cross_repository_write: false
+event_version: tracking_event_v0_1
+notification_projection_version: logistics_notification_projection_v0_1
+
+scenarios:
+  - scenario_id: lifecycle_success
+    shipment_reference: synthetic_shipment_success_001
+    tracking_reference: SYNTH-TRACK-SUCCESS-001
+    provider_id: synthetic_parcel
+    recipient_reference: synthetic_recipient_hint_001
+    correlation_id: correlation_success_001
+    observations:
+      - observation_id: created
+        provider_status: shipment_created
+        provider_event_code: SYNTH_CREATED
+        occurred_at: "2026-07-29T10:00:00+03:00"
+        expected_decision: accepted
+        expected_event_type: shipment_created
+      - observation_id: tracking_update
+        provider_status: in_transit
+        provider_event_code: SYNTH_MOVING
+        occurred_at: "2026-07-29T10:10:00+03:00"
+        expected_decision: accepted
+        expected_event_type: tracking_updated
+      - observation_id: duplicate_tracking_update
+        provider_status: in_transit
+        provider_event_code: SYNTH_MOVING
+        occurred_at: "2026-07-29T10:10:00+03:00"
+        expected_decision: duplicate
+      - observation_id: out_of_order_tracking_update
+        provider_status: tracking_updated
+        provider_event_code: SYNTH_OLDER
+        occurred_at: "2026-07-29T10:05:00+03:00"
+        expected_decision: out_of_order
+      - observation_id: arrived
+        provider_status: arrived
+        provider_event_code: SYNTH_ARRIVED
+        occurred_at: "2026-07-29T10:20:00+03:00"
+        expected_decision: accepted
+        expected_event_type: arrived
+      - observation_id: delivered
+        provider_status: delivered
+        provider_event_code: SYNTH_DELIVERED
+        occurred_at: "2026-07-29T10:30:00+03:00"
+        expected_decision: accepted
+        expected_event_type: delivered
+
+  - scenario_id: provider_failure
+    shipment_reference: synthetic_shipment_failed_001
+    tracking_reference: SYNTH-TRACK-FAILED-001
+    provider_id: synthetic_postal
+    recipient_reference: synthetic_recipient_hint_002
+    correlation_id: correlation_failed_001
+    observations:
+      - observation_id: created
+        provider_status: shipment_created
+        provider_event_code: SYNTH_CREATED
+        occurred_at: "2026-07-29T11:00:00+03:00"
+        expected_decision: accepted
+        expected_event_type: shipment_created
+      - observation_id: failed
+        provider_status: failed
+        provider_event_code: SYNTH_FAILED
+        occurred_at: "2026-07-29T11:10:00+03:00"
+        expected_decision: accepted
+        expected_event_type: failed
+
+  - scenario_id: manual_attention
+    shipment_reference: synthetic_shipment_attention_001
+    tracking_reference: SYNTH-TRACK-ATTENTION-001
+    provider_id: synthetic_freight
+    recipient_reference: synthetic_recipient_hint_003
+    correlation_id: correlation_attention_001
+    observations:
+      - observation_id: created
+        provider_status: shipment_created
+        provider_event_code: SYNTH_CREATED
+        occurred_at: "2026-07-29T12:00:00+03:00"
+        expected_decision: accepted
+        expected_event_type: shipment_created
+      - observation_id: unknown_provider_status
+        provider_status: provider_status_999
+        provider_event_code: SYNTH_UNKNOWN
+        occurred_at: "2026-07-29T12:10:00+03:00"
+        expected_decision: accepted
+        expected_event_type: needs_attention
