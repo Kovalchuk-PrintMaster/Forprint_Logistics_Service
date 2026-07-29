@@ -3,33 +3,29 @@ module_id: logistics_service
 module_name: ForPrint Logistics Service
 module_status: active
 priority: p0
-current_phase: provider_adapter_contract_v0_1
+current_phase: tracking_events_v0_1
 last_completed_step: logistics_service_provider_adapter_contract_v0_1_completed
-last_updated: '2026-07-27'
-branch: feature/logistics-provider-adapter-contract-v01
-last_commit: 245fea7c868be675b844885a55070712cfa81db2
+last_updated: '2026-07-29'
+branch: feature/logistics-tracking-events-contract-v01
+last_commit: 4812047963427043d616871075ac807a35e51aff
 checks:
-  make_check: ok
-  make_check_report: ok
-  governance_check: ok
-  coordination_check: ok
-  tests: ok
-  make_check_report_full: ok
-  module_validate: ok
-  focused_provider_tests: ok
+  make_check: not_run
+  make_check_report: not_run
+  governance_check: not_run
+  coordination_check: requires_recheck
+  tests: not_run
 boundary:
   no_foreign_ownership: true
   no_production_api: true
   no_live_write: true
   no_real_integrations: true
-recommended_next_step: Wait for final Blueprint acceptance review. Do not merge the feature branch or
-  start a new provider implementation front.
-status: completed_in_module
-phase: provider_adapter_contract_v0_1
-source_prompt_id: logistics_service_provider_adapter_contract_v0_1
-updated_at: '2026-07-27T13:28:38+03:00'
-implementation_commit: 245fea7c868be675b844885a55070712cfa81db2
-push_status: pushed
+recommended_next_step: implement_tracking_events_v0_1
+status: prompt_active
+phase: tracking_events_v0_1
+source_prompt_id: logistics_service_tracking_events_v0_1
+updated_at: '2026-07-29T10:19:09+03:00'
+implementation_commit: null
+push_status: not_pushed
 progress_summary:
   project_skeleton: completed
   core_domain_models: completed
@@ -37,8 +33,8 @@ progress_summary:
   fixture_support: completed
   integration_readiness: preview_only
   documentation: completed
-  coordination: completed
-  confidence: high
+  coordination: active
+  confidence: medium
 integration_contracts:
   consumed:
   - contract_id: crm_to_logistics_delivery.v1
@@ -82,17 +78,15 @@ module_specific:
   logistics_notification_events_planned: true
   real_provider_credentials_present: false
 current_step:
-  id: logistics_service_provider_adapter_contract_v0_1_acceptance_closeout
-  status: ready_for_blueprint_review
-  next_action: Wait for final Blueprint acceptance review. Do not merge the feature branch or start a
-    new provider implementation front.
-open_questions:
-- Please perform final Blueprint acceptance review for the provider adapter contract closeout.
+  id: logistics_service_tracking_events_v0_1
+  status: in_progress
+  next_action: inspect current files and implement the active prompt
+open_questions: []
 prompt_progress:
   intake: completed
-  implementation: completed
-  tests: passed
-  completion: completed
+  implementation: not_started
+  tests: not_run
+  completion: not_started
 acceptance_closeout_base_commit: 4c58be61529a8e8b715b94adb8f7c28691e6da43
 completion_commit: db614b72173ac9ad387cfdd76adae7dfacc519ab
 validation_evidence:
