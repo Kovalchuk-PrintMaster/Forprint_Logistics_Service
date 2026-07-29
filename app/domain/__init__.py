@@ -4,7 +4,10 @@ from app.domain.address_book import (
 )
 from app.domain.events import (
     LogisticsNotificationEvent,
+    LogisticsNotificationProjection,
     LogisticsNotificationType,
+    NotificationPriority,
+    NotificationProjectionType,
 )
 from app.domain.provider_contracts import (
     AddressValidationRequest,
@@ -42,7 +45,14 @@ from app.domain.shipments import (
     ShipmentStatus,
 )
 from app.domain.tracking import (
+    EVENT_CURRENT_STATE,
+    TERMINAL_SHIPMENT_STATES,
+    TRACKING_EVENT_SCHEMA_VERSION,
+    ProviderTrackingObservation,
+    ShipmentEventEnvelope,
+    ShipmentEventType,
     TrackingEvent,
+    TrackingProcessingDecision,
     TrackingRequest,
 )
 
@@ -55,9 +65,13 @@ __all__ = [
     "DeliveryQuoteLookupResult",
     "DryRunExecutionMetadata",
     "DryRunPayloadEnvelope",
+    "EVENT_CURRENT_STATE",
     "LogisticsNotificationEvent",
+    "LogisticsNotificationProjection",
     "LogisticsNotificationType",
     "LogisticsProvider",
+    "NotificationPriority",
+    "NotificationProjectionType",
     "ProviderCapability",
     "ProviderCapabilityDescription",
     "ProviderCapabilitySupport",
@@ -65,17 +79,23 @@ __all__ = [
     "ProviderErrorCode",
     "ProviderMessageLevel",
     "ProviderOperation",
+    "ProviderTrackingObservation",
     "ProviderValidationMessage",
     "RecipientRef",
     "RecipientValidationRequest",
     "RecipientValidationResult",
     "ShipmentDraft",
+    "ShipmentEventEnvelope",
+    "ShipmentEventType",
     "ShipmentPayloadPreviewRequest",
     "ShipmentPayloadPreviewResult",
     "ShipmentStatus",
+    "TERMINAL_SHIPMENT_STATES",
+    "TRACKING_EVENT_SCHEMA_VERSION",
     "TrackingEvent",
     "TrackingLookupRequest",
     "TrackingLookupResult",
+    "TrackingProcessingDecision",
     "TrackingRequest",
     "normalize_lookup_token",
 ]
