@@ -151,7 +151,7 @@ validation_evidence:
   governance_check_exit_code: 0
   coordination_check_exit_code: 0
   git_diff_check_exit_code: 0
-  module_validate_exit_code: null
+  module_validate_exit_code: 0
 policy_sources:
   local_tracking_contract: docs/architecture/tracking_event_contract.md
   notification_handoff_boundary: docs/architecture/boundaries/notification_handoff_boundary.md
@@ -177,8 +177,17 @@ acceptance_readiness:
   telegram_api_calls_added: false
   sqlite_persistence_added: false
   feature_branch_merged: false
-completion_evidence:
-  completion_artifact_commit: null
-  completion_artifact_commit_status: pending_completion_artifact_commit
   blueprint_acceptance_status: not_started
+completion_evidence:
+  completion_artifact_commit: 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3
+  completion_artifact_commit_status: recorded
+  blueprint_acceptance_status: not_started
+  feature_branch_merged: false
+completion_commit: 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3
+completion_closeout:
+  completion_artifact_commit: 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3
+  completion_artifact_commit_pushed: true
+  closeout_metadata_commit: the commit containing this metadata update
+  blueprint_review_status: not_started
+  blueprint_acceptance_claimed: false
   feature_branch_merged: false

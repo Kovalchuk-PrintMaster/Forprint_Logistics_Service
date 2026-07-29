@@ -112,8 +112,8 @@ push_status: pushed
 known_warnings:
 - Blueprint module-policy file is not available; module-policy-check reports MISSING_NEEDS_ALIGNMENT
   and governance-check still exits 0.
-- The completion-artifact Git commit is recorded in the following closeout checkpoint;
-  this packet does not claim Blueprint acceptance.
+- Completion artifacts were first committed and pushed in 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3;
+  Blueprint acceptance remains not_started and the feature branch remains unmerged.
 files_changed:
 - app/domain/__init__.py
 - app/domain/events.py
@@ -153,8 +153,8 @@ implementation_commits:
   fixture_preview_workflow: 91d53512e2af40fcc800c44d331ff604c50cc813
   documentation: bbc298e294bd9e7e6cca976d4a8077c52c4a51ff
 completion_evidence:
-  completion_artifact_commit: null
-  completion_artifact_commit_status: pending_completion_artifact_commit
+  completion_artifact_commit: 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3
+  completion_artifact_commit_status: recorded
   blueprint_acceptance_status: not_started
   feature_branch_merged: false
 validation_evidence:
@@ -172,7 +172,7 @@ validation_evidence:
   governance_check_exit_code: 0
   coordination_check_exit_code: 0
   git_diff_check_exit_code: 0
-  module_validate_exit_code: null
+  module_validate_exit_code: 0
 authoritative_contracts:
   tracking_event_contract: docs/architecture/tracking_event_contract.md
   notification_handoff_boundary: docs/architecture/boundaries/notification_handoff_boundary.md
@@ -215,3 +215,10 @@ generated_artifact_handling:
 upstream_divergence:
   left: 0
   right: 0
+completion_closeout:
+  completion_artifact_commit: 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3
+  completion_artifact_commit_pushed: true
+  closeout_metadata_commit: the commit containing this metadata update
+  blueprint_review_status: not_started
+  blueprint_acceptance_claimed: false
+  feature_branch_merged: false

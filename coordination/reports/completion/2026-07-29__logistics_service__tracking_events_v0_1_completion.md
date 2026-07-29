@@ -20,8 +20,8 @@ checks:
 known_warnings:
 - Blueprint module-policy file is not available; module-policy-check reports MISSING_NEEDS_ALIGNMENT
   and governance-check still exits 0.
-- The completion-artifact Git commit is recorded in the following closeout checkpoint;
-  this packet does not claim Blueprint acceptance.
+- Completion artifacts were first committed and pushed in 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3;
+  Blueprint acceptance remains not_started and the feature branch remains unmerged.
 boundary_confirmation:
   production_api_added: false
   live_external_integrations_added: false
@@ -126,7 +126,7 @@ Completed the provider-neutral tracking event contract with six canonical event 
 ## Known warnings
 
 - Blueprint module-policy file is not available; module-policy-check reports MISSING_NEEDS_ALIGNMENT and governance-check still exits 0.
-- The completion-artifact Git commit is recorded in the following closeout checkpoint; this packet does not claim Blueprint acceptance.
+- Completion artifacts were first committed and pushed in 6b86853d5fdbc7d64d7519c95f1148bc5952d8f3; Blueprint acceptance remains not_started and the feature branch remains unmerged.
 
 ## Instruction sources reviewed
 
