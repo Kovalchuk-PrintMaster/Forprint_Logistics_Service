@@ -42,6 +42,10 @@ REQUIRED_PATHS = (
     "docs/architecture/boundaries/test_address_book_boundary.md",
     "docs/development/configuration/secrets_policy.md",
     "docs/development/testing/local_test_data_policy.md",
+    "docs/architecture/tracking_event_contract.md",
+    "docs/architecture/boundaries/notification_handoff_boundary.md",
+    "docs/operations/tracking_events_runbook.md",
+    "docs/operations/tracking_events_recovery.md",
 )
 
 SENSITIVE_ENV_NAMES = (
