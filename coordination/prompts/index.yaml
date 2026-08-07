@@ -81,9 +81,17 @@ prompts:
   received_at: '2026-07-29'
   module_execution_status: completed_by_module
   blueprint_review_status: not_started
-  completion_report: coordination/reports/completion/2026-07-29__logistics_service__tracking_events_v0_1_completion.md
-  completion_commit: bbc298e294bd9e7e6cca976d4a8077c52c4a51ff
+  completion_report: coordination/reports/completion/2026-08-07__logistics_service__tracking_events_v0_1_completion_superseding_v0_2.md
+  completion_commit: null
   blueprint_acceptance_commit: null
   blueprint_accepted_at: null
   archived_file: coordination/prompts/archived/2026-07-29__logistics_service__tracking_events_v0_1.md
+  implementation_commit: bbc298e294bd9e7e6cca976d4a8077c52c4a51ff
+  completion_commit_status: derive_after_git_commit
+  completion_schema_version: module_completion_packet_v0_2
+  completion_protocol_version: blueprint_completion_intake_v0_2
+  supersedes_completion_id: logistics_service_tracking_events_v0_1_completed
+  revision_reason: Superseding evidence corrects the Blueprint SAFETY_CONFIRMATION_INVALID
+    protocol-compatibility finding by publishing the five required positive safety
+    confirmations. The Tracking Events implementation is unchanged.
 active_prompt_id: null
