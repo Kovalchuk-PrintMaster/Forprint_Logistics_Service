@@ -73,7 +73,7 @@ def _render_completion_report(packet: dict[str, Any]) -> str:
         "target_module": packet["module_id"],
         "phase": packet["phase"],
         "completed_step": packet["completion_id"],
-        "status": "completed_in_module_pending_blueprint_review",
+        "status": "completed_in_module",
         "blueprint_review_status": "not_started",
         "automatic_acceptance": False,
         "implementation_commit": packet["implementation_commit"],
@@ -290,7 +290,7 @@ def _update_current_status(
     data["last_commit"] = packet["implementation_commit"]
     data["recommended_next_step"] = packet["next_recommended_steps"][0]
 
-    data["status"] = "completed_in_module_pending_blueprint_review"
+    data["status"] = "completed_in_module"
     data["phase"] = packet["phase"]
     data["source_prompt_id"] = packet["prompt_id"]
     data["updated_at"] = packet["created_at"]
@@ -343,7 +343,7 @@ def _update_current_status(
 
     data["current_step"] = {
         "id": packet["completion_id"],
-        "status": "completed_in_module_pending_blueprint_review",
+        "status": "completed_in_module",
         "next_action": packet["next_recommended_steps"][0],
     }
     data["open_questions"] = packet["next_questions_for_blueprint"]
@@ -452,9 +452,9 @@ def _update_reports_index(
         "report_id": packet["report_id"],
         "prompt_id": packet["prompt_id"],
         "type": "completion",
-        "file": packet["report_path"],
+        "report_file": packet["report_path"],
         "phase": packet["phase"],
-        "status": "completed_in_module_pending_blueprint_review",
+        "status": "completed_in_module",
         "implementation_commit": packet["implementation_commit"],
         "completion_commit": None,
         "completion_commit_status": "derive_after_git_commit",

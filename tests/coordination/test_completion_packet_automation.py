@@ -246,4 +246,11 @@ def test_completion_packet_apply_is_idempotent(
 
     assert prompt["implementation_commit"] == "a" * 40
     assert prompt["completion_commit"] is None
+    reports_index = yaml.safe_load(
+        (tmp_path / "coordination/reports/index.yaml").read_text(encoding="utf-8")
+    )
+    report_record = reports_index["reports"][0]
+    assert report_record["report_file"] == build_packet()["report_path"]
+    assert "file" not in report_record
+
     assert prompt["completion_schema_version"] == CURRENT_PACKET_SCHEMA

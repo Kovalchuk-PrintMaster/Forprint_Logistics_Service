@@ -1,12 +1,21 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from scripts.coordination.validate_completion_packet import load_packet, validate_packet
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from scripts.coordination.validate_completion_packet import (  # noqa: E402, I001
+    load_packet,
+    validate_packet,
+)
 
 
 def _frontmatter(path: Path) -> dict[str, Any]:

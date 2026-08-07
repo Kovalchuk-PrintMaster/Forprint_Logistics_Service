@@ -872,7 +872,12 @@ def validate_prompt_state(
         if not entry.get("completion_report"):
             errors.append("Completed module prompt must contain completion_report")
 
-        if not entry.get("completion_commit"):
+        pending_current_v02_completion_commit = (
+            entry.get("completion_commit_status") == "derive_after_git_commit"
+            and entry.get("completion_schema_version") == "module_completion_packet_v0_2"
+            and entry.get("completion_protocol_version") == "blueprint_completion_intake_v0_2"
+        )
+        if not entry.get("completion_commit") and not pending_current_v02_completion_commit:
             errors.append("Completed module prompt must contain completion_commit")
 
     prompt_progress = status.get("prompt_progress")

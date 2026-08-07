@@ -168,7 +168,7 @@ def test_completion_closes_local_prompt_lifecycle(
         (tmp_path / "coordination/status/current_status.yaml").read_text(encoding="utf-8")
     )
 
-    assert status["status"] == ("completed_in_module_pending_blueprint_review")
+    assert status["status"] == ("completed_in_module")
     assert status["completion_commit"] is None
     assert status["automatic_acceptance"] is False
     assert status["completion_protocol"] == {
