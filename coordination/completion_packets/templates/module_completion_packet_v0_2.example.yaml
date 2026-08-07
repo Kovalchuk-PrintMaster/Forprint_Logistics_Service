@@ -1,0 +1,42 @@
+schema_version: module_completion_packet_v0_2
+protocol_version: blueprint_completion_intake_v0_2
+completion_id: logistics_service_example_completion_v0_2
+module_id: logistics_service
+module_name: ForPrint Logistics Service
+phase: example_phase_v0_1
+prompt_id: logistics_service_example_v0_1
+report_id: logistics_service_example_completion_report_v0_2
+report_path: coordination/reports/completion/logistics_service_example_completion_v0_2.md
+created_at: '2026-08-07T16:30:00+03:00'
+summary: Example current completion packet.
+implemented:
+- Example implemented result.
+checks:
+  check_report: ok
+  tests: ok
+  governance_check: ok
+  check_report_failed: 0
+  check_report_warnings: 0
+instruction_sources_reviewed:
+- Active Blueprint prompt or explicit operator RETURN_WITH_FINDINGS instruction.
+standards_reviewed:
+- completion-intake-and-acceptance-governance-v0-1
+standards_alignment_notes:
+- Current completion artifacts use schema/protocol v0.2.
+boundary_confirmation:
+  no_production_api: true
+  no_live_external_integrations: true
+  no_real_1c_sync: true
+  no_production_write: true
+  no_automatic_posting: true
+current_outputs:
+- coordination/completion_packets/templates/module_completion_packet_v0_2.example.yaml
+next_recommended_steps:
+- Commit and push the validated completion evidence, then notify Blueprint for read-only
+  intake.
+next_questions_for_blueprint: []
+branch: feature/example
+implementation_commit: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+push_status: pushed
+blockers: []
+dependency_implications: []

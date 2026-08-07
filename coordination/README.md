@@ -40,3 +40,7 @@ be checked before commit.
 
 Use `make blueprint-prompts-sync` instead of editing prompt metadata
 manually.
+
+## Current completion reporting
+
+The active completion path is documented in `docs/development/coordination/completion_reporting_protocol.md`. New and superseding packets use `module_completion_packet_v0_2` with `blueprint_completion_intake_v0_2`, positive `no_*: true` safety confirmations and full 40-character implementation commits. Historical packets remain immutable. `READY_FOR_OPERATOR_REVIEW` is not `ACCEPTED`.

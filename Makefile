@@ -35,6 +35,8 @@ PACKET ?=
 
 COMPLETION_PACKET_VALIDATOR := scripts/coordination/validate_completion_packet.py
 COMPLETION_PACKET_APPLIER := scripts/coordination/apply_completion_packet.py
+COMPLETION_REPORT_VALIDATOR := scripts/coordination/validate_completion_report.py
+COMPLETION_SAFETY_CHECKER := scripts/validation/check_completion_safety_boundaries.py
 CHECK_REPORT_RUNNER := scripts/diagnostics/run_logistics_checks.py
 PROJECT_POLICY_CHECKER := scripts/validation/check_project_policies.py
 
@@ -115,6 +117,8 @@ help:
 	@echo "  make completion-packet-validate PACKET=<path>"
 	@echo "  make completion-packet-apply PACKET=<path>"
 	@echo "  make completion-packet-check PACKET=<path>"
+	@echo "  make completion-safety-check"
+	@echo "  make completion-report-validate PACKET=<path>"
 	@echo "  make report-clean"
 
 # =============================================================================
@@ -537,10 +541,11 @@ completion-packet-apply:
 
 .PHONY: completion-packet-check
 completion-packet-check:
-	@test -n "$(PACKET)" || \
-		(echo "$(COLOR_RED)PACKET is required.$(COLOR_RESET)"; exit 2)
+	@test -n "$(PACKET)" || (echo "$(COLOR_RED)PACKET=<path> is required.$(COLOR_RESET)"; exit 1)
+	$(MAKE) completion-safety-check
 	$(MAKE) completion-packet-validate PACKET="$(PACKET)"
 	$(MAKE) completion-packet-apply PACKET="$(PACKET)"
+	$(MAKE) completion-report-validate PACKET="$(PACKET)"
 	$(MAKE) completion-packet-apply PACKET="$(PACKET)"
 
 .PHONY: report-clean
@@ -575,3 +580,12 @@ pre-commit:
 # =============================================================================
 # 07 Git helpers FINISH
 # =============================================================================
+
+.PHONY: completion-safety-check
+completion-safety-check:
+	$(PYTHON) $(COMPLETION_SAFETY_CHECKER)
+
+.PHONY: completion-report-validate
+completion-report-validate:
+	@test -n "$(PACKET)" || (echo "$(COLOR_RED)PACKET=<path> is required.$(COLOR_RESET)"; exit 1)
+	$(PYTHON) $(COMPLETION_REPORT_VALIDATOR) "$(PACKET)"
