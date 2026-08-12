@@ -1,0 +1,266 @@
+schema_version: module_completion_packet_v0_3
+protocol_version: blueprint_completion_intake_v0_3
+completion_id: logistics_service_tracking_events_v0_1_completed_v0_3_reference
+module_id: logistics_service
+module_name: ForPrint Logistics Service
+phase: tracking_events_v0_1
+prompt_id: logistics_service_tracking_events_v0_1
+report_id: logistics_service_tracking_events_v0_1_completion_report_v0_3_reference
+report_path: coordination/reports/completion/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.md
+created_at: '2026-08-12T17:30:01+03:00'
+summary: Candidate Completion Exchange v0.3 reference evidence for Tracking Events; implementation unchanged.
+prompt_contract:
+  contract_id: logistics_service_tracking_events_v0_1_contract_v0_3
+  revision: module_prompt_contract_v0_3
+  source_prompt_sha256: 8158ff1feb9c2416aac97f70ce20110de3195d5239a343be940705d096242094
+implementation_range:
+  base_commit: 4812047963427043d616871075ac807a35e51aff
+  tip_commit: bbc298e294bd9e7e6cca976d4a8077c52c4a51ff
+requirement_results:
+- requirement_id: TRK-REQ-001
+  status: completed
+  implementation_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  test_paths:
+  - tests/unit/domain/test_tracking_event_contract.py
+- requirement_id: TRK-REQ-002
+  status: completed
+  implementation_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  test_paths:
+  - tests/unit/domain/test_tracking_event_contract.py
+- requirement_id: TRK-REQ-003
+  status: completed
+  implementation_paths:
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  test_paths:
+  - tests/unit/domain/test_tracking_event_contract.py
+  - tests/unit/services/test_tracking_contract_service.py
+- requirement_id: TRK-REQ-004
+  status: completed
+  implementation_paths:
+  - app/domain/events.py
+  - app/services/tracking_contract_service.py
+  test_paths:
+  - tests/unit/services/test_tracking_contract_service.py
+  - tests/integration/workflows/test_tracking_events_preview.py
+- requirement_id: TRK-REQ-005
+  status: completed
+  implementation_paths:
+  - app/domain/events.py
+  - app/services/tracking_contract_service.py
+  test_paths:
+  - tests/unit/domain/test_tracking_event_contract.py
+  - tests/unit/services/test_tracking_contract_service.py
+- requirement_id: TRK-REQ-006
+  status: completed
+  implementation_paths:
+  - examples/fixtures/tracking_events/synthetic_tracking_events.yaml
+  - scripts/previews/preview_tracking_events_contract.py
+  test_paths:
+  - tests/contract/fixtures/test_tracking_events_fixture.py
+  - tests/integration/workflows/test_tracking_events_preview.py
+- requirement_id: TRK-REQ-007
+  status: completed
+  implementation_paths:
+  - Makefile
+  - scripts/previews/preview_tracking_events_contract.py
+  - scripts/validation/check_tracking_events_contract.py
+  test_paths:
+  - tests/contract/policies/test_tracking_events_make_targets.py
+  - tests/integration/workflows/test_tracking_events_check_visibility.py
+- requirement_id: TRK-REQ-008
+  status: completed
+  artifact_paths:
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+- requirement_id: TRK-REQ-009
+  status: completed
+  implementation_paths:
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  test_paths:
+  - tests/unit/domain/test_tracking_event_contract.py
+  - tests/unit/services/test_tracking_contract_service.py
+- requirement_id: TRK-REQ-010
+  status: completed
+check_results:
+- check_id: TRK-CHECK-001
+  command: make tracking-events-check
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:41+03:00'
+  execution_evidence:
+    output_sha256: 343ed2cadaa95f1885e52594d41d6de246a3b474ed112835bab687478f9bd2f0
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 0.126835
+- check_id: TRK-CHECK-002
+  command: make governance-check
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:41+03:00'
+  execution_evidence:
+    output_sha256: 947d4ee7064c0428dcf047df637318b8833ad50b0674a6429fa3aa230b3ed176
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 0.243643
+- check_id: TRK-CHECK-003
+  command: make coordination-check
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:41+03:00'
+  execution_evidence:
+    output_sha256: 8f3cde1ee14b67897a65181dc7d56fb76674ab17ea130db207f8473ba31cd149
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 0.102078
+- check_id: TRK-CHECK-004
+  command: make check
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:41+03:00'
+  execution_evidence:
+    output_sha256: ae26bb30e9c06fbd4304ec752eaa5464b76cbd5e45edacbec220f5aee6472104
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 4.398074
+- check_id: TRK-CHECK-005
+  command: make check-report
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:45+03:00'
+  execution_evidence:
+    output_sha256: 8f66a23166ee8999a4193d976b96f076de7086ce103aaa0fbb4bf2d5a6571f93
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 4.228272
+- check_id: TRK-CHECK-006
+  command: make check-report-full
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:50+03:00'
+  execution_evidence:
+    output_sha256: dc7f635f2bada7c152554cf357323718db6eedbb2e31e3f9f1f849cfdda3db09
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 4.210687
+- check_id: TRK-CHECK-007
+  command: make module-validate
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:54+03:00'
+  execution_evidence:
+    output_sha256: d398da07afd2a8e06741b6ff42ce109be9c5aa6c9a7bb06649938c3a8f54013e
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 4.294009
+- check_id: TRK-CHECK-008
+  command: git diff --check
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:58+03:00'
+  execution_evidence:
+    output_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 0.003411
+- check_id: TRK-CHECK-009
+  command: git status --short
+  status: passed
+  exit_code: 0
+  executed_at: '2026-08-12T18:43:58+03:00'
+  execution_evidence:
+    output_sha256: 562888e638314261fe14f4467ca5d5b31c55f2201bab91005bbbec17828d537d
+    capture_mode: merged_stdout_stderr_bytes
+  duration_seconds: 0.004284
+  expectation:
+    type: exact_declared_dirty_path_set
+    allowed_paths:
+    - Makefile
+    - coordination/completion_packets/records/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.yaml
+    - coordination/reports/completion/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.md
+    - docs/development/coordination/completion_reporting_protocol.md
+    - scripts/coordination/validate_tracking_events_v0_3_reference_completion.py
+    - tests/coordination/test_tracking_events_v0_3_reference_completion.py
+  observation:
+    actual_paths:
+    - Makefile
+    - coordination/completion_packets/records/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.yaml
+    - coordination/reports/completion/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.md
+    - docs/development/coordination/completion_reporting_protocol.md
+    - scripts/coordination/validate_tracking_events_v0_3_reference_completion.py
+    - tests/coordination/test_tracking_events_v0_3_reference_completion.py
+    unexpected_paths: []
+    missing_expected_paths: []
+instruction_sources_reviewed:
+- Blueprint Tracking Events v0.3 prompt contract.
+- Original approved Tracking Events prompt SHA-256 8158ff1feb9c2416aac97f70ce20110de3195d5239a343be940705d096242094.
+standards_reviewed:
+- coordination/standards/governance/module_completion_exchange_protocol_v0_3.md
+- coordination/revisions/current.yaml
+standards_alignment_notes:
+- v0.3 remains candidate/reference validation only; v0.2 remains operational current.
+- Every required requirement/check ID is answered exactly once.
+- Implementation evidence is the authoritative Git range 4812047963427043d616871075ac807a35e51aff..bbc298e294bd9e7e6cca976d4a8077c52c4a51ff.
+boundary_confirmation:
+  no_production_api: true
+  no_live_external_integrations: true
+  no_real_1c_sync: true
+  no_production_write: true
+  no_automatic_posting: true
+  no_provider_calls: true
+  no_telegram_api_calls: true
+  no_cross_repository_writes: true
+  no_database_implementation: true
+current_outputs:
+- Makefile
+- app/domain/events.py
+- app/domain/tracking.py
+- app/services/tracking_contract_service.py
+- docs/architecture/boundaries/notification_handoff_boundary.md
+- docs/architecture/tracking_event_contract.md
+- docs/operations/tracking_events_recovery.md
+- docs/operations/tracking_events_runbook.md
+- examples/fixtures/tracking_events/synthetic_tracking_events.yaml
+- scripts/previews/preview_tracking_events_contract.py
+- scripts/validation/check_tracking_events_contract.py
+- tests/contract/fixtures/test_tracking_events_fixture.py
+- tests/contract/policies/test_tracking_events_make_targets.py
+- tests/integration/workflows/test_tracking_events_check_visibility.py
+- tests/integration/workflows/test_tracking_events_preview.py
+- tests/unit/domain/test_tracking_event_contract.py
+- tests/unit/services/test_tracking_contract_service.py
+next_recommended_steps:
+- Operator review; if publication is separately authorized, commit/push and run Blueprint read-only candidate
+  intake with --allow-candidate-reference.
+next_questions_for_blueprint: []
+branch: feature/logistics-tracking-events-contract-v01
+push_status: pending_operator_publication
+supersedes_completion_id: logistics_service_tracking_events_v0_1_completed_v0_2
+supersedes_packet_path: coordination/completion_packets/records/2026-08-07__logistics_service__tracking_events_v0_1_completion_superseding_v0_2.yaml
+revision_reason: The Tracking Events implementation is unchanged. Evidence is being migrated to Completion
+  Exchange v0.3 candidate reference format for full machine-readable prompt/evidence/check coverage.
+candidate_reference_validation_only: true
+blueprint_acceptance: false
+v0_3_promotion: false
+telegram_dependency_gated: true
+precommit_surface_validation:
+  status: passed
+  validator: temporary_git_index
+  declared_paths:
+  - Makefile
+  - coordination/completion_packets/records/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.yaml
+  - coordination/reports/completion/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.md
+  - docs/development/coordination/completion_reporting_protocol.md
+  - scripts/coordination/validate_tracking_events_v0_3_reference_completion.py
+  - tests/coordination/test_tracking_events_v0_3_reference_completion.py
+  unexpected_paths: []
+  missing_expected_paths: []
+  temporary_staged_paths:
+  - Makefile
+  - coordination/completion_packets/records/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.yaml
+  - coordination/reports/completion/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.md
+  - docs/development/coordination/completion_reporting_protocol.md
+  - scripts/coordination/validate_tracking_events_v0_3_reference_completion.py
+  - tests/coordination/test_tracking_events_v0_3_reference_completion.py
+  temporary_index_diff_check: passed
+  real_git_index_changed: false
+  worktree_changed: false

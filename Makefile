@@ -117,6 +117,7 @@ help:
 	@echo "  make completion-packet-validate PACKET=<path>"
 	@echo "  make completion-packet-apply PACKET=<path>"
 	@echo "  make completion-packet-check PACKET=<path>"
+	@echo "  make tracking-events-v0-3-reference-completion-check PACKET=<path>"
 	@echo "  make completion-safety-check"
 	@echo "  make completion-report-validate PACKET=<path>"
 	@echo "  make report-clean"
@@ -589,3 +590,8 @@ completion-safety-check:
 completion-report-validate:
 	@test -n "$(PACKET)" || (echo "$(COLOR_RED)PACKET=<path> is required.$(COLOR_RESET)"; exit 1)
 	$(PYTHON) $(COMPLETION_REPORT_VALIDATOR) "$(PACKET)"
+
+.PHONY: tracking-events-v0-3-reference-completion-check
+tracking-events-v0-3-reference-completion-check:
+	@test -n "$(PACKET)" || (echo "PACKET=<path> is required" && exit 2)
+	$(PYTHON) scripts/coordination/validate_tracking_events_v0_3_reference_completion.py "$(PACKET)"
