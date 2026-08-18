@@ -86,8 +86,7 @@ def test_module_validate_composes_existing_safe_targets() -> None:
     assert recipe == (
         "$(MAKE) check-report-full",
         "$(MAKE) governance-check",
-        "$(MAKE) report-clean",
-        "$(MAKE) status-report",
+        "$(MAKE) coordination-check",
     )
     assert "$(MAKE) module-validate" not in recipe
 
@@ -124,7 +123,4 @@ def test_module_validate_composes_existing_safe_targets() -> None:
     assert "reports/logistics_service_check_report.json" in (report_clean_text)
     assert "reports/logistics_service_check_report.md" in (report_clean_text)
     assert "reports/diagnostics" in report_clean_text
-    assert recipe[-2:] == (
-        "$(MAKE) report-clean",
-        "$(MAKE) status-report",
-    )
+    assert recipe[-1:] == ("$(MAKE) coordination-check",)

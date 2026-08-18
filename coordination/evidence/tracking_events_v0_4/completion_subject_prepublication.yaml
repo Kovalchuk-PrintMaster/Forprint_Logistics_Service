@@ -1,0 +1,52 @@
+schema_version: logistics_tracking_events_v0_4_completion_subject_prepublication_v0_1
+created_at: '2026-08-18T15:44:52+03:00'
+branch: feature/logistics-tracking-events-contract-v01
+base_head: ecf3e23223cec90e47ac206be9a33c3e3b02673c
+implementation_commit: bbc298e294bd9e7e6cca976d4a8077c52c4a51ff
+prompt_id: logistics_service_tracking_events_v0_1
+source_semantic_coverage: 26/26
+prompt_contract_target_obligations_total: 39
+prepublication_target_obligations_satisfied: 38
+pending_completion_evidence_obligation: CE-009
+pending_reason: Completion commit, push and upstream-divergence evidence can only be recorded after this
+  completion subject is committed and pushed.
+completion_packet_created: false
+completion_outbox_created: false
+live_v0_4_terminal_coordination_applied: false
+historical_v0_2_terminal_coordination_preserved: true
+focused_tests:
+  paths:
+  - tests/unit/domain/test_tracking_event_contract.py
+  - tests/unit/services/test_tracking_contract_service.py
+  - tests/contract/fixtures/test_tracking_events_fixture.py
+  - tests/contract/policies/test_tracking_events_make_targets.py
+  - tests/contract/policies/test_tracking_events_documentation.py
+  - tests/integration/workflows/test_tracking_events_preview.py
+  - tests/integration/workflows/test_tracking_events_check_visibility.py
+  - tests/coordination/test_v0_4_command_semantics.py
+  - tests/coordination/test_tracking_events_v0_4_evidence.py
+  - tests/coordination/test_tracking_events_v0_4_completion_subject.py
+  collected: 49
+  passed: 49
+full_suite:
+  collected: 209
+  passed: 209
+check_report:
+  total: 11
+  passed: 11
+  warnings: 0
+  failed: 0
+check_report_full:
+  total: 11
+  passed: 11
+  warnings: 0
+  failed: 0
+next_gate: Commit and push this completion subject, verify remote containment, then finalize v0.4 coordination
+  and build Packet/Outbox.
+safety:
+  preview_only: true
+  live_write: false
+  provider_call_performed: false
+  Telegram_API_call: false
+  cross_repository_write: false
+  credentials_added: false

@@ -67,13 +67,22 @@ Expected exit:
 make tracking-events-preview
 ```
 
-The command builds all scenarios in process memory and writes:
+The canonical Make preview builds all scenarios in process memory and does not
+write to the filesystem.
+
+Explicit artifact generation is separate:
+
+```bash
+make tracking-events-preview-generate
+```
+
+Generated artifact:
 
 ```text
 reports/previews/tracking_events_contract_preview.json
 ```
 
-Review top-level safety evidence:
+Review generated top-level safety evidence after the explicit generation command:
 
 ```bash
 grep -nE \

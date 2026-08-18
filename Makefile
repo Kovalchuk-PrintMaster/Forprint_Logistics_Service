@@ -110,6 +110,13 @@ help:
 	@echo "  make logistics-model-preview"
 	@echo "  make tracking-events-check"
 	@echo "  make tracking-events-preview"
+	@echo "  make tracking-events-preview-generate"
+	@echo "  make tracking-events-v0-4-evidence-check"
+	@echo "  make tracking-events-v0-4-subject-status"
+	@echo "  make tracking-events-v0-4-subject-preflight"
+	@echo "  make tracking-events-v0-4-subject-prepare"
+	@echo "  make tracking-events-v0-4-subject-check"
+	@echo "  make tracking-events-v0-4-finalization-idempotency-check"
 	@echo "  make status-report"
 	@echo "  make report-status"
 	@echo ""
@@ -159,15 +166,14 @@ module-sync:
 	$(MAKE) coordination-check
 	$(MAKE) status-report
 
-# Purpose: run the canonical module-level validation and cleanup flow.
-# Result: full checks and governance pass, generated reports are removed,
-# and current module status is displayed without external writes.
+# Purpose: run the canonical read-only module-level validation flow.
+# Result: full checks, governance and coordination validation pass without
+# generated-report cleanup, status mutation, external writes, commit or push.
 .PHONY: module-validate
 module-validate:
 	$(MAKE) check-report-full
 	$(MAKE) governance-check
-	$(MAKE) report-clean
-	$(MAKE) status-report
+	$(MAKE) coordination-check
 
 # =============================================================================
 # 02 Operator entrypoints / Blueprint-first workflow FINISH
@@ -498,9 +504,15 @@ tracking-events-check:
 	$(PYTHON) -m scripts.validation.check_tracking_events_contract
 
 # Purpose: show the synthetic tracking and notification handoff preview.
-# Result: a deterministic local preview is printed and written under reports/.
+# Result: deterministic preview is printed without filesystem mutation.
 .PHONY: tracking-events-preview
 tracking-events-preview:
+	$(PYTHON) -m scripts.previews.preview_tracking_events_contract --no-write
+
+# Purpose: explicitly generate the tracking-events preview artifact.
+# Result: writes reports/previews/tracking_events_contract_preview.json.
+.PHONY: tracking-events-preview-generate
+tracking-events-preview-generate:
 	$(PYTHON) -m scripts.previews.preview_tracking_events_contract
 
 .PHONY: logistics-check
@@ -509,10 +521,18 @@ logistics-check:
 
 .PHONY: check-report
 check-report:
-	$(PYTHON) $(CHECK_REPORT_RUNNER)
+	$(PYTHON) scripts/diagnostics/run_logistics_checks_read_only.py
 
 .PHONY: check-report-full
 check-report-full:
+	$(PYTHON) scripts/diagnostics/run_logistics_checks_read_only.py --full
+
+.PHONY: check-report-generate
+check-report-generate:
+	$(PYTHON) $(CHECK_REPORT_RUNNER)
+
+.PHONY: check-report-full-generate
+check-report-full-generate:
 	$(PYTHON) $(CHECK_REPORT_RUNNER) --full
 
 # =============================================================================
@@ -545,9 +565,7 @@ completion-packet-check:
 	@test -n "$(PACKET)" || (echo "$(COLOR_RED)PACKET=<path> is required.$(COLOR_RESET)"; exit 1)
 	$(MAKE) completion-safety-check
 	$(MAKE) completion-packet-validate PACKET="$(PACKET)"
-	$(MAKE) completion-packet-apply PACKET="$(PACKET)"
 	$(MAKE) completion-report-validate PACKET="$(PACKET)"
-	$(MAKE) completion-packet-apply PACKET="$(PACKET)"
 
 .PHONY: report-clean
 report-clean:
@@ -595,3 +613,45 @@ completion-report-validate:
 tracking-events-v0-3-reference-completion-check:
 	@test -n "$(PACKET)" || (echo "PACKET=<path> is required" && exit 2)
 	$(PYTHON) scripts/coordination/validate_tracking_events_v0_3_reference_completion.py "$(PACKET)"
+
+
+# Tracking Events / Completion Exchange v0.4 validation surface.
+BLUEPRINT_COORDINATION_REGISTRY ?= $(BLUEPRINT_ROOT)/coordination/registry/coordination_source_registry_v0_1.yaml
+
+.PHONY: completion-packet-v0-4-validate
+completion-packet-v0-4-validate:
+	@test -n "$(PACKET)" || (echo "PACKET=<path> is required" && exit 2)
+	$(PYTHON) scripts/coordination/validate_completion_packet_v0_4.py --root . --packet "$(PACKET)"
+
+.PHONY: completion-outbox-v0-4-validate
+completion-outbox-v0-4-validate:
+	@test -n "$(EVENT)" || (echo "EVENT=<path> is required" && exit 2)
+	$(PYTHON) scripts/coordination/validate_completion_outbox_v0_4.py "$(EVENT)" --root . --registry "$(BLUEPRINT_COORDINATION_REGISTRY)"
+
+.PHONY: tracking-events-v0-4-evidence-check
+tracking-events-v0-4-evidence-check:
+	$(PYTHON) scripts/coordination/validate_tracking_events_v0_4_evidence.py
+
+
+# Tracking Events v0.4 two-phase completion publication.
+# Subject preparation is mutation-capable but does not mutate terminal
+# coordination records and does not create Packet/Outbox.
+.PHONY: tracking-events-v0-4-subject-status
+tracking-events-v0-4-subject-status:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_completion_subject.py status
+
+.PHONY: tracking-events-v0-4-subject-preflight
+tracking-events-v0-4-subject-preflight:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_completion_subject.py preflight
+
+.PHONY: tracking-events-v0-4-subject-prepare
+tracking-events-v0-4-subject-prepare:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_completion_subject.py prepare
+
+.PHONY: tracking-events-v0-4-subject-check
+tracking-events-v0-4-subject-check:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_completion_subject.py check
+
+.PHONY: tracking-events-v0-4-finalization-idempotency-check
+tracking-events-v0-4-finalization-idempotency-check:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_completion_subject.py idempotency-check

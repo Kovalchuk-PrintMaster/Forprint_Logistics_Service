@@ -45,7 +45,17 @@ def test_tracking_events_make_targets_are_canonical() -> None:
         text,
         "tracking-events-preview",
     )
-    assert "$(PYTHON) -m scripts.previews.preview_tracking_events_contract" in preview_recipe
+    assert (
+        "$(PYTHON) -m scripts.previews.preview_tracking_events_contract --no-write"
+        in preview_recipe
+    )
+
+    generate_recipe = target_recipe(
+        text,
+        "tracking-events-preview-generate",
+    )
+    assert "$(PYTHON) -m scripts.previews.preview_tracking_events_contract" in generate_recipe
+    assert "--no-write" not in generate_recipe
 
 
 def test_check_report_includes_tracking_events_once() -> None:

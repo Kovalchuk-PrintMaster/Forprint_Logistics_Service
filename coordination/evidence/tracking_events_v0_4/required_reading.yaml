@@ -1,0 +1,29 @@
+schema_version: logistics_tracking_events_v0_4_required_reading_v0_1
+blueprint:
+  blueprint_commit: 3940c70f4fbe56aa8f8c834d8cbee56eeb8b5c11
+  contract_sha256: 73f0fe602398536c940f3a6295a3b7d3263f302fba65b68e21d5c90355250981
+  source_prompt_sha256: 8158ff1feb9c2416aac97f70ce20110de3195d5239a343be940705d096242094
+  semantic_fidelity: ACCEPT_SEMANTIC_FIDELITY
+  semantic_coverage: 26/26
+  tracking_events_completion_accepted: false
+  global_v0_4_promotion_performed: false
+module_authoritative_artifacts:
+- path: docs/architecture/adapters/provider_adapter_policy.md
+  sha256: 226dfc31d067200de473bb3380c4e55747cd50977a367d1ced5c026acba10895
+- path: docs/architecture/provider_adapter_contract.md
+  sha256: 64e1ea4151b0fc8fe708412959d8ff0efa6ac1af5f05709b8b9b0863d96f91a1
+- path: docs/operations/provider_adapter_contract_runbook.md
+  sha256: aa340c5c0e8e65b4e1483b9e7671125b3e9cf7727537bb23562b148d20efa0ad
+- path: docs/operations/provider_adapter_contract_recovery.md
+  sha256: 5190d75cfd34f1ae05067b0caff33b2676059acf82013f9f2f25b2a4312eb7b4
+- path: docs/architecture/tracking_event_contract.md
+  sha256: 5f778e05e24437bf6d06958d0c47e85c51c21cb10d62117754af18eb96918077
+- path: docs/architecture/boundaries/notification_handoff_boundary.md
+  sha256: 5cb1a94542a57f1de31b11a995e4cab2d88fafede48c0c7550ca260ef3eb9387
+- path: docs/operations/tracking_events_runbook.md
+  sha256: 08ee2b2636e3459e94acdd5b9fcb745840fa1daf9a3c4335ec1d4d4879070073
+- path: docs/operations/tracking_events_recovery.md
+  sha256: 0ff4c7c918b679a98bba8cc105015da2ac5a3084ad3cb800d94b0b03865ba09a
+approved_blueprint_navigation_used: true
+authoritative_paths_reused: true
+duplicate_domain_hierarchy_created: false

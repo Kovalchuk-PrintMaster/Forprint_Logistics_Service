@@ -1,0 +1,249 @@
+schema_version: logistics_tracking_events_telegram_handoff_v0_4
+authoritative_model: app/domain/events.py::LogisticsNotificationProjection
+projection_factory: LogisticsNotificationProjection.from_event
+projection_version: logistics_notification_projection_v0_1
+field_schema:
+- field: notification_key
+  required: true
+  owner: logistics_service
+- field: notification_type
+  required: true
+  owner: logistics_service
+- field: projection_version
+  required: true
+  owner: logistics_service
+- field: event_id
+  required: true
+  owner: logistics_service
+- field: event_type
+  required: true
+  owner: logistics_service
+- field: event_version
+  required: true
+  owner: logistics_service
+- field: shipment_reference
+  required: true
+  owner: logistics_service
+- field: occurred_at
+  required: true
+  owner: logistics_service
+- field: priority
+  required: true
+  owner: logistics_service
+- field: correlation_id
+  required: true
+  owner: logistics_service
+- field: idempotency_key
+  required: true
+  owner: logistics_service
+- field: tracking_reference
+  required: false
+  owner: logistics_service
+- field: provider_id
+  required: false
+  owner: logistics_service
+- field: recipient_reference
+  required: false
+  owner: logistics_service
+- field: facts
+  required: false
+  owner: logistics_service
+- field: preview_only
+  required: false
+  owner: logistics_service
+- field: live_write
+  required: false
+  owner: logistics_service
+- field: provider_call_performed
+  required: false
+  owner: logistics_service
+- field: telegram_api_call_performed
+  required: false
+  owner: logistics_service
+- field: cross_repository_write
+  required: false
+  owner: logistics_service
+examples_by_event_type:
+  arrived:
+    correlation_id: correlation_success_001
+    cross_repository_write: false
+    event_id: event_2381cb3914fca78f327e460b
+    event_type: arrived
+    event_version: tracking_event_v0_1
+    facts:
+      current_state: arrived
+      event_type: arrived
+      fixture: synthetic_tracking_events_v0_1
+      provider_event_code: SYNTH_ARRIVED
+      provider_status: arrived
+      scenario_id: lifecycle_success
+    idempotency_key: notification_idem_1b9dce1629b0583adc4c9c79
+    live_write: false
+    notification_key: notification_7b8dd8f90323d8305178e2e8
+    notification_type: arrived
+    occurred_at: '2026-07-29T10:20:00+03:00'
+    preview_only: true
+    priority: normal
+    projection_version: logistics_notification_projection_v0_1
+    provider_call_performed: false
+    provider_id: synthetic_parcel
+    recipient_reference: synthetic_recipient_hint_001
+    shipment_reference: synthetic_shipment_success_001
+    telegram_api_call_performed: false
+    tracking_reference: SYNTH-TRACK-SUCCESS-001
+  delivered:
+    correlation_id: correlation_success_001
+    cross_repository_write: false
+    event_id: event_e8131405de685fdfe2d44775
+    event_type: delivered
+    event_version: tracking_event_v0_1
+    facts:
+      current_state: delivered
+      event_type: delivered
+      fixture: synthetic_tracking_events_v0_1
+      provider_event_code: SYNTH_DELIVERED
+      provider_status: delivered
+      scenario_id: lifecycle_success
+    idempotency_key: notification_idem_ff5f9a7ce7f6f416d75cdb60
+    live_write: false
+    notification_key: notification_cf0b5513e64c6fb7e44ecc54
+    notification_type: delivered
+    occurred_at: '2026-07-29T10:30:00+03:00'
+    preview_only: true
+    priority: normal
+    projection_version: logistics_notification_projection_v0_1
+    provider_call_performed: false
+    provider_id: synthetic_parcel
+    recipient_reference: synthetic_recipient_hint_001
+    shipment_reference: synthetic_shipment_success_001
+    telegram_api_call_performed: false
+    tracking_reference: SYNTH-TRACK-SUCCESS-001
+  failed:
+    correlation_id: correlation_failed_001
+    cross_repository_write: false
+    event_id: event_e2194fc91fd1646d0aa9a45d
+    event_type: failed
+    event_version: tracking_event_v0_1
+    facts:
+      current_state: failed
+      event_type: failed
+      fixture: synthetic_tracking_events_v0_1
+      provider_event_code: SYNTH_FAILED
+      provider_status: failed
+      scenario_id: provider_failure
+    idempotency_key: notification_idem_1c9e20ef6ca99114bf42a7a2
+    live_write: false
+    notification_key: notification_ff91c8b913c2e22d234d6722
+    notification_type: failed
+    occurred_at: '2026-07-29T11:10:00+03:00'
+    preview_only: true
+    priority: critical
+    projection_version: logistics_notification_projection_v0_1
+    provider_call_performed: false
+    provider_id: synthetic_postal
+    recipient_reference: synthetic_recipient_hint_002
+    shipment_reference: synthetic_shipment_failed_001
+    telegram_api_call_performed: false
+    tracking_reference: SYNTH-TRACK-FAILED-001
+  needs_attention:
+    correlation_id: correlation_attention_001
+    cross_repository_write: false
+    event_id: event_5ebe5761b7577c7a83b40b96
+    event_type: needs_attention
+    event_version: tracking_event_v0_1
+    facts:
+      current_state: needs_attention
+      event_type: needs_attention
+      fixture: synthetic_tracking_events_v0_1
+      provider_event_code: SYNTH_UNKNOWN
+      provider_status: provider_status_999
+      scenario_id: manual_attention
+    idempotency_key: notification_idem_123c0e9715b29fdd85c2430f
+    live_write: false
+    notification_key: notification_e98eb8dcbd8453f22e4b9093
+    notification_type: needs_attention
+    occurred_at: '2026-07-29T12:10:00+03:00'
+    preview_only: true
+    priority: attention
+    projection_version: logistics_notification_projection_v0_1
+    provider_call_performed: false
+    provider_id: synthetic_freight
+    recipient_reference: synthetic_recipient_hint_003
+    shipment_reference: synthetic_shipment_attention_001
+    telegram_api_call_performed: false
+    tracking_reference: SYNTH-TRACK-ATTENTION-001
+  shipment_created:
+    correlation_id: correlation_success_001
+    cross_repository_write: false
+    event_id: event_4532d9c4c543d251747555fb
+    event_type: shipment_created
+    event_version: tracking_event_v0_1
+    facts:
+      current_state: draft_created
+      event_type: shipment_created
+      fixture: synthetic_tracking_events_v0_1
+      provider_event_code: SYNTH_CREATED
+      provider_status: shipment_created
+      scenario_id: lifecycle_success
+    idempotency_key: notification_idem_80aec2abd46c233a84598e96
+    live_write: false
+    notification_key: notification_e78d5f3838640e12dd908777
+    notification_type: shipment_created
+    occurred_at: '2026-07-29T10:00:00+03:00'
+    preview_only: true
+    priority: normal
+    projection_version: logistics_notification_projection_v0_1
+    provider_call_performed: false
+    provider_id: synthetic_parcel
+    recipient_reference: synthetic_recipient_hint_001
+    shipment_reference: synthetic_shipment_success_001
+    telegram_api_call_performed: false
+    tracking_reference: SYNTH-TRACK-SUCCESS-001
+  tracking_updated:
+    correlation_id: correlation_success_001
+    cross_repository_write: false
+    event_id: event_2649f0f9875d432ad2d128c3
+    event_type: tracking_updated
+    event_version: tracking_event_v0_1
+    facts:
+      current_state: tracking_updated
+      event_type: tracking_updated
+      fixture: synthetic_tracking_events_v0_1
+      provider_event_code: SYNTH_MOVING
+      provider_status: in_transit
+      scenario_id: lifecycle_success
+    idempotency_key: notification_idem_748a8fb2030c1bdb0c4b6a67
+    live_write: false
+    notification_key: notification_b1ca63123ff44e254089c740
+    notification_type: tracking_updated
+    occurred_at: '2026-07-29T10:10:00+03:00'
+    preview_only: true
+    priority: normal
+    projection_version: logistics_notification_projection_v0_1
+    provider_call_performed: false
+    provider_id: synthetic_parcel
+    recipient_reference: synthetic_recipient_hint_001
+    shipment_reference: synthetic_shipment_success_001
+    telegram_api_call_performed: false
+    tracking_reference: SYNTH-TRACK-SUCCESS-001
+event_type_coverage: 6/6
+field_ownership:
+  logistics_service: canonical event identity, safe lifecycle facts, priority, correlation and idempotency
+  telegram_bot: wording, localization, chat/session state, buttons, transport, retries and delivery receipts
+  recipient_reference: optional routing hint; not canonical client/account ownership
+version_compatibility:
+  supported_projection_version: logistics_notification_projection_v0_1
+  unsupported_version_behavior: reject before channel rendering/delivery; no state mutation
+idempotency:
+  same_event_and_recipient_hint: same notification_key, idempotency_key and deterministic JSON
+  notification_replay_stable: true
+error_behavior:
+  duplicate_or_rejected_event: no new notification projection
+  unsupported_version: reject without channel delivery
+safety:
+  preview_only: true
+  live_write: false
+  provider_call_performed: false
+  Telegram_API_call: false
+  cross_repository_write: false
+  credentials_added: false

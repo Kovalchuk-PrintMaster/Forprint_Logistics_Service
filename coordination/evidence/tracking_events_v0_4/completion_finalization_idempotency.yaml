@@ -1,0 +1,15 @@
+schema_version: logistics_tracking_events_v0_4_completion_finalization_idempotency_v0_1
+isolated_sandbox: true
+synthetic_completion_commit: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+first_run:
+  result: APPLIED
+  changed_paths:
+  - coordination/prompts/index.yaml
+  - coordination/status/current_status.yaml
+repeat_run:
+  result: IDEMPOTENT_NOOP
+  changed_paths: []
+semantic_state_equal_after_repeat: true
+live_worktree_mutated: false
+packet_created: false
+outbox_created: false

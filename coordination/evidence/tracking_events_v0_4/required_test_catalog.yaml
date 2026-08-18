@@ -1,0 +1,30 @@
+schema_version: logistics_tracking_events_v0_4_required_test_catalog_v0_1
+focused_test_paths:
+- tests/unit/domain/test_tracking_event_contract.py
+- tests/unit/services/test_tracking_contract_service.py
+- tests/contract/fixtures/test_tracking_events_fixture.py
+- tests/contract/policies/test_tracking_events_make_targets.py
+- tests/contract/policies/test_tracking_events_documentation.py
+- tests/integration/workflows/test_tracking_events_preview.py
+- tests/integration/workflows/test_tracking_events_check_visibility.py
+- tests/coordination/test_v0_4_command_semantics.py
+- tests/coordination/test_tracking_events_v0_4_evidence.py
+required_coverage:
+- six canonical event types
+- typed/versioned envelope
+- timezone-aware timestamps
+- deterministic serialization
+- lifecycle transitions
+- provider normalization
+- duplicates/out-of-order
+- correlation/causation
+- event/notification idempotency
+- notification replay
+- safe rendering
+- no credentials/provider/Telegram/cross-repo writes
+- read-only preview
+- Make contract
+generated_artifact_policy:
+  tracking_events_preview_read_only: true
+  persistent_preview_generation_explicit: true
+  check_report_targets_read_only: true

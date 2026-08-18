@@ -1,0 +1,418 @@
+schema_version: module_prompt_contract_v0_4
+metadata:
+  contract_id: logistics_service_tracking_events_v0_1__contract_v0_4_reference_v0_2
+  module_id: logistics_service
+  prompt_id: logistics_service_tracking_events_v0_1
+  created_at: '2026-08-17'
+  status: candidate_reference_only
+  immutable: true
+source_prompt:
+  path: coordination/prompt_contracts/logistics_service/logistics_service_tracking_events_v0_1/source_prompt_snapshot.md
+  sha256: 8158ff1feb9c2416aac97f70ce20110de3195d5239a343be940705d096242094
+  origin_path_at_capture: coordination/outgoing_prompts/logistics_service/approved/2026-07-29__logistics_service__tracking_events_v0_1.md
+  origin_sha256_at_capture: 8158ff1feb9c2416aac97f70ce20110de3195d5239a343be940705d096242094
+integrity:
+  algorithm: sha256
+  payload_sha256: 02775affa37cd6b21c8251dd05f379cb727bfecd9bebe6f948d2ac8b987c2138
+  payload_hash_scope: canonical JSON of entire document excluding integrity.payload_sha256
+source_obligations:
+- obligation_id: SRC-001
+  source_locator: Accepted foundation + Required Git workflow
+  required: true
+  summary: Preserve the accepted Provider Adapter base, use the dedicated Tracking Events feature branch, and report
+    branch/base/worktree/prompt/roadmap state without merging, deleting, or renaming the branch.
+- obligation_id: SRC-002
+  source_locator: Ownership boundaries
+  required: true
+  summary: Keep shipment truth and provider-neutral event semantics in Logistics, Telegram presentation/conversation
+    ownership in Telegram Bot, future canonical persistence outside Logistics, and prohibit cross-repository writes.
+- obligation_id: SRC-003
+  source_locator: Main implementation scope 1
+  required: true
+  summary: Provide one authoritative provider-neutral taxonomy with shipment_created, tracking_updated, arrived,
+    delivered, failed, and needs_attention; define semantics and keep provider names out of canonical event types.
+- obligation_id: SRC-004
+  source_locator: Main implementation scope 2
+  required: true
+  summary: Provide a typed, versioned, deterministically serializable event envelope with the required identity,
+    timing, shipment/tracking, provider-safe, state, correlation, causation, idempotency, source, preview/live,
+    details, summary, and warning fields plus the stated invariants.
+- obligation_id: SRC-005
+  source_locator: Main implementation scope 3
+  required: true
+  summary: Define deterministic provider-neutral lifecycle transitions including creation, repeated updates, arrived-to-delivered,
+    failure, needs-attention, duplicate, out-of-order, terminal-state, and provider-normalization behavior without
+    a production workflow engine.
+- obligation_id: SRC-006
+  source_locator: Main implementation scope 4
+  required: true
+  summary: Provide a channel-neutral notification projection with the required identifiers, event/shipment/tracking/provider/timing/recipient/fact/priority/correlation/idempotency/preview
+    fields and exclude Telegram UI state, credentials, raw sensitive responses, canonical client/order data, and
+    database details.
+- obligation_id: SRC-007
+  source_locator: Main implementation scope 5
+  required: true
+  summary: Define deterministic correlation, causation, event and notification idempotency, logical duplicate detection,
+    replay safety, repeated same-status snapshot handling, out-of-order observation handling, and event-version
+    compatibility.
+- obligation_id: SRC-008
+  source_locator: Main implementation scope 6
+  required: true
+  summary: Provide synthetic fixtures for creation, updates, arrival, delivery, provider failure, manual attention,
+    duplicate and out-of-order updates, Telegram projection, and replay/idempotency using no real customer data
+    or credentials.
+- obligation_id: SRC-009
+  source_locator: Main implementation scope 7
+  required: true
+  summary: Provide a deterministic Make-first read-only preview demonstrating taxonomy, envelope, lifecycle transition,
+    normalized update, notification projection, idempotency, preview_only=true, live_write=false, and provider_call_performed=false
+    with no network/provider/Telegram/cross-repository/database/background-worker mutations.
+- obligation_id: SRC-010
+  source_locator: Main implementation scope 8
+  required: true
+  summary: Document taxonomy, envelope, lifecycle, provider normalization, notification boundary, Telegram ownership,
+    idempotency/replay, preview workflow, recovery, future local persistence, and future central database migration;
+    recovery must describe file-scoped rollback and post-recovery checks.
+- obligation_id: SRC-011
+  source_locator: Local persistence boundary
+  required: true
+  summary: Do not implement SQLite or production persistence; allow only persistence-ready serialization/interfaces
+    and clearly test-only in-memory fixtures, with no migrations, canonical customer/order tables, cross-module
+    DB ownership, hidden SQL domain dependencies, or DB-specific public fields.
+- obligation_id: SRC-012
+  source_locator: Telegram coordination boundary
+  required: true
+  summary: Provide Telegram handoff evidence containing one canonical projection schema, sample payloads for every
+    required event type, field ownership, required/optional fields, version compatibility, idempotency, error/unsupported-version
+    behavior, and explicit no-cross-repository-write confirmation.
+- obligation_id: SRC-013
+  source_locator: Telegram coordination boundary / questions
+  required: true
+  summary: Record Telegram-side agreement questions in coordination/status/next_questions_for_blueprint.md without
+    blocking provider-neutral implementation on wording or UI choices.
+- obligation_id: SRC-014
+  source_locator: Required tests
+  required: true
+  summary: Test all required event types; envelope typing; timezone-aware timestamps; event-version validation;
+    deterministic serialization; valid/invalid/terminal lifecycle behavior; provider normalization; duplicate/out-of-order
+    handling; correlation/causation; deterministic idempotency; notification projection/replay; safe rendering;
+    no credentials; no provider/Telegram/cross-repository calls or writes; preview command; Make contract; and report
+    generation.
+- obligation_id: SRC-015
+  source_locator: Required tests / totals
+  required: true
+  summary: Report exact focused and full-suite collection/pass totals separately from check-report totals.
+- obligation_id: SRC-016
+  source_locator: Required commands
+  required: true
+  summary: Run at minimum make tracking-events-check, governance-check, coordination-check, check, check-report,
+    check-report-full, module-validate, git diff --check, and git status --short, or document the canonical focused-target
+    equivalent.
+- obligation_id: SRC-017
+  source_locator: Generated reports and diagnostics
+  required: true
+  summary: Do not leave generated reports or diagnostics staged/committed unless repository policy explicitly classifies
+    them as tracked evidence.
+- obligation_id: SRC-018
+  source_locator: Completion workflow / required outputs
+  required: true
+  summary: Use module-side completion automation and provide completion packet record, completion report, reports
+    index, current_status.yaml, current_status.md, and next_questions_for_blueprint.md.
+- obligation_id: SRC-019
+  source_locator: Completion workflow / required report content
+  required: true
+  summary: Completion packet/report must carry prompt, branch/base/implementation/completion commits, changed files,
+    authoritative event contract, taxonomy, lifecycle summary, notification path, Telegram examples, idempotency
+    rules, focused/full test totals, check-report totals, warnings/blockers, generated-artifact handling, all safety
+    confirmations, open questions or explicit none, and push/upstream-divergence evidence.
+- obligation_id: SRC-020
+  source_locator: Completion workflow / automation
+  required: true
+  summary: Completion automation must be valid and idempotent, including safe repeated execution and superseding
+    behavior when revising historical completion evidence.
+- obligation_id: SRC-021
+  source_locator: Completion workflow / final handoff
+  required: true
+  summary: Final assistant handoff must be compact and link to detailed evidence instead of reproducing full logs.
+- obligation_id: SRC-022
+  source_locator: Explicit non-goals
+  required: true
+  summary: Do not implement local/central DB integration, live/read-only provider APIs, bookings or TTN creation,
+    Telegram code/API, production queues/schedulers/workers, live shipment mutations, credentials, canonical client/order
+    ownership, pricing/payment/accounting/warehouse/CRM/Website/Calculator/Gateway writes.
+- obligation_id: SRC-023
+  source_locator: Definition of done / implementation semantics
+  required: true
+  summary: Done requires authoritative taxonomy and all six event types, typed envelope, deterministic tested lifecycle,
+    provider normalization, explicit correlation/causation/idempotency, Telegram-ready channel-neutral projections,
+    required synthetic fixtures, read-only Make preview, preview_only=true, live_write=false, no real provider/Telegram
+    calls, no DB implementation, and architecture/runbook/recovery docs.
+- obligation_id: SRC-024
+  source_locator: Definition of done / delivery evidence
+  required: true
+  summary: Done additionally requires valid idempotent completion automation, passing full checks, committed and
+    pushed feature branch, and complete Blueprint review evidence.
+- obligation_id: SRC-R01
+  source_locator: Required reading before implementation / Blueprint sources
+  required: true
+  summary: Read the current required Blueprint governance and coordination sources through the approved Blueprint
+    pull and prompt-navigation workflow before implementation.
+- obligation_id: SRC-R02
+  source_locator: Required reading before implementation / accepted Logistics evidence
+  required: true
+  summary: Review the accepted provider contract, runbook, recovery evidence, and existing authoritative Logistics
+    equivalents; reuse actual authoritative paths and do not create duplicate domain hierarchies.
+implementation_obligations:
+- obligation_id: IMP-001
+  summary: Preserve accepted implementation base and dedicated feature-branch workflow.
+- obligation_id: IMP-002
+  summary: Maintain one authoritative six-event provider-neutral taxonomy with documented semantics.
+- obligation_id: IMP-003
+  summary: Maintain the typed versioned deterministic event envelope and its safety invariants.
+- obligation_id: IMP-004
+  summary: Maintain deterministic lifecycle and provider-normalization behavior including duplicate/out-of-order/terminal
+    rules.
+- obligation_id: IMP-005
+  summary: Maintain the channel-neutral Telegram-ready notification projection and ownership exclusions.
+- obligation_id: IMP-006
+  summary: Maintain correlation, causation, idempotency, replay, duplicate, ordering, and version-compatibility
+    rules.
+- obligation_id: IMP-007
+  summary: Maintain the complete synthetic fixture set using synthetic-only data.
+- obligation_id: IMP-008
+  summary: Maintain a Make-first deterministic read-only Tracking Events preview/check workflow.
+- obligation_id: IMP-009
+  summary: Maintain architecture, boundary, runbook, and recovery documentation with file-scoped rollback guidance.
+- obligation_id: IMP-010
+  summary: Preserve persistence-ready boundaries without implementing SQLite or central persistence.
+- obligation_id: IMP-011
+  summary: Maintain the detailed Telegram handoff contract and question-recording boundary.
+- obligation_id: IMP-012
+  summary: Preserve all explicit safety, ownership, integration, and non-goal boundaries.
+- obligation_id: IMP-013
+  summary: Resolve and read the required current Blueprint governance sources through the approved coordination
+    workflow before implementation.
+- obligation_id: IMP-014
+  summary: Review and reuse accepted authoritative Logistics artifacts and paths instead of creating duplicate domain
+    hierarchies.
+verification_obligations:
+- obligation_id: VER-001
+  summary: Verify all six canonical event types, provider-neutral taxonomy semantics, and provider normalization.
+- obligation_id: VER-002
+  summary: Verify typed envelope validation, timezone-aware timestamps, explicit versioning, deterministic serialization,
+    and credential-safe output.
+- obligation_id: VER-003
+  summary: Verify valid and invalid lifecycle transitions, terminal-state behavior, duplicate updates, and out-of-order
+    updates.
+- obligation_id: VER-004
+  summary: Verify correlation/causation metadata, deterministic event idempotency, notification idempotency, and
+    replay safety.
+- obligation_id: VER-005
+  summary: Verify notification projection schema, safe rendering, ownership exclusions, and Telegram-ready examples.
+- obligation_id: VER-006
+  summary: Verify preview command and Make target are deterministic/read-only with no provider, Telegram, cross-repository,
+    database, or live writes.
+- obligation_id: VER-007
+  summary: Run and record the complete required command set including focused, governance, coordination, full, report,
+    module validation, diff, and status checks.
+- obligation_id: VER-008
+  summary: Record exact focused and full-suite collection/pass totals as distinct evidence.
+- obligation_id: VER-009
+  summary: Record check-report and check-report-full totals separately from pytest totals.
+- obligation_id: VER-010
+  summary: Verify required documentation and file-scoped recovery guidance.
+- obligation_id: VER-011
+  summary: Verify module completion automation is valid and idempotent on repeated execution.
+- obligation_id: VER-012
+  summary: Verify required-reading resolution, accepted-artifact reuse, authoritative-path reuse, and absence of
+    duplicate domain hierarchy creation.
+completion_evidence_obligations:
+- obligation_id: CE-001
+  summary: Record branch, base commit, clean/expected worktree, resolved prompt id, and resolved roadmap step.
+- obligation_id: CE-002
+  summary: Record changed files, authoritative event contract path, taxonomy, lifecycle summary, notification projection
+    path, and idempotency rules.
+- obligation_id: CE-003
+  summary: Record Telegram handoff schema/examples for every required event type, ownership/requiredness/version/error/idempotency
+    rules, and no-cross-repository-write confirmation.
+- obligation_id: CE-004
+  summary: Record exact focused and full-suite collected/pass totals separately.
+- obligation_id: CE-005
+  summary: Record exact check-report and check-report-full totals separately from pytest totals.
+- obligation_id: CE-006
+  summary: Record warnings/blockers and generated-report/diagnostic handling.
+- obligation_id: CE-007
+  summary: Record preview_only=true, live_write=false, provider_call_performed=false, Telegram_API_call=false, cross_repository_write=false,
+    and credentials_added=false.
+- obligation_id: CE-008
+  summary: Record open questions in next_questions_for_blueprint.md or explicit no-open-questions.
+- obligation_id: CE-009
+  summary: Record implementation/completion commits plus push and upstream-divergence evidence.
+- obligation_id: CE-010
+  summary: Record all required module-side completion output paths and superseding chain when revising historical
+    evidence.
+- obligation_id: CE-011
+  summary: Provide a compact final handoff linking detailed evidence rather than duplicating logs.
+- obligation_id: CE-012
+  summary: Record completion automation validity and idempotent repeated-run evidence.
+- obligation_id: CE-013
+  summary: Record required-reading resolution and confirmation that existing authoritative Logistics artifacts/paths
+    were reviewed and reused without duplicate hierarchy creation.
+source_obligation_fidelity_ledger:
+- source_obligation_id: SRC-001
+  target_obligation_ids:
+  - IMP-001
+  - CE-001
+- source_obligation_id: SRC-002
+  target_obligation_ids:
+  - IMP-012
+  - CE-007
+- source_obligation_id: SRC-003
+  target_obligation_ids:
+  - IMP-002
+  - VER-001
+  - CE-002
+- source_obligation_id: SRC-004
+  target_obligation_ids:
+  - IMP-003
+  - VER-002
+  - CE-002
+- source_obligation_id: SRC-005
+  target_obligation_ids:
+  - IMP-004
+  - VER-003
+  - CE-002
+- source_obligation_id: SRC-006
+  target_obligation_ids:
+  - IMP-005
+  - VER-005
+  - CE-002
+  - CE-003
+- source_obligation_id: SRC-007
+  target_obligation_ids:
+  - IMP-006
+  - VER-004
+  - CE-002
+- source_obligation_id: SRC-008
+  target_obligation_ids:
+  - IMP-007
+  - VER-001
+  - VER-003
+  - VER-004
+- source_obligation_id: SRC-009
+  target_obligation_ids:
+  - IMP-008
+  - VER-006
+  - CE-007
+- source_obligation_id: SRC-010
+  target_obligation_ids:
+  - IMP-009
+  - VER-010
+- source_obligation_id: SRC-011
+  target_obligation_ids:
+  - IMP-010
+  - IMP-012
+  - CE-007
+- source_obligation_id: SRC-012
+  target_obligation_ids:
+  - IMP-011
+  - VER-005
+  - CE-003
+- source_obligation_id: SRC-013
+  target_obligation_ids:
+  - IMP-011
+  - CE-008
+- source_obligation_id: SRC-014
+  target_obligation_ids:
+  - VER-001
+  - VER-002
+  - VER-003
+  - VER-004
+  - VER-005
+  - VER-006
+- source_obligation_id: SRC-015
+  target_obligation_ids:
+  - VER-008
+  - VER-009
+  - CE-004
+  - CE-005
+- source_obligation_id: SRC-016
+  target_obligation_ids:
+  - VER-007
+  - CE-004
+  - CE-005
+- source_obligation_id: SRC-017
+  target_obligation_ids:
+  - CE-006
+- source_obligation_id: SRC-018
+  target_obligation_ids:
+  - CE-010
+  - CE-012
+- source_obligation_id: SRC-019
+  target_obligation_ids:
+  - CE-001
+  - CE-002
+  - CE-003
+  - CE-004
+  - CE-005
+  - CE-006
+  - CE-007
+  - CE-008
+  - CE-009
+  - CE-010
+- source_obligation_id: SRC-020
+  target_obligation_ids:
+  - VER-011
+  - CE-012
+- source_obligation_id: SRC-021
+  target_obligation_ids:
+  - CE-011
+- source_obligation_id: SRC-022
+  target_obligation_ids:
+  - IMP-012
+  - VER-006
+  - CE-007
+- source_obligation_id: SRC-023
+  target_obligation_ids:
+  - IMP-002
+  - IMP-003
+  - IMP-004
+  - IMP-005
+  - IMP-006
+  - IMP-007
+  - IMP-008
+  - IMP-009
+  - IMP-010
+  - VER-001
+  - VER-002
+  - VER-003
+  - VER-004
+  - VER-005
+  - VER-006
+  - VER-010
+- source_obligation_id: SRC-024
+  target_obligation_ids:
+  - VER-007
+  - VER-011
+  - CE-009
+  - CE-010
+  - CE-012
+- source_obligation_id: SRC-R01
+  target_obligation_ids:
+  - IMP-013
+  - VER-012
+  - CE-013
+- source_obligation_id: SRC-R02
+  target_obligation_ids:
+  - IMP-014
+  - VER-012
+  - CE-013
+semantic_fidelity:
+  human_review_required: true
+  execution_fingerprint_sufficient: false
+  review_state: pending_operator_review
+promotion:
+  state: candidate_reference_only
+  normal_acceptance_allowed: false
+  explicit_promotion_required: true
+  promotion_performed: false

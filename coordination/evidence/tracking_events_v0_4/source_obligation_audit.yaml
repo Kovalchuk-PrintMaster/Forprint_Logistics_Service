@@ -1,0 +1,607 @@
+schema_version: logistics_tracking_events_v0_4_source_obligation_audit_v0_1
+module_id: logistics_service
+prompt_id: logistics_service_tracking_events_v0_1
+contract_id: logistics_service_tracking_events_v0_1__contract_v0_4_reference_v0_2
+blueprint_anchor_commit: 3940c70f4fbe56aa8f8c834d8cbee56eeb8b5c11
+semantic_fidelity:
+  decision: ACCEPT_SEMANTIC_FIDELITY
+  scope: prompt_contract_semantic_fidelity_only
+  coverage: 26/26
+  tracking_events_completion_accepted: false
+summary:
+  source_obligations_total: 26
+  satisfied_existing_initial: 15
+  evidence_gaps_initial: 9
+  workflow_tooling_gaps_initial: 2
+  tracking_runtime_implementation_gaps_initial: 0
+  remaining_gaps: 0
+source_obligations:
+- source_obligation_id: SRC-001
+  summary: Preserve the accepted Provider Adapter base, use the dedicated Tracking Events feature branch, and report
+    branch/base/worktree/prompt/roadmap state without merging, deleting, or renaming the branch.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-001
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-001
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: &id001
+  - tests/unit/domain/test_tracking_event_contract.py
+  - tests/unit/services/test_tracking_contract_service.py
+  - tests/contract/fixtures/test_tracking_events_fixture.py
+  - tests/contract/policies/test_tracking_events_make_targets.py
+  - tests/contract/policies/test_tracking_events_documentation.py
+  - tests/integration/workflows/test_tracking_events_preview.py
+  - tests/integration/workflows/test_tracking_events_check_visibility.py
+  - tests/coordination/test_v0_4_command_semantics.py
+  - tests/coordination/test_tracking_events_v0_4_evidence.py
+- source_obligation_id: SRC-002
+  summary: Keep shipment truth and provider-neutral event semantics in Logistics, Telegram presentation/conversation
+    ownership in Telegram Bot, future canonical persistence outside Logistics, and prohibit cross-repository writes.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-012
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-007
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-003
+  summary: Provide one authoritative provider-neutral taxonomy with shipment_created, tracking_updated, arrived,
+    delivered, failed, and needs_attention; define semantics and keep provider names out of canonical event types.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-002
+  verification_obligations:
+  - VER-001
+  completion_evidence_obligations:
+  - CE-002
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-004
+  summary: Provide a typed, versioned, deterministically serializable event envelope with the required identity,
+    timing, shipment/tracking, provider-safe, state, correlation, causation, idempotency, source, preview/live,
+    details, summary, and warning fields plus the stated invariants.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-003
+  verification_obligations:
+  - VER-002
+  completion_evidence_obligations:
+  - CE-002
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-005
+  summary: Define deterministic provider-neutral lifecycle transitions including creation, repeated updates, arrived-to-delivered,
+    failure, needs-attention, duplicate, out-of-order, terminal-state, and provider-normalization behavior without
+    a production workflow engine.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-004
+  verification_obligations:
+  - VER-003
+  completion_evidence_obligations:
+  - CE-002
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-006
+  summary: Provide a channel-neutral notification projection with the required identifiers, event/shipment/tracking/provider/timing/recipient/fact/priority/correlation/idempotency/preview
+    fields and exclude Telegram UI state, credentials, raw sensitive responses, canonical client/order data, and
+    database details.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-005
+  verification_obligations:
+  - VER-005
+  completion_evidence_obligations:
+  - CE-002
+  - CE-003
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-007
+  summary: Define deterministic correlation, causation, event and notification idempotency, logical duplicate detection,
+    replay safety, repeated same-status snapshot handling, out-of-order observation handling, and event-version
+    compatibility.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-006
+  verification_obligations:
+  - VER-004
+  completion_evidence_obligations:
+  - CE-002
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-008
+  summary: Provide synthetic fixtures for creation, updates, arrival, delivery, provider failure, manual attention,
+    duplicate and out-of-order updates, Telegram projection, and replay/idempotency using no real customer data
+    or credentials.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-007
+  verification_obligations:
+  - VER-001
+  - VER-003
+  - VER-004
+  completion_evidence_obligations: []
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-009
+  summary: Provide a deterministic Make-first read-only preview demonstrating taxonomy, envelope, lifecycle transition,
+    normalized update, notification projection, idempotency, preview_only=true, live_write=false, and provider_call_performed=false
+    with no network/provider/Telegram/cross-repository/database/background-worker mutations.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-008
+  verification_obligations:
+  - VER-006
+  completion_evidence_obligations:
+  - CE-007
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-010
+  summary: Document taxonomy, envelope, lifecycle, provider normalization, notification boundary, Telegram ownership,
+    idempotency/replay, preview workflow, recovery, future local persistence, and future central database migration;
+    recovery must describe file-scoped rollback and post-recovery checks.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-009
+  verification_obligations:
+  - VER-010
+  completion_evidence_obligations: []
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-011
+  summary: Do not implement SQLite or production persistence; allow only persistence-ready serialization/interfaces
+    and clearly test-only in-memory fixtures, with no migrations, canonical customer/order tables, cross-module
+    DB ownership, hidden SQL domain dependencies, or DB-specific public fields.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-010
+  - IMP-012
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-007
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-012
+  summary: Provide Telegram handoff evidence containing one canonical projection schema, sample payloads for every
+    required event type, field ownership, required/optional fields, version compatibility, idempotency, error/unsupported-version
+    behavior, and explicit no-cross-repository-write confirmation.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-011
+  verification_obligations:
+  - VER-005
+  completion_evidence_obligations:
+  - CE-003
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-013
+  summary: Record Telegram-side agreement questions in coordination/status/next_questions_for_blueprint.md without
+    blocking provider-neutral implementation on wording or UI choices.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-011
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-008
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-014
+  summary: Test all required event types; envelope typing; timezone-aware timestamps; event-version validation;
+    deterministic serialization; valid/invalid/terminal lifecycle behavior; provider normalization; duplicate/out-of-order
+    handling; correlation/causation; deterministic idempotency; notification projection/replay; safe rendering;
+    no credentials; no provider/Telegram/cross-repository calls or writes; preview command; Make contract; and report
+    generation.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations:
+  - VER-001
+  - VER-002
+  - VER-003
+  - VER-004
+  - VER-005
+  - VER-006
+  completion_evidence_obligations: []
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-015
+  summary: Report exact focused and full-suite collection/pass totals separately from check-report totals.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations:
+  - VER-008
+  - VER-009
+  completion_evidence_obligations:
+  - CE-004
+  - CE-005
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-016
+  summary: Run at minimum make tracking-events-check, governance-check, coordination-check, check, check-report,
+    check-report-full, module-validate, git diff --check, and git status --short, or document the canonical focused-target
+    equivalent.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations:
+  - VER-007
+  completion_evidence_obligations:
+  - CE-004
+  - CE-005
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-017
+  summary: Do not leave generated reports or diagnostics staged/committed unless repository policy explicitly classifies
+    them as tracked evidence.
+  audit_status: IMPLEMENTATION_GAP
+  resolution: RESOLVED_BY_V0_4_WORKFLOW_TOOLING_REPAIR
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-006
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-018
+  summary: Use module-side completion automation and provide completion packet record, completion report, reports
+    index, current_status.yaml, current_status.md, and next_questions_for_blueprint.md.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-010
+  - CE-012
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-019
+  summary: Completion packet/report must carry prompt, branch/base/implementation/completion commits, changed files,
+    authoritative event contract, taxonomy, lifecycle summary, notification path, Telegram examples, idempotency
+    rules, focused/full test totals, check-report totals, warnings/blockers, generated-artifact handling, all safety
+    confirmations, open questions or explicit none, and push/upstream-divergence evidence.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-001
+  - CE-002
+  - CE-003
+  - CE-004
+  - CE-005
+  - CE-006
+  - CE-007
+  - CE-008
+  - CE-009
+  - CE-010
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-020
+  summary: Completion automation must be valid and idempotent, including safe repeated execution and superseding
+    behavior when revising historical completion evidence.
+  audit_status: IMPLEMENTATION_GAP
+  resolution: RESOLVED_BY_V0_4_WORKFLOW_TOOLING_REPAIR
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations:
+  - VER-011
+  completion_evidence_obligations:
+  - CE-012
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-021
+  summary: Final assistant handoff must be compact and link to detailed evidence instead of reproducing full logs.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations: []
+  completion_evidence_obligations:
+  - CE-011
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-022
+  summary: Do not implement local/central DB integration, live/read-only provider APIs, bookings or TTN creation,
+    Telegram code/API, production queues/schedulers/workers, live shipment mutations, credentials, canonical client/order
+    ownership, pricing/payment/accounting/warehouse/CRM/Website/Calculator/Gateway writes.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-012
+  verification_obligations:
+  - VER-006
+  completion_evidence_obligations:
+  - CE-007
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-023
+  summary: Done requires authoritative taxonomy and all six event types, typed envelope, deterministic tested lifecycle,
+    provider normalization, explicit correlation/causation/idempotency, Telegram-ready channel-neutral projections,
+    required synthetic fixtures, read-only Make preview, preview_only=true, live_write=false, no real provider/Telegram
+    calls, no DB implementation, and architecture/runbook/recovery docs.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-002
+  - IMP-003
+  - IMP-004
+  - IMP-005
+  - IMP-006
+  - IMP-007
+  - IMP-008
+  - IMP-009
+  - IMP-010
+  verification_obligations:
+  - VER-001
+  - VER-002
+  - VER-003
+  - VER-004
+  - VER-005
+  - VER-006
+  - VER-010
+  completion_evidence_obligations: []
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-024
+  summary: Done additionally requires valid idempotent completion automation, passing full checks, committed and
+    pushed feature branch, and complete Blueprint review evidence.
+  audit_status: EVIDENCE_GAP
+  resolution: RESOLVED_BY_V0_4_COMPLETION_EVIDENCE
+  remaining_gap: false
+  implementation_obligations: []
+  verification_obligations:
+  - VER-007
+  - VER-011
+  completion_evidence_obligations:
+  - CE-009
+  - CE-010
+  - CE-012
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-R01
+  summary: Read the current required Blueprint governance and coordination sources through the approved Blueprint
+    pull and prompt-navigation workflow before implementation.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-013
+  verification_obligations:
+  - VER-012
+  completion_evidence_obligations:
+  - CE-013
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
+- source_obligation_id: SRC-R02
+  summary: Review the accepted provider contract, runbook, recovery evidence, and existing authoritative Logistics
+    equivalents; reuse actual authoritative paths and do not create duplicate domain hierarchies.
+  audit_status: SATISFIED_EXISTING
+  resolution: NO_REPAIR_REQUIRED
+  remaining_gap: false
+  implementation_obligations:
+  - IMP-014
+  verification_obligations:
+  - VER-012
+  completion_evidence_obligations:
+  - CE-013
+  authoritative_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - docs/architecture/tracking_event_contract.md
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  - docs/operations/tracking_events_runbook.md
+  - docs/operations/tracking_events_recovery.md
+  relevant_tests: *id001
