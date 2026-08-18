@@ -1,0 +1,35 @@
+schema_version: module_completion_outbox_event_v0_4
+protocol_version: module_completion_outbox_protocol_v0_4
+event_id: logistics_service_tracking_events_v0_1_completed_v0_4_reference_published_v0_4
+event_type: module_completion_published_v0_4
+status: published_pending_blueprint_discovery
+module_id: logistics_service
+repository_id: forprint_logistics_service
+prompt_id: logistics_service_tracking_events_v0_1
+completion_id: logistics_service_tracking_events_v0_1_completed_v0_4_reference
+emitted_at: '2026-08-18T16:24:22+03:00'
+immutable: true
+completion_packet:
+  path: coordination/completion_packets/records/logistics_service_tracking_events_v0_1_completed_v0_4_reference.yaml
+  sha256: 6dd59599178a06ba794deb025543f1ffedbcc3d54311083cd2f4dc4f0d798d62
+publication:
+  completion_subject_commit: cb1887a0c29784dfbf2da628065c716bf96917e9
+  remote_name: origin
+  branch: feature/logistics-tracking-events-contract-v01
+  remote_containment_verified: true
+  verified_at: '2026-08-18T16:24:22+03:00'
+  verification_evidence_path: coordination/completion_publication_verification/logistics_service_tracking_events_v0_1_completed_v0_4_reference.yaml
+  verification_evidence_sha256: c4eb4212906fe02e9dddf05b559b3107b12b1d459d2fbab10798088783f6cf8d
+  outbox_event_commit_embedded_in_event: false
+  external_outbox_event_publication_verification_required: true
+  automatic_commit: false
+  automatic_push: false
+revision:
+  supersedes_event_id: null
+  supersedes_event_path: null
+  revision_reason: null
+governance:
+  blueprint_discovery_performed: false
+  blueprint_intake_performed: false
+  operator_decision_created: false
+  global_v0_4_promotion_performed: false

@@ -1,0 +1,398 @@
+schema_version: module_completion_packet_v0_4
+protocol_version: module_completion_packet_protocol_v0_4
+completion_id: logistics_service_tracking_events_v0_1_completed_v0_4_reference
+module_id: logistics_service
+prompt_id: logistics_service_tracking_events_v0_1
+phase: tracking_events_v0_1
+created_at: '2026-08-18T16:24:22+03:00'
+status: completed_in_module_pending_blueprint_review
+immutable: true
+report_id: logistics_service_tracking_events_v0_1_completion_report_v0_4_reference
+report_path: coordination/reports/completion/logistics_service_tracking_events_v0_1_completion_report_v0_4_reference.md
+report_sha256: a40861594151a478596967c4ba51cee9edbfc75dacdd0dca298d840a3ff8a898
+implementation_base_commit: 4812047963427043d616871075ac807a35e51aff
+implementation_commit: bbc298e294bd9e7e6cca976d4a8077c52c4a51ff
+branch: feature/logistics-tracking-events-contract-v01
+prompt_contract:
+  schema_version: module_prompt_contract_v0_4
+  contract_id: logistics_service_tracking_events_v0_1__contract_v0_4_reference_v0_2
+  path: coordination/prompt_contracts/logistics_service/logistics_service_tracking_events_v0_1/logistics_service_tracking_events_v0_1__contract_v0_4_reference_v0_2.yaml
+  file_sha256: 73f0fe602398536c940f3a6295a3b7d3263f302fba65b68e21d5c90355250981
+  payload_sha256: 02775affa37cd6b21c8251dd05f379cb727bfecd9bebe6f948d2ac8b987c2138
+  source_prompt_sha256: 8158ff1feb9c2416aac97f70ce20110de3195d5239a343be940705d096242094
+requirement_results:
+- obligation_id: IMP-001
+  category: implementation
+  result: satisfied
+  evidence_ids: &id001
+  - source_obligation_audit
+  - required_reading
+  - tracking_event_contract
+  - notification_handoff_boundary
+  - events_model
+  - tracking_model
+  - tracking_contract_service
+  - tracking_fixture
+  - telegram_handoff
+- obligation_id: IMP-002
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-003
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-004
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-005
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-006
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-007
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-008
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-009
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-010
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-011
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-012
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-013
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: IMP-014
+  category: implementation
+  result: satisfied
+  evidence_ids: *id001
+- obligation_id: VER-001
+  category: verification
+  result: satisfied
+  evidence_ids: &id002
+  - source_obligation_audit
+  - required_test_catalog
+  - subject_validation_execution
+  - final_validation_execution
+  - post_apply_validation
+  - finalization_idempotency
+  - telegram_handoff
+- obligation_id: VER-002
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-003
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-004
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-005
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-006
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-007
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-008
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-009
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-010
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-011
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: VER-012
+  category: verification
+  result: satisfied
+  evidence_ids: *id002
+- obligation_id: CE-001
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: &id003
+  - completion_report
+  - publication_verification
+  - source_obligation_audit
+  - subject_validation_execution
+  - final_validation_execution
+  - post_apply_validation
+  - finalization_idempotency
+  - telegram_handoff
+  - required_reading
+- obligation_id: CE-002
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-003
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-004
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-005
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-006
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-007
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-008
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-009
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-010
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-011
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-012
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+- obligation_id: CE-013
+  category: completion_evidence
+  result: satisfied
+  evidence_ids: *id003
+checks:
+  check_report: passed
+  tests: passed
+  governance_check: passed
+  check_report_passed: 11
+  check_report_warnings: 0
+  check_report_failed: 0
+check_results:
+- check_id: FINAL-TEST-FOCUSED-COLLECT
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest --collect-only -q -o addopts= tests/unit/domain/test_tracking_event_contract.py tests/unit/services/test_tracking_contract_service.py
+    tests/contract/fixtures/test_tracking_events_fixture.py tests/contract/policies/test_tracking_events_make_targets.py
+    tests/contract/policies/test_tracking_events_documentation.py tests/integration/workflows/test_tracking_events_preview.py
+    tests/integration/workflows/test_tracking_events_check_visibility.py tests/coordination/test_v0_4_command_semantics.py
+    tests/coordination/test_tracking_events_v0_4_evidence.py tests/coordination/test_tracking_events_v0_4_completion_subject.py
+    tests/coordination/test_tracking_events_v0_4_finalization.py
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-TEST-FOCUSED-RUN
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest -q -o addopts= tests/unit/domain/test_tracking_event_contract.py tests/unit/services/test_tracking_contract_service.py
+    tests/contract/fixtures/test_tracking_events_fixture.py tests/contract/policies/test_tracking_events_make_targets.py
+    tests/contract/policies/test_tracking_events_documentation.py tests/integration/workflows/test_tracking_events_preview.py
+    tests/integration/workflows/test_tracking_events_check_visibility.py tests/coordination/test_v0_4_command_semantics.py
+    tests/coordination/test_tracking_events_v0_4_evidence.py tests/coordination/test_tracking_events_v0_4_completion_subject.py
+    tests/coordination/test_tracking_events_v0_4_finalization.py
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-TEST-FULL-COLLECT
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest --collect-only -q -o addopts=
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-TEST-FULL-RUN
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest -q -o addopts=
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-CHECK-001
+  command: make tracking-events-check
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-CHECK-002
+  command: make check
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-CHECK-003
+  command: make check-report
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-CHECK-004
+  command: make check-report-full
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-CHECK-005
+  command: make tracking-events-preview
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-CHECK-006
+  command: make tracking-events-v0-4-evidence-check
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: FINAL-CHECK-007
+  command: git diff --check
+  result: passed
+  evidence_ids:
+  - final_validation_execution
+- check_id: POST-APPLY-001
+  command: make governance-check
+  result: passed
+  evidence_ids:
+  - post_apply_validation
+- check_id: POST-APPLY-002
+  command: make coordination-check
+  result: passed
+  evidence_ids:
+  - post_apply_validation
+- check_id: POST-APPLY-003
+  command: make module-validate
+  result: passed
+  evidence_ids:
+  - post_apply_validation
+evidence_manifest:
+- evidence_id: completion_report
+  kind: report
+  path: coordination/reports/completion/logistics_service_tracking_events_v0_1_completion_report_v0_4_reference.md
+  sha256: a40861594151a478596967c4ba51cee9edbfc75dacdd0dca298d840a3ff8a898
+- evidence_id: publication_verification
+  kind: artifact
+  path: coordination/completion_publication_verification/logistics_service_tracking_events_v0_1_completed_v0_4_reference.yaml
+  sha256: c4eb4212906fe02e9dddf05b559b3107b12b1d459d2fbab10798088783f6cf8d
+- evidence_id: source_obligation_audit
+  kind: artifact
+  path: coordination/evidence/tracking_events_v0_4/source_obligation_audit.yaml
+  sha256: 04b8cf27587c1e412dd6c33928cc4e33d52c2108df8347988273efc602c69ef4
+- evidence_id: telegram_handoff
+  kind: artifact
+  path: coordination/evidence/tracking_events_v0_4/telegram_handoff.yaml
+  sha256: a3f41bc969b35440efb664674a50ec14df779b14a3b42d57d90e9e04e54f9fee
+- evidence_id: required_test_catalog
+  kind: artifact
+  path: coordination/evidence/tracking_events_v0_4/required_test_catalog.yaml
+  sha256: 4389e7958c4d58eacd7106297b6dfb9ef50fe443bed3e9188081998fee368725
+- evidence_id: required_reading
+  kind: artifact
+  path: coordination/evidence/tracking_events_v0_4/required_reading.yaml
+  sha256: fe029842c96ce96a04f009b7a7d586af4e33aa1b601112301bba5eba4250a9f0
+- evidence_id: subject_validation_execution
+  kind: test_output
+  path: coordination/evidence/tracking_events_v0_4/validation_execution.yaml
+  sha256: 963f21c4e85979dabf31e0d3cce64f4e7ab83dc3d5a75f43113661811d60ea21
+- evidence_id: final_validation_execution
+  kind: test_output
+  path: coordination/evidence/tracking_events_v0_4/final_validation_execution.yaml
+  sha256: 057a45c890b7668f3964956ec22db42f117de3b1c2b51cdb63eb185f92272393
+- evidence_id: post_apply_validation
+  kind: governance_check
+  path: coordination/evidence/tracking_events_v0_4/post_apply_validation.yaml
+  sha256: 4741f26992520f4d8ddda1bd11dc848c04e46c2ff9f53d4c96a6c4e3c44a10ee
+- evidence_id: finalization_idempotency
+  kind: artifact
+  path: coordination/evidence/tracking_events_v0_4/completion_finalization_idempotency_postpublication.yaml
+  sha256: 25bdd931615627fc0b36b7c8fb53a0fdba2a93b337174663ac1f5398a62598b5
+- evidence_id: tracking_event_contract
+  kind: artifact
+  path: docs/architecture/tracking_event_contract.md
+  sha256: 5f778e05e24437bf6d06958d0c47e85c51c21cb10d62117754af18eb96918077
+- evidence_id: notification_handoff_boundary
+  kind: artifact
+  path: docs/architecture/boundaries/notification_handoff_boundary.md
+  sha256: 5cb1a94542a57f1de31b11a995e4cab2d88fafede48c0c7550ca260ef3eb9387
+- evidence_id: tracking_events_runbook
+  kind: artifact
+  path: docs/operations/tracking_events_runbook.md
+  sha256: 08ee2b2636e3459e94acdd5b9fcb745840fa1daf9a3c4335ec1d4d4879070073
+- evidence_id: tracking_events_recovery
+  kind: artifact
+  path: docs/operations/tracking_events_recovery.md
+  sha256: 0ff4c7c918b679a98bba8cc105015da2ac5a3084ad3cb800d94b0b03865ba09a
+- evidence_id: events_model
+  kind: artifact
+  path: app/domain/events.py
+  sha256: e385c254bb5160e613bb3ef0f32c1788bf5e927c07c10595de4bc430b3c91267
+- evidence_id: tracking_model
+  kind: artifact
+  path: app/domain/tracking.py
+  sha256: cc4618bbb62fada3b1dbc0811d608f22407aa746e2a00e61deddb20332b38f90
+- evidence_id: tracking_contract_service
+  kind: artifact
+  path: app/services/tracking_contract_service.py
+  sha256: f6d8a9d263559e26491c3ceece2337f1e7a4ac8051d82250ac36a533b291286b
+- evidence_id: tracking_fixture
+  kind: artifact
+  path: examples/fixtures/tracking_events/synthetic_tracking_events.yaml
+  sha256: 19d20c013c8a00e901bf11b24bc69dee53f04744ede1c81f71a15ce7c47938a4
+boundary_confirmations:
+  automatic_acceptance_performed: false
+  automatic_return_performed: false
+  historical_evidence_rewritten: false
+  prompt_contract_mutated: false
+  rollout_or_production_write_performed: false
+  module_write_scope_respected: true
+semantic_fidelity:
+  module_attests_requirement_results_complete: true
+  human_blueprint_review_required: true
+  execution_fingerprint_sufficient: false
+publication:
+  completion_commit_embedded: false
+  remote_containment_claimed_by_packet: false
+  external_publication_verification_required: true
+  automatic_commit: false
+  automatic_push: false
+revision:
+  supersedes_completion_id: logistics_service_tracking_events_v0_1_completed_v0_3_reference
+  supersedes_packet_path: coordination/completion_packets/records/2026-08-12__logistics_service__tracking_events_v0_1_completion_superseding_v0_3_reference.yaml
+  revision_reason: Supersede historical Tracking Events reference completion with v0.4 closed-loop evidence.
+promotion:
+  state: candidate_reference_only
+  normal_acceptance_allowed: false
+  promotion_performed: false
+integrity:
+  algorithm: sha256
+  payload_sha256: c71c451da69c56cc3d47336746ad25796a8ddbd68257166267dd3aeb25be54a5
+  payload_hash_scope: canonical JSON of entire packet excluding integrity.payload_sha256

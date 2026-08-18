@@ -1,0 +1,24 @@
+schema_version: logistics_tracking_events_v0_4_post_apply_validation_v0_1
+captured_at: '2026-08-18T16:24:47+03:00'
+result: PASSED
+checks:
+- check_id: POST-APPLY-001
+  command: make governance-check
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:42+03:00'
+  output_sha256: 52697bfe423d2fcd82ba0fd12ce214e0ecc14322306c444580a0e4ead3101673
+- check_id: POST-APPLY-002
+  command: make coordination-check
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:42+03:00'
+  output_sha256: f44ac91878ad8369f2007c29b394f371aaacfba2df3794df9054f0064cd53d06
+- check_id: POST-APPLY-003
+  command: make module-validate
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:47+03:00'
+  output_sha256: 6081147606a9f85a62951bdb2ce07ab07825bdb96ab268cd5c3a7a03c0fa7d74
+operator_decision_created: false
+global_v0_4_promotion_performed: false

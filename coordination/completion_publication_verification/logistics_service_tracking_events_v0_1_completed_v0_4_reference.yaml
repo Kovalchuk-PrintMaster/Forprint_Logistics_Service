@@ -1,0 +1,15 @@
+schema_version: module_completion_publication_verification_v0_4
+completion_id: logistics_service_tracking_events_v0_1_completed_v0_4_reference
+module_id: logistics_service
+prompt_id: logistics_service_tracking_events_v0_1
+verified_at: '2026-08-18T16:24:22+03:00'
+completion_subject_commit: cb1887a0c29784dfbf2da628065c716bf96917e9
+remote_name: origin
+branch: feature/logistics-tracking-events-contract-v01
+remote_ref: origin/feature/logistics-tracking-events-contract-v01
+remote_commit: cb1887a0c29784dfbf2da628065c716bf96917e9
+remote_head_equals_subject_commit: true
+remote_containment_verified: true
+upstream_divergence: 0 0
+automatic_commit: false
+automatic_push: false

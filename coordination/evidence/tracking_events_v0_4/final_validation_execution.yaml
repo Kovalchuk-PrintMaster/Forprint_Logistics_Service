@@ -1,0 +1,117 @@
+schema_version: logistics_tracking_events_v0_4_final_validation_execution_v0_1
+captured_at: '2026-08-18T16:24:42+03:00'
+focused_tests:
+  paths:
+  - tests/unit/domain/test_tracking_event_contract.py
+  - tests/unit/services/test_tracking_contract_service.py
+  - tests/contract/fixtures/test_tracking_events_fixture.py
+  - tests/contract/policies/test_tracking_events_make_targets.py
+  - tests/contract/policies/test_tracking_events_documentation.py
+  - tests/integration/workflows/test_tracking_events_preview.py
+  - tests/integration/workflows/test_tracking_events_check_visibility.py
+  - tests/coordination/test_v0_4_command_semantics.py
+  - tests/coordination/test_tracking_events_v0_4_evidence.py
+  - tests/coordination/test_tracking_events_v0_4_completion_subject.py
+  - tests/coordination/test_tracking_events_v0_4_finalization.py
+  collected: 53
+  passed: 53
+full_suite:
+  collected: 213
+  passed: 213
+check_report:
+  total: 11
+  passed: 11
+  warnings: 0
+  failed: 0
+check_report_full:
+  total: 11
+  passed: 11
+  warnings: 0
+  failed: 0
+test_commands:
+- check_id: FINAL-TEST-FOCUSED-COLLECT
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest --collect-only -q -o addopts= tests/unit/domain/test_tracking_event_contract.py tests/unit/services/test_tracking_contract_service.py
+    tests/contract/fixtures/test_tracking_events_fixture.py tests/contract/policies/test_tracking_events_make_targets.py
+    tests/contract/policies/test_tracking_events_documentation.py tests/integration/workflows/test_tracking_events_preview.py
+    tests/integration/workflows/test_tracking_events_check_visibility.py tests/coordination/test_v0_4_command_semantics.py
+    tests/coordination/test_tracking_events_v0_4_evidence.py tests/coordination/test_tracking_events_v0_4_completion_subject.py
+    tests/coordination/test_tracking_events_v0_4_finalization.py
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:23+03:00'
+  output_sha256: 3e8bb734ba4a44e4ac50e05547d5e3a19dc7f7ec276992065fadbe957ce46060
+- check_id: FINAL-TEST-FOCUSED-RUN
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest -q -o addopts= tests/unit/domain/test_tracking_event_contract.py tests/unit/services/test_tracking_contract_service.py
+    tests/contract/fixtures/test_tracking_events_fixture.py tests/contract/policies/test_tracking_events_make_targets.py
+    tests/contract/policies/test_tracking_events_documentation.py tests/integration/workflows/test_tracking_events_preview.py
+    tests/integration/workflows/test_tracking_events_check_visibility.py tests/coordination/test_v0_4_command_semantics.py
+    tests/coordination/test_tracking_events_v0_4_evidence.py tests/coordination/test_tracking_events_v0_4_completion_subject.py
+    tests/coordination/test_tracking_events_v0_4_finalization.py
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:24+03:00'
+  output_sha256: b725dc5f91d03aca126428292a4297a5e8405ed2c09e93fc2f792e30bced44c6
+- check_id: FINAL-TEST-FULL-COLLECT
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest --collect-only -q -o addopts=
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:24+03:00'
+  output_sha256: 50b5defa9a504279f36f75efb02b242ae622228c19ee2f1ac86a274e90bc9158
+- check_id: FINAL-TEST-FULL-RUN
+  command: /srv/software_development/forprint-project/forprint_logistics_service/.venv_logistics_service/bin/python
+    -m pytest -q -o addopts=
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:28+03:00'
+  output_sha256: b32afd7765f78e44a15a7377af069ae5e68ee50f3a081089764702ca9a28ab8c
+required_commands:
+- check_id: FINAL-CHECK-001
+  command: make tracking-events-check
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:28+03:00'
+  output_sha256: a20535229f010d95e6ac21eb6292085c64d890f62e5a701b7e62da0e933e9209
+- check_id: FINAL-CHECK-002
+  command: make check
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:32+03:00'
+  output_sha256: d244b96f6f32c1bdd14e1b02182d0bc51f102aa14264b560802a42c00575984d
+- check_id: FINAL-CHECK-003
+  command: make check-report
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:37+03:00'
+  output_sha256: dada8cf7f290c71c07b9f9fae426dd5c8ec3324c84d0db8cbdf8f9cf364d8b98
+- check_id: FINAL-CHECK-004
+  command: make check-report-full
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:41+03:00'
+  output_sha256: 7511ed6f2d7f4171c297925f83a05492d356949ec8296ea5cb7b64e33dcda029
+- check_id: FINAL-CHECK-005
+  command: make tracking-events-preview
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:41+03:00'
+  output_sha256: 8cf0f021c3be7875134c941b47db16a94e9610f19149b71a270d70d9e853dcb9
+- check_id: FINAL-CHECK-006
+  command: make tracking-events-v0-4-evidence-check
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:42+03:00'
+  output_sha256: 6fb52898ec1f0b75e99395648da719a169d33d52231e07020152c68b1da236dd
+- check_id: FINAL-CHECK-007
+  command: git diff --check
+  result: passed
+  exit_code: 0
+  executed_at: '2026-08-18T16:24:42+03:00'
+  output_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+generated_artifact_handling:
+  check_report_read_only: true
+  check_report_full_read_only: true
+  tracking_events_preview_read_only: true
+  generated_diagnostics_written: false

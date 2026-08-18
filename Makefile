@@ -117,6 +117,11 @@ help:
 	@echo "  make tracking-events-v0-4-subject-prepare"
 	@echo "  make tracking-events-v0-4-subject-check"
 	@echo "  make tracking-events-v0-4-finalization-idempotency-check"
+	@echo "  make tracking-events-v0-4-finalize-status"
+	@echo "  make tracking-events-v0-4-finalize-preflight"
+	@echo "  make tracking-events-v0-4-finalize-prepare"
+	@echo "  make tracking-events-v0-4-finalization-check"
+	@echo "  make tracking-events-v0-4-postpublication-idempotency-check"
 	@echo "  make status-report"
 	@echo "  make report-status"
 	@echo ""
@@ -655,3 +660,26 @@ tracking-events-v0-4-subject-check:
 .PHONY: tracking-events-v0-4-finalization-idempotency-check
 tracking-events-v0-4-finalization-idempotency-check:
 	$(PYTHON) scripts/coordination/tracking_events_v0_4_completion_subject.py idempotency-check
+
+
+# Tracking Events v0.4 post-publication finalization.
+# finalize-prepare is module-owned and mutation-capable; it never commits/pushes.
+.PHONY: tracking-events-v0-4-finalize-status
+tracking-events-v0-4-finalize-status:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_finalization.py status
+
+.PHONY: tracking-events-v0-4-finalize-preflight
+tracking-events-v0-4-finalize-preflight:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_finalization.py preflight
+
+.PHONY: tracking-events-v0-4-finalize-prepare
+tracking-events-v0-4-finalize-prepare:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_finalization.py prepare
+
+.PHONY: tracking-events-v0-4-finalization-check
+tracking-events-v0-4-finalization-check:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_finalization.py check
+
+.PHONY: tracking-events-v0-4-postpublication-idempotency-check
+tracking-events-v0-4-postpublication-idempotency-check:
+	$(PYTHON) scripts/coordination/tracking_events_v0_4_finalization.py idempotency-check
