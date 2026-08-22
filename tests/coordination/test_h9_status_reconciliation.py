@@ -51,8 +51,11 @@ def test_h9_current_status_preserves_live_freshness_blocker() -> None:
     assert h9["business_prompt_release"] is False
     assert h9["business_prompt_claim"] is False
     assert h9["automatic_blueprint_acceptance"] is False
-    assert h9["commit_performed"] is False
-    assert h9["push_performed"] is False
+    assert h9["implementation_commit"] == "4a3a8cf3d2809c3a7f49268fa62334ed24b5fa90"
+    assert h9["commit_performed"] is True
+    assert h9["push_performed"] is True
+    assert h9["push_status"] == "pushed"
+    assert h9["remote_containment_verified"] is True
 
 
 def test_h9_report_is_indexed_without_business_prompt_packet() -> None:
@@ -63,8 +66,12 @@ def test_h9_report_is_indexed_without_business_prompt_packet() -> None:
     assert row["type"] == "coordination_platform_rollout"
     assert row["prompt_id"] is None
     assert row["automatic_acceptance"] is False
-    assert row["commit_performed"] is False
-    assert row["push_performed"] is False
+    assert row["implementation_commit"] == "4a3a8cf3d2809c3a7f49268fa62334ed24b5fa90"
+    assert row["completion_commit"] == "4a3a8cf3d2809c3a7f49268fa62334ed24b5fa90"
+    assert row["commit_performed"] is True
+    assert row["push_performed"] is True
+    assert row["push_status"] == "pushed"
+    assert row["remote_containment_verified"] is True
 
     report = ROOT / row["report_file"]
     assert report.is_file()
