@@ -1,0 +1,98 @@
+schema_version: forprint_current_release_projection_v0_1
+metadata:
+  projection_id: forprint_coordination_current_release_v0_4_1
+  owner: forprint_system_blueprint
+  updated_at: '2026-08-21'
+  status: authoritative_current
+  authority_scope: effective_current_coordination_release
+  historical_artifact_metadata_is_not_runtime_authority: true
+release:
+  base_release: v0.4
+  base_release_state: PROMOTED_CLOSED_SEALED
+  promotion_decision:
+    path: coordination/internal_work/blueprint/governance/2026-08-19__blueprint__v0_4_global_promotion_decision_v0_1.yaml
+    sha256: 82308233625a348f8213d3976a60e6aa8a5db83cf3523cf334999e6e5e4727c5
+    operator_decision: PROMOTE_V0_4
+  hardening_release: v0.4.1
+  hardening_state: ACTIVE_CURRENT
+  current_slice: H8_current_release_and_legacy_compatibility_lane
+authority_model:
+  effective_release_authority_source: coordination/releases/current.yaml
+  artifact_publication_metadata: preserved as historical publication state and never used alone to infer
+    current runtime authority
+  indexes_express_current_effective_adoption:
+  - coordination/standards/index.yaml
+  - coordination/standards/governance/index.yaml
+  sealed_history_mutation_allowed: false
+effective_governance:
+  prompt_contract:
+    artifact: coordination/standards/governance/module_prompt_contract_v0_4.yaml
+    artifact_publication_status_preserved: candidate_reference_only
+    effective_status: active_current
+  completion_packet:
+    artifact: coordination/standards/governance/module_completion_packet_v0_4.yaml
+    artifact_publication_status_preserved: candidate_reference_only
+    effective_status: active_current
+  completion_outbox:
+    artifact: coordination/standards/governance/module_completion_outbox_v0_4.yaml
+    artifact_publication_status_preserved: candidate_reference_only
+    effective_status: active_current
+  health_policy:
+    artifact: coordination/standards/governance/coordination_health_policy_v0_1.yaml
+    artifact_publication_status_preserved: candidate_v0_4
+    effective_status: active_v0_4_1
+operational_completion_exchange:
+  registry: coordination/revisions/current.yaml
+  prompt_contract_schema: module_prompt_contract_v0_4
+  completion_packet_schema: module_completion_packet_v0_4
+  completion_outbox_schema: module_completion_outbox_event_v0_4
+  discovery_intake: scripts/coordination/completion_discovery_and_intake_v0_4.py
+  review_transaction: scripts/coordination/review_roadmap_queue_transaction_v0_4.py
+  normal_operator_acceptance_path_allowed: true
+  module_completion_is_operator_acceptance: false
+coordination_controls:
+  active_prompt_wip_limit: 1
+  operator_decision_required_for_accept_return_hold: true
+  automatic_accept: false
+  automatic_release_next_prompt: false
+  selection_order:
+  - explicit_operator_override_if_eligible
+  - dependency_and_dispatch_eligibility
+  - priority
+  - stable_id_tiebreak
+planning_health:
+  roadmap:
+    minimum_future_steps: 5
+    target_future_steps: 8
+    maximum_future_steps: null
+  prompt_buffer:
+    minimum_dispatchable_drafts: 2
+    target_dispatchable_drafts: 3
+    maximum_dispatchable_drafts: null
+legacy_compatibility:
+  policy: coordination/standards/governance/legacy_compatibility_retirement_policy_v0_1.md
+  registry: coordination/legacy/compatibility_registry_v0_1.yaml
+  default_current_gate_behavior: nonblocking_excluded_or_skipped
+  visibility: advisory_yellow
+  current_runtime_dependency_allowed: false
+module_scope:
+  pilot_module: logistics_service
+  forprint_library: observe_only_until_rollout
+  telegram_bot: observe_only_until_rollout
+  website: paused_excluded_until_explicit_operator_resume
+historical_non_authoritative_projections:
+- coordination/self_coordination/roadmap.yaml
+- coordination/self_coordination/prompt_queue/index.yaml
+planned_followups:
+- id: H9
+  title: Logistics reference rollout packaging
+- id: H10
+  title: Ecosystem rollout, balance and dependency adoption
+- id: H11
+  title: Legacy compatibility retirement/archive audit
+  entry_condition: H10 complete and all active assistants use current release tooling
+  expected_actions:
+  - audit all deprecated compatibility components
+  - preserve immutable Git tag/branch or standalone archive only where useful
+  - move or delete obsolete current-tree files after explicit retirement decision
+  - remove obsolete default-test exclusions

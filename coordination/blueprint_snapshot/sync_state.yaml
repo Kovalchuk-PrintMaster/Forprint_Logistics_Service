@@ -1,0 +1,25 @@
+schema_version: module_blueprint_snapshot_state_v0_1
+module_id: logistics_service
+blueprint:
+  branch: audit/blueprint-inventory-refresh-2026-07-29
+  head: 0947620276a6114ed87ab2bb32d3d39c3e4a3e30
+sources:
+  release_path: coordination/releases/current.yaml
+  release_sha256: 65eda6be4e4e072e12e9c3098fe701c7ece1707a4108c3ea8ffaff2a501188b8
+  prompt_queue_path: coordination/outgoing_prompts/logistics_service/index.yaml
+  prompt_queue_sha256: b2210e2b6eaed938139284f3e1ae4a9ac5866304001db976c41cd23083f838f8
+release:
+  base_release: v0.4
+  base_release_state: PROMOTED_CLOSED_SEALED
+  hardening_release: v0.4.1
+  hardening_state: ACTIVE_CURRENT
+  pilot_module: logistics_service
+  legacy_visibility: advisory_yellow
+  legacy_gate: nonblocking_excluded_or_skipped
+  legacy_runtime_dependency_allowed: false
+boundaries:
+  network_used: false
+  blueprint_repository_write_performed: false
+  module_write_scope: coordination/blueprint_snapshot
+  prompt_claim_created: false
+  operator_decision_created: false

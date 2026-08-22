@@ -75,16 +75,16 @@ prompts:
   phase: tracking_events_v0_1
   priority: critical
   source: forprint_system_blueprint
-  source_file: coordination/outgoing_prompts/logistics_service/approved/2026-07-29__logistics_service__tracking_events_v0_1.md
+  source_file: coordination/outgoing_prompts/logistics_service/completed/2026-07-29__logistics_service__tracking_events_v0_1.md
   file: coordination/prompts/received/2026-07-29__logistics_service__tracking_events_v0_1.md
   status: completed_in_module
   received_at: '2026-07-29'
   module_execution_status: completed_by_module
-  blueprint_review_status: not_started
+  blueprint_review_status: accepted_by_blueprint
   completion_report: coordination/reports/completion/logistics_service_tracking_events_v0_1_completion_report_v0_4_reference.md
   completion_commit: cb1887a0c29784dfbf2da628065c716bf96917e9
   blueprint_acceptance_commit: null
-  blueprint_accepted_at: null
+  blueprint_accepted_at: '2026-08-18'
   archived_file: coordination/prompts/archived/2026-07-29__logistics_service__tracking_events_v0_1.md
   implementation_commit: bbc298e294bd9e7e6cca976d4a8077c52c4a51ff
   completion_commit_status: recorded
@@ -93,4 +93,6 @@ prompts:
   supersedes_completion_id: logistics_service_tracking_events_v0_1_completed_v0_3_reference
   revision_reason: Tracking Events completion evidence migrated to v0.4 closed-loop reference workflow.
   completion_id: logistics_service_tracking_events_v0_1_completed_v0_4_reference
+  operator_decision: ACCEPT
+  review_evidence: coordination/review_packets/logistics_service/processed/2026-08-18__logistics_service_tracking_events_v0_1__accept_v0_4_reference.yaml
 active_prompt_id: null

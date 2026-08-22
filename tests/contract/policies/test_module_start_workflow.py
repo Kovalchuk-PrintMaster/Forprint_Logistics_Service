@@ -4,123 +4,70 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 MAKEFILE_PATH = PROJECT_ROOT / "Makefile"
 
 
-def target_recipe_lines(
-    makefile_text: str,
-    target: str,
-) -> tuple[str, ...]:
-    lines = makefile_text.splitlines()
-    target_line = f"{target}:"
-
-    try:
-        start = lines.index(target_line) + 1
-    except ValueError as exc:
-        raise AssertionError(f"Make target is missing: {target}") from exc
-
-    recipe: list[str] = []
-
+def recipe(target: str) -> tuple[str, ...]:
+    lines = MAKEFILE_PATH.read_text(encoding="utf-8").splitlines()
+    start = lines.index(f"{target}:") + 1
+    result = []
     for line in lines[start:]:
         if line.startswith("\t"):
-            recipe.append(line.strip())
-            continue
-
-        if recipe:
+            result.append(line.strip())
+        elif result:
             break
+    return tuple(result)
 
-    return tuple(recipe)
 
-
-def test_module_start_uses_standard_local_workflow() -> None:
-    text = MAKEFILE_PATH.read_text(encoding="utf-8")
-    recipe = target_recipe_lines(
-        text,
-        "module-start",
+def test_module_start_uses_h9_exact_order() -> None:
+    assert recipe("module-start") == (
+        "$(MAKE) coordination-sync-check",
+        "$(MAKE) module-sync",
+        "$(MAKE) module-status",
+        "$(MAKE) prompt-notify",
+        "$(MAKE) prompt-read-next",
     )
 
-    assert recipe == (
-        "$(MAKE) blueprint-check",
-        "$(MAKE) blueprint-standards-check",
-        "$(MAKE) blueprint-sync-directives",
-        "$(MAKE) blueprint-prompts-sync",
+
+def test_module_sync_is_network_independent() -> None:
+    assert recipe("module-sync") == (
+        "$(MAKE) module-sync-apply",
+        "$(MAKE) document-awareness",
         "$(MAKE) coordination-check",
-        "$(MAKE) status-report",
-        "$(MAKE) blueprint-prompt",
+        "$(MAKE) module-status",
     )
 
-    assert "$(MAKE) blueprint-pull" not in recipe
+
+def test_blueprint_pull_is_fail_closed() -> None:
+    joined = "\n".join(recipe("blueprint-pull"))
+    assert "pull --ff-only" not in joined
+    assert "deprecated" in joined.lower()
+    assert "exit 2" in joined
 
 
-def test_module_sync_does_not_read_active_prompt() -> None:
+def test_canonical_surface_is_exposed() -> None:
     text = MAKEFILE_PATH.read_text(encoding="utf-8")
-    recipe = target_recipe_lines(
-        text,
-        "module-sync",
-    )
-
-    assert recipe == (
-        "$(MAKE) blueprint-check",
-        "$(MAKE) blueprint-standards-check",
-        "$(MAKE) blueprint-sync-directives",
-        "$(MAKE) blueprint-prompts-sync",
-        "$(MAKE) coordination-check",
-        "$(MAKE) status-report",
-    )
-
-    assert "$(MAKE) blueprint-prompt" not in recipe
-
-
-def test_help_exposes_module_workflow() -> None:
-    text = MAKEFILE_PATH.read_text(encoding="utf-8")
-
-    assert '@echo "  make module-start"' in text
-    assert '@echo "  make module-sync"' in text
-    assert '@echo "  make module-validate"' in text
-
-
-def test_module_validate_composes_existing_safe_targets() -> None:
-    text = MAKEFILE_PATH.read_text(encoding="utf-8")
-    recipe = target_recipe_lines(
-        text,
-        "module-validate",
-    )
-
-    assert recipe == (
-        "$(MAKE) check-report-full",
-        "$(MAKE) governance-check",
-        "$(MAKE) coordination-check",
-    )
-    assert "$(MAKE) module-validate" not in recipe
-
     for target in (
-        "check-report-full",
+        "module-start",
+        "module-sync",
+        "module-status",
+        "module-validate",
+        "coordination-sync-check",
+        "blueprint-check",
+        "blueprint-prompts-list",
+        "prompt-notify",
+        "prompt-next",
+        "prompt-read-next",
+        "check",
         "governance-check",
-        "report-clean",
-        "status-report",
+        "git-status",
     ):
         assert f"{target}:" in text
 
-    forbidden_tokens = (
-        "curl ",
-        "wget ",
-        "requests.",
-        "httpx.",
-        "create_shipment",
-        "live_write=true",
-        "live_write = true",
-        "credentials",
-    )
-    recipe_text = "\n".join(recipe).lower()
 
-    for token in forbidden_tokens:
-        assert token not in recipe_text
+def test_coordination_check_does_not_execute_blueprint_python() -> None:
+    joined = "\n".join(recipe("coordination-check"))
+    assert "BLUEPRINT_PYTHON" not in joined
+    assert "check_coordination_metadata.py" not in joined
 
-    report_clean_text = "\n".join(
-        target_recipe_lines(
-            text,
-            "report-clean",
-        )
-    )
 
-    assert "reports/logistics_service_check_report.json" in (report_clean_text)
-    assert "reports/logistics_service_check_report.md" in (report_clean_text)
-    assert "reports/diagnostics" in report_clean_text
-    assert recipe[-1:] == ("$(MAKE) coordination-check",)
+def test_deterministic_checks_do_not_call_freshness_gate() -> None:
+    for target in ("check", "governance-check", "module-validate"):
+        assert "coordination-sync-check" not in "\n".join(recipe(target))

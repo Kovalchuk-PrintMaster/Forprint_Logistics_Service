@@ -276,7 +276,7 @@ def _check_env_example(root: Path) -> PolicyResult:
 def _check_flat_directory_policy(root: Path) -> PolicyResult:
     allowed_root_files = {
         "tests": {"__init__.py"},
-        "scripts": {"__init__.py"},
+        "scripts": {"__init__.py", "coordination_sync_check.py"},
         "docs": set(),
         "examples": set(),
     }

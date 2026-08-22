@@ -11,7 +11,6 @@ PYTHON ?= .venv_logistics_service/bin/python
 export PYTHONDONTWRITEBYTECODE := 1
 
 BLUEPRINT_ROOT ?= /srv/software_development/forprint-project/forprint_system_blueprint
-BLUEPRINT_PYTHON ?= $(BLUEPRINT_ROOT)/.venv_blueprint/bin/python
 
 MODULE_GUIDE := $(BLUEPRINT_ROOT)/module_guides/$(MODULE_ID).md
 MANIFEST_SCHEMA := $(BLUEPRINT_ROOT)/machine/module_manifest_schema.yaml
@@ -24,12 +23,12 @@ LOCAL_ARCHIVED_PROMPT_DIR := coordination/prompts/archived
 LOCAL_PROMPT_INDEX := coordination/prompts/index.yaml
 BLUEPRINT_PROMPT_INDEX := $(BLUEPRINT_ROOT)/coordination/outgoing_prompts/$(MODULE_ID)/index.yaml
 PROMPT_STATE_SYNC := scripts/coordination/sync_prompt_state.py
+MODULE_COORDINATION_SYNC_CHECK_SCRIPT := scripts/coordination_sync_check.py
+H9_RUNTIME := scripts/coordination/h9_runtime.py
 
 MODULE_POLICY := $(BLUEPRINT_ROOT)/coordination/module_policy/$(MODULE_ID)/module_policy.md
 MODULE_DIRECTIVE_INDEX := $(BLUEPRINT_ROOT)/coordination/directives/modules/$(MODULE_ID)/index.yaml
 
-COORDINATION_CHECKER := $(BLUEPRINT_ROOT)/scripts/check_coordination_metadata.py
-COORDINATION_FIXER := $(BLUEPRINT_ROOT)/scripts/fix_coordination_metadata.py
 
 PACKET ?=
 
@@ -70,6 +69,7 @@ help:
 	@echo "Operator workflow:"
 	@echo "  make module-start"
 	@echo "  make module-sync"
+	@echo "  make module-status"
 	@echo "  make module-validate"
 	@echo ""
 	@echo "Bootstrap and development:"
@@ -80,9 +80,12 @@ help:
 	@echo "  make secrets-check"
 	@echo ""
 	@echo "Blueprint and coordination:"
-	@echo "  make blueprint-pull"
+	@echo "  make coordination-sync-check"
 	@echo "  make blueprint-check"
 	@echo "  make blueprint-prompts-list"
+	@echo "  make prompt-notify"
+	@echo "  make prompt-next"
+	@echo "  make prompt-read-next"
 	@echo "  make blueprint-prompts-sync"
 	@echo "  make blueprint-prompt"
 	@echo "  make blueprint-prompt-status"
@@ -92,6 +95,7 @@ help:
 	@echo "  make coordination-check"
 	@echo "  make coordination-fix"
 	@echo "  make governance-check"
+	@echo "  make git-status"
 	@echo ""
 	@echo "Validation:"
 	@echo "  make cache-clean"
@@ -150,13 +154,11 @@ help:
 # is displayed. The Blueprint repository remains read-only.
 .PHONY: module-start
 module-start:
-	$(MAKE) blueprint-check
-	$(MAKE) blueprint-standards-check
-	$(MAKE) blueprint-sync-directives
-	$(MAKE) blueprint-prompts-sync
-	$(MAKE) coordination-check
-	$(MAKE) status-report
-	$(MAKE) blueprint-prompt
+	$(MAKE) coordination-sync-check
+	$(MAKE) module-sync
+	$(MAKE) module-status
+	$(MAKE) prompt-notify
+	$(MAKE) prompt-read-next
 
 # Purpose: synchronize module-visible Blueprint state without reading the
 # active prompt as an execution instruction.
@@ -164,12 +166,22 @@ module-start:
 # synchronized into module-owned coordination records.
 .PHONY: module-sync
 module-sync:
-	$(MAKE) blueprint-check
-	$(MAKE) blueprint-standards-check
-	$(MAKE) blueprint-sync-directives
-	$(MAKE) blueprint-prompts-sync
+	$(MAKE) module-sync-apply
+	$(MAKE) document-awareness
 	$(MAKE) coordination-check
-	$(MAKE) status-report
+	$(MAKE) module-status
+
+.PHONY: module-sync-apply
+module-sync-apply:
+	$(PYTHON) $(H9_RUNTIME) sync --module-root . --blueprint-root "$(BLUEPRINT_ROOT)" --module "$(MODULE_ID)"
+
+.PHONY: document-awareness
+document-awareness:
+	$(PYTHON) $(H9_RUNTIME) awareness --module-root . --module "$(MODULE_ID)"
+
+.PHONY: module-status
+module-status:
+	$(PYTHON) $(H9_RUNTIME) status --module-root . --module "$(MODULE_ID)"
 
 # Purpose: run the canonical read-only module-level validation flow.
 # Result: full checks, governance and coordination validation pass without
@@ -191,7 +203,11 @@ module-validate:
 
 .PHONY: blueprint-pull
 blueprint-pull:
-	git -C "$(BLUEPRINT_ROOT)" pull --ff-only
+	@echo "$(COLOR_RED)FAILED: blueprint-pull is deprecated and forbidden; use coordination-sync-check and update Blueprint only from the Blueprint repository.$(COLOR_RESET)"; exit 2
+
+.PHONY: coordination-sync-check
+coordination-sync-check:
+	$(PYTHON) $(MODULE_COORDINATION_SYNC_CHECK_SCRIPT) --blueprint-root "$(BLUEPRINT_ROOT)" --module "$(MODULE_ID)"
 
 .PHONY: blueprint-check
 blueprint-check:
@@ -214,6 +230,18 @@ blueprint-sync-directives:
 blueprint-prompts-list:
 	@test -d "$(ACTIVE_PROMPT_DIR)"
 	@find "$(ACTIVE_PROMPT_DIR)" -maxdepth 1 -type f -name '*.md' | sort
+
+.PHONY: prompt-notify
+prompt-notify:
+	$(PYTHON) $(MODULE_COORDINATION_SYNC_CHECK_SCRIPT) --blueprint-root "$(BLUEPRINT_ROOT)" --module "$(MODULE_ID)" --local-only
+
+.PHONY: prompt-next
+prompt-next:
+	$(PYTHON) $(H9_RUNTIME) prompt-next --module-root . --module "$(MODULE_ID)"
+
+.PHONY: prompt-read-next
+prompt-read-next:
+	$(PYTHON) $(H9_RUNTIME) prompt-read-next --module-root . --module "$(MODULE_ID)"
 
 .PHONY: blueprint-prompts-check
 blueprint-prompts-check:
@@ -297,25 +325,11 @@ module-policy-check:
 
 .PHONY: coordination-check
 coordination-check:
-	@test -f forprint_module_manifest.yaml
-	@test -f coordination/status/current_status.yaml
-	@test -f coordination/status/current_status.md
-	@test -f coordination/status/next_questions_for_blueprint.md
-	@test -f coordination/prompts/index.yaml
-	@test -f coordination/reports/index.yaml
-	@if [ -x "$(BLUEPRINT_PYTHON)" ] && [ -f "$(COORDINATION_CHECKER)" ]; then \
-		"$(BLUEPRINT_PYTHON)" "$(COORDINATION_CHECKER)" --module-root "$(CURDIR)"; \
-	else \
-		"$(PYTHON)" -c "from pathlib import Path; import yaml; files = [Path('forprint_module_manifest.yaml'), Path('coordination/status/current_status.yaml'), Path('coordination/prompts/index.yaml'), Path('coordination/reports/index.yaml')]; [yaml.safe_load(path.read_text(encoding='utf-8')) for path in files]; print('Local YAML coordination fallback: OK')"; \
-	fi
+	$(PYTHON) $(H9_RUNTIME) coordination-validate --module-root . --module "$(MODULE_ID)"
 
 .PHONY: coordination-fix
 coordination-fix:
-	@if [ -x "$(BLUEPRINT_PYTHON)" ] && [ -f "$(COORDINATION_FIXER)" ]; then \
-		"$(BLUEPRINT_PYTHON)" "$(COORDINATION_FIXER)" --module-root "$(CURDIR)"; \
-	else \
-		echo "$(COLOR_YELLOW)DEFERRED: central coordination fixer is unavailable.$(COLOR_RESET)"; \
-	fi
+	@echo "$(COLOR_YELLOW)DEFERRED: H9 current runtime has no automatic coordination fixer; repair module-owned records explicitly.$(COLOR_RESET)"
 
 .PHONY: coordination-records-check
 coordination-records-check:
