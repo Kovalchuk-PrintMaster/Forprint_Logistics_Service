@@ -1,0 +1,44 @@
+schema_version: logistics_fresh_context_manifest_v0_1
+module_id: logistics_service
+authority: DERIVED_FRESHNESS_EVIDENCE_NOT_PROMPT_AUTHORITY
+repository:
+  branch: feature/logistics-tracking-events-contract-v01
+  head: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+prompt:
+  state: READY_PROMPT
+  prompt_id: logistics_service_authority_lineage_and_module_bootstrap_v0_1
+  sequence: 6
+  file: approved/2026-09-05__logistics_service_authority_lineage_and_module_bootstrap_v0_1.md
+worker_dispatch_state: PAUSED_BY_OPERATOR
+unclassified_dirty_paths: []
+sources:
+- path: AGENTS.md
+  sha256: c1d936ea9b9abbf06aa9d477232c3314afb59b37cbf4b2d009017582710b8fa0
+- path: Makefile
+  sha256: 51c945067dafa615dd2131ee1334d5ac871b3073963275b1cc95922c87f5e39d
+- path: coordination/README.md
+  sha256: 8a47e0c08095a1f59ed9fc19dae2fac9c1f18d3efb42865276a6a0dd982f4d2e
+- path: coordination/blueprint_snapshot/current_release.yaml
+  sha256: 709a446c37f3de95430ac9af58a8df02873aa033cc7e64ae3a7c924b95c8359e
+- path: coordination/blueprint_snapshot/prompt_queue.yaml
+  sha256: 1b4d604c54ec6a70bff9d64897ba632d2253296c0147fd245a45a2dcdd654593
+- path: coordination/blueprint_snapshot/prompts/approved/2026-09-05__logistics_service_authority_lineage_and_module_bootstrap_v0_1.md
+  sha256: 66eee8a6b09e02105689837c2320165ef698e74a12bc68f4afcf058bba604bc4
+- path: coordination/module_memory/document_authority.yaml
+  sha256: 63555c42df4d532efa1453cbf9edb4caba57f5b108fbcaa8e853ef9bfe3065d3
+- path: coordination/module_memory/implementation_lineage.yaml
+  sha256: 92247af2776bf411eb6aba278fb1650100e350356b83bde8f40ce06f4fc3915d
+- path: coordination/module_memory/inventory_index.yaml
+  sha256: 2e3719e7be392f10ab59c05a469317bd5ec24e6cc5da2313e3dc4eb0c8247d3e
+- path: coordination/module_memory/module_memory.yaml
+  sha256: 606f0938d83d1e4ba15ea82a346a6e72fbfd524eb45cd3641bb975d010616663
+- path: coordination/module_memory/roadmap_state.yaml
+  sha256: 85e220fe2a83efb6ae711669e63f3ed7825fef6474620f2a4cb23dd192826b11
+- path: scripts/knowledge/build_module_memory_index.py
+  sha256: 4f48208e2004f1cb315c49dfa078a148a20570904ae18f45af27dd6417030b65
+- path: scripts/validation/validate_document_authority.py
+  sha256: eb90028ca32668565b647e3c0dd1a93d6d69c7120029e9be1a88e3939e5ac619
+- path: scripts/validation/validate_fresh_context.py
+  sha256: de82c225305c256cf2a12e3eed3417a5b14f70f9421803e574b82ae585cb4cbe
+- path: scripts/validation/validate_module_memory.py
+  sha256: 8a1c605647785a3775d5ca7e4d3368982e7b933f7b502a35a9f7da226019af63

@@ -1,0 +1,150 @@
+schema_version: logistics_module_memory_inventory_index_v0_1
+module_id: logistics_service
+authority: DERIVED_NAVIGATION_NOT_INDEPENDENT_AUTHORITY
+source: coordination/module_memory/module_memory.yaml
+implementation_count: 7
+capability_count: 5
+capabilities:
+- capability_id: logistics.coordination
+  implementation_ids:
+  - logistics.coordination.h9_module_runtime_v0_1
+- capability_id: logistics.local_model
+  implementation_ids:
+  - logistics.local_model.address_snapshot_and_preview_v0_1
+- capability_id: logistics.notification
+  implementation_ids:
+  - logistics.notification.current_projection_v0_1
+  - logistics.notification.supported_legacy_event_service_v0_1
+- capability_id: logistics.provider_boundary
+  implementation_ids:
+  - logistics.provider_boundary.provider_neutral_adapter_v0_1
+- capability_id: logistics.tracking
+  implementation_ids:
+  - logistics.tracking.current_contract_v0_1
+  - logistics.tracking.supported_legacy_v0_1
+implementations:
+- implementation_id: logistics.coordination.h9_module_runtime_v0_1
+  capability_id: logistics.coordination
+  implementation_kind: coordination_runtime
+  source_paths:
+  - scripts/coordination/h9_runtime.py
+  - scripts/coordination_sync_check.py
+  lifecycle_state: CURRENT
+  documentation_refs:
+  - coordination/README.md
+  test_refs:
+  - tests/coordination/test_h9_reference_rollout.py
+  - tests/coordination/test_h9_status_reconciliation.py
+  contract_refs: []
+  dependencies:
+  - forprint_system_blueprint coordination authority
+  consumers:
+  - logistics module operator workflow
+- implementation_id: logistics.local_model.address_snapshot_and_preview_v0_1
+  capability_id: logistics.local_model
+  implementation_kind: noncanonical_local_model
+  source_paths:
+  - app/domain/address_book.py
+  - app/domain/recipients.py
+  - app/domain/shipments.py
+  - app/services/address_book_service.py
+  - app/services/shipment_draft_service.py
+  lifecycle_state: CURRENT
+  documentation_refs:
+  - docs/architecture/boundaries/local_logistics_model_boundary.md
+  test_refs:
+  - tests/unit/domain/test_local_model_safety.py
+  - tests/unit/services/test_local_model_services.py
+  contract_refs:
+  - docs/architecture/boundaries/local_logistics_model_boundary.md
+  dependencies: []
+  consumers:
+  - shipment preview flows
+- implementation_id: logistics.notification.current_projection_v0_1
+  capability_id: logistics.notification
+  implementation_kind: domain_projection
+  source_paths:
+  - app/domain/events.py
+  lifecycle_state: CURRENT
+  documentation_refs:
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  test_refs:
+  - tests/unit/domain/test_tracking_event_contract.py
+  contract_refs:
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  dependencies:
+  - logistics.tracking
+  consumers:
+  - notification/telegram boundary
+- implementation_id: logistics.notification.supported_legacy_event_service_v0_1
+  capability_id: logistics.notification
+  implementation_kind: legacy_compatibility_service
+  source_paths:
+  - app/domain/events.py
+  - app/services/notification_event_service.py
+  lifecycle_state: SUPPORTED_LEGACY
+  documentation_refs:
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  test_refs:
+  - tests/unit/domain/test_tracking_event_contract.py
+  contract_refs:
+  - docs/architecture/boundaries/notification_handoff_boundary.md
+  dependencies:
+  - logistics.tracking
+  consumers:
+  - unknown legacy consumers require review before retirement
+- implementation_id: logistics.provider_boundary.provider_neutral_adapter_v0_1
+  capability_id: logistics.provider_boundary
+  implementation_kind: provider_adapter_contract
+  source_paths:
+  - app/adapters/providers/base.py
+  - app/domain/provider_contracts.py
+  lifecycle_state: CURRENT
+  documentation_refs:
+  - docs/architecture/boundaries/local_logistics_model_boundary.md
+  test_refs:
+  - tests/unit/domain/test_provider_contracts.py
+  contract_refs:
+  - docs/architecture/boundaries/local_logistics_model_boundary.md
+  dependencies: []
+  consumers:
+  - logistics.tracking
+  - shipment preview flows
+- implementation_id: logistics.tracking.current_contract_v0_1
+  capability_id: logistics.tracking
+  implementation_kind: domain_and_service_contract
+  source_paths:
+  - app/domain/events.py
+  - app/domain/tracking.py
+  - app/services/tracking_contract_service.py
+  - app/services/tracking_event_service.py
+  lifecycle_state: CURRENT
+  documentation_refs:
+  - docs/architecture/tracking_event_contract.md
+  test_refs:
+  - tests/coordination/test_tracking_events_v0_4_evidence.py
+  - tests/unit/domain/test_tracking_event_contract.py
+  contract_refs:
+  - docs/architecture/tracking_event_contract.md
+  dependencies:
+  - logistics.provider_boundary
+  consumers:
+  - logistics.notification
+- implementation_id: logistics.tracking.supported_legacy_v0_1
+  capability_id: logistics.tracking
+  implementation_kind: legacy_compatibility_path
+  source_paths:
+  - app/domain/tracking.py
+  - app/services/tracking_event_service.py
+  - app/storage/in_memory.py
+  - app/storage/repositories.py
+  lifecycle_state: SUPPORTED_LEGACY
+  documentation_refs:
+  - docs/architecture/tracking_event_contract.md
+  test_refs:
+  - tests/unit/domain/test_tracking_event_contract.py
+  contract_refs:
+  - docs/architecture/tracking_event_contract.md
+  dependencies: []
+  consumers:
+  - unknown legacy consumers require review before retirement

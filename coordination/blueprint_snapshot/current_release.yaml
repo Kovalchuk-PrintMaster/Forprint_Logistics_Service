@@ -2,7 +2,7 @@ schema_version: forprint_current_release_projection_v0_1
 metadata:
   projection_id: forprint_coordination_current_release_v0_4_1
   owner: forprint_system_blueprint
-  updated_at: '2026-08-21'
+  updated_at: '2026-08-25'
   status: authoritative_current
   authority_scope: effective_current_coordination_release
   historical_artifact_metadata_is_not_runtime_authority: true
@@ -15,7 +15,7 @@ release:
     operator_decision: PROMOTE_V0_4
   hardening_release: v0.4.1
   hardening_state: ACTIVE_CURRENT
-  current_slice: H8_current_release_and_legacy_compatibility_lane
+  current_slice: blueprint_v0_4_1_ecosystem_rollout_balance_and_dependency_adoption_v0_1
 authority_model:
   effective_release_authority_source: coordination/releases/current.yaml
   artifact_publication_metadata: preserved as historical publication state and never used alone to infer
@@ -80,14 +80,19 @@ module_scope:
   forprint_library: observe_only_until_rollout
   telegram_bot: observe_only_until_rollout
   website: paused_excluded_until_explicit_operator_resume
+automation_validation_pilot:
+  authority_decision: coordination/internal_work/blueprint/governance/2026-08-25__blueprint__logistics_only_automation_pilot_scope_decision_v0_1.yaml
+  mode: logistics_only_until_stability_proven
+  sole_pilot_module: logistics_service
+  all_other_modules_connected: false
+  minimum_successful_automatic_prompt_runs_before_expansion_review: 2
+  positive_stability_result_required: true
+  expansion_requires_separate_reviewed_decision: true
+  non_logistics_default: not_connected_until_logistics_stability_gate
 historical_non_authoritative_projections:
 - coordination/self_coordination/roadmap.yaml
 - coordination/self_coordination/prompt_queue/index.yaml
 planned_followups:
-- id: H9
-  title: Logistics reference rollout packaging
-- id: H10
-  title: Ecosystem rollout, balance and dependency adoption
 - id: H11
   title: Legacy compatibility retirement/archive audit
   entry_condition: H10 complete and all active assistants use current release tooling
@@ -96,3 +101,15 @@ planned_followups:
   - preserve immutable Git tag/branch or standalone archive only where useful
   - move or delete obsolete current-tree files after explicit retirement decision
   - remove obsolete default-test exclusions
+
+# phase-boundary-progression-gate-policy-v0-1
+progression_gate_policy:
+  standard_id: phase_boundary_progression_gate_policy_v0_1
+  current_phase: H10
+  manual_progress_confirmation_scope: phase_boundary_only
+  intra_phase_deterministic_progression_authorized: true
+  intra_phase_operator_accept_confirmation_required: false
+  intra_phase_operator_activation_confirmation_required: false
+  current_execution_mode: explicit_user_run
+  background_push_enabled: false
+  manual_exception_authority_preserved: true

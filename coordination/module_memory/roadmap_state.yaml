@@ -1,0 +1,57 @@
+schema_version: logistics_module_roadmap_state_v0_1
+module_id: logistics_service
+status: NAVIGATION_PROJECTION_NOT_RELEASE_AUTHORITY
+source_evidence:
+  path: blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__first_wave_roadmap_reconciliation_input_v0_1.yaml
+  sha256: 1e49628ed8d0a216a63c3ece0ff760bf0022ad611519f4ad21122f3100197927
+  source_status: PROPOSED_RECONCILIATION_INPUT_NOT_CANONICAL_ROADMAP
+current:
+  phase: H10
+  reference_pilot: true
+  worker_dispatch: PAUSED_BY_OPERATOR
+  self_knowledge_reference: IMPLEMENTING_U138
+sequence:
+- order: 1
+  capability: authority_lineage_and_fresh_context_bootstrap
+  purpose: AGENTS/index/lineage/document authority before new business implementation
+- order: 2
+  capability: replaceable_local_survival_store
+  purpose: SQLite behind repository boundary; non-canonical cache/outbox/last-known state
+- order: 3
+  capability: pilot_recipient_directory
+  purpose: approximately 10 local non-canonical recipients pending CRM authority
+- order: 4
+  capability: parcel_provider_read_only_wave
+  scope:
+  - nova_poshta
+  - ukrposhta
+  - meest_express
+- order: 5
+  capability: taxi_assisted_dispatch_wave
+  scope:
+  - uklon
+  - bolt
+  - uber
+- order: 6
+  capability: telegram_channel_contract
+  purpose: Telegram owns channel UX; Logistics owns logistics semantics
+- order: 7
+  capability: degraded_survival_modes
+  modes:
+  - FULL
+  - DEGRADED_READ
+  - DEGRADED_QUEUE
+  - OFFLINE_SAFE
+  - MANUAL_REVIEW_REQUIRED
+- order: 8
+  capability: first_wave_end_to_end_pilot
+  purpose: operator-visible real workflow testing before live-write promotion
+- order: 9
+  capability: current_event_persistence_and_gateway_handoff
+- order: 10
+  capability: live_provider_write_gate
+  purpose: separate high-impact approval only after read-only pilot evidence
+rules:
+  blueprint_release_authority_remains_external: true
+  local_roadmap_may_release_prompts: false
+  business_work_before_self_knowledge_and_activation_runtime: false

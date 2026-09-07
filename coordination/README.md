@@ -44,3 +44,20 @@ manually.
 ## Current completion reporting
 
 The active completion path is documented in `docs/development/coordination/completion_reporting_protocol.md`. New and superseding packets use `module_completion_packet_v0_2` with `blueprint_completion_intake_v0_2`, positive `no_*: true` safety confirmations and full 40-character implementation commits. Historical packets remain immutable. `READY_FOR_OPERATOR_REVIEW` is not `ACCEPTED`.
+
+<!-- FORPRINT_LOGISTICS_MODULE_MEMORY_REFERENCE_V0_1 -->
+## Module self-knowledge reference
+
+The Logistics reference pilot keeps curated module memory under
+`coordination/module_memory/` and exposes deterministic maintenance/validation through:
+
+- `make module-memory-build`
+- `make module-memory-check`
+- `make document-authority-check`
+- `make fresh-context-check`
+- `make self-knowledge-status`
+
+`module-start` may refresh `coordination/blueprint_snapshot/`, but it does not rewrite
+curated Module Memory. The central Blueprint Control Plane owns future worker launch,
+approval and dispatch. A ready prompt is not automatic execution authority.
+

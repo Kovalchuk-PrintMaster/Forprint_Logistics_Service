@@ -1,0 +1,35 @@
+schema_version: logistics_module_memory_current_state_v0_1
+module_id: logistics_service
+authority: DERIVED_CURRENT_STATE_PROJECTION
+git:
+  branch: feature/logistics-tracking-events-contract-v01
+  head: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+release:
+  hardening_release: v0.4.1
+  hardening_state: ACTIVE_CURRENT
+  current_phase: H10
+  pilot_module: logistics_service
+prompt:
+  state: READY_PROMPT
+  prompt_id: logistics_service_authority_lineage_and_module_bootstrap_v0_1
+  sequence: 6
+  file: approved/2026-09-05__logistics_service_authority_lineage_and_module_bootstrap_v0_1.md
+worker:
+  dispatch_state: PAUSED_BY_OPERATOR
+  prompt_claim_created: false
+working_tree:
+  blueprint_snapshot_dirty_paths:
+  - status: ' M'
+    path: coordination/blueprint_snapshot/current_release.yaml
+    classification: blueprint_snapshot
+  - status: ' M'
+    path: coordination/blueprint_snapshot/prompt_queue.yaml
+    classification: blueprint_snapshot
+  - status: ??
+    path: coordination/blueprint_snapshot/prompts/approved/2026-09-05__logistics_service_authority_lineage_and_module_bootstrap_v0_1.md
+    classification: blueprint_snapshot
+  - status: ' M'
+    path: coordination/blueprint_snapshot/sync_state.yaml
+    classification: blueprint_snapshot
+  unclassified_dirty_paths: []
+  self_knowledge_changes_are_omitted_from_stability_signal: true

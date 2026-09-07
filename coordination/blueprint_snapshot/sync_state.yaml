@@ -2,12 +2,12 @@ schema_version: module_blueprint_snapshot_state_v0_1
 module_id: logistics_service
 blueprint:
   branch: audit/blueprint-inventory-refresh-2026-07-29
-  head: 0947620276a6114ed87ab2bb32d3d39c3e4a3e30
+  head: 4739fdcd8b213814f8440dd6a6681f596d8da456
 sources:
   release_path: coordination/releases/current.yaml
-  release_sha256: 65eda6be4e4e072e12e9c3098fe701c7ece1707a4108c3ea8ffaff2a501188b8
+  release_sha256: 709a446c37f3de95430ac9af58a8df02873aa033cc7e64ae3a7c924b95c8359e
   prompt_queue_path: coordination/outgoing_prompts/logistics_service/index.yaml
-  prompt_queue_sha256: b2210e2b6eaed938139284f3e1ae4a9ac5866304001db976c41cd23083f838f8
+  prompt_queue_sha256: 1b4d604c54ec6a70bff9d64897ba632d2253296c0147fd245a45a2dcdd654593
 release:
   base_release: v0.4
   base_release_state: PROMOTED_CLOSED_SEALED

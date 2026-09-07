@@ -1,0 +1,56 @@
+schema_version: logistics_document_authority_v0_1
+module_id: logistics_service
+status: REFERENCE_BASELINE
+rules:
+  historical_evidence_is_current_execution_authority: false
+  blueprint_snapshot_is_module_owned_copy_not_blueprint_source: true
+  conflicts_require_explicit_reconciliation: true
+documents:
+- path: forprint_module_manifest.yaml
+  classification: CURRENT_AUTHORITY
+  role: module identity and manifest contract
+  execution_authority: false
+- path: config/module.yaml
+  classification: CURRENT_AUTHORITY
+  role: module-local configuration defaults
+  execution_authority: false
+- path: docs/architecture/tracking_event_contract.md
+  classification: CURRENT_AUTHORITY
+  role: current Tracking Events semantic contract
+  execution_authority: false
+- path: docs/architecture/boundaries/local_logistics_model_boundary.md
+  classification: CURRENT_AUTHORITY
+  role: local non-canonical model boundary
+  execution_authority: false
+- path: docs/architecture/boundaries/notification_handoff_boundary.md
+  classification: CURRENT_AUTHORITY
+  role: Logistics to notification/channel boundary
+  execution_authority: false
+- path: docs/operations/tracking_events_recovery.md
+  classification: CURRENT_SUPPORTING
+  role: tracking recovery operating guidance
+  execution_authority: false
+- path: coordination/README.md
+  classification: CURRENT_SUPPORTING
+  role: module coordination workflow navigation
+  execution_authority: false
+- path: README.md
+  classification: CURRENT_SUPPORTING
+  role: module overview and developer entrypoint
+  execution_authority: false
+- path: coordination/blueprint_snapshot/current_release.yaml
+  classification: GENERATED_RUNTIME_SNAPSHOT
+  role: module-local copy of Blueprint current release authority
+  execution_authority: true
+- path: coordination/blueprint_snapshot/prompt_queue.yaml
+  classification: GENERATED_RUNTIME_SNAPSHOT
+  role: module-local copy of Blueprint prompt queue authority
+  execution_authority: true
+- path: coordination/reports/completion/2026-07-29__logistics_service__tracking_events_v0_1_completion.md
+  classification: HISTORICAL_EVIDENCE
+  role: historical completion evidence
+  execution_authority: false
+- path: coordination/reports/completion/logistics_service_boundary_and_local_model_v0_1_completion.md
+  classification: HISTORICAL_EVIDENCE
+  role: historical completion evidence
+  execution_authority: false

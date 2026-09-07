@@ -1,0 +1,633 @@
+schema_version: logistics_module_memory_v0_1
+module_id: logistics_service
+status: REFERENCE_BASELINE
+authority: MODULE_OWNED_CURATED_SELF_KNOWLEDGE
+seed:
+  external_inventory:
+    path: blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    sha256: 60568bf819e0ec93bf02867f141239031b10fa37cc6fbbb804ec00ea8d8fde72
+  implementation_lineage:
+    path: blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+    sha256: 1d0395bce46c5d370ad30896ebd2585a75b1772f18e9d76143cb66db26dc793f
+  module_memory_contract:
+    path: blueprint://coordination/internal_work/blueprint/module_inventory/2026-09-06__module_memory_schema_v0_1.yaml
+    sha256: 987c0c0f627286edbd4e32bd88b0a17a679e7eeb37fb9f8d93476b7213992304
+rules:
+  significant_surfaces_only: true
+  indexes_are_authority: false
+  unknown_legacy_history_may_be_invented: false
+  automatic_compatibility_retirement_allowed: false
+  worker_dispatch_state: PAUSED_BY_OPERATOR
+records:
+- identity:
+    module_id: logistics_service
+    capability_id: logistics.tracking
+    implementation_id: logistics.tracking.current_contract_v0_1
+    implementation_kind: domain_and_service_contract
+    significant_surface: true
+    source_paths:
+    - app/domain/tracking.py
+    - app/domain/events.py
+    - app/services/tracking_contract_service.py
+    - app/services/tracking_event_service.py
+  purpose_and_provenance:
+    purpose: Current provider-neutral Tracking Events contract and normalized event handling.
+    origin_problem: Provide stable tracking semantics while keeping provider details replaceable.
+    introduced_at: UNKNOWN_LEGACY
+    introduced_by_prompt: null
+    introduced_by_decision: null
+    provenance_confidence: medium
+  classification:
+    interaction_scope: S2
+    criticality: C3
+    standardization_maturity: OBSERVED
+  semantic_binding:
+    semantic_id: logistics.tracking
+    binding_state: OBSERVED_LOCAL_REFERENCE
+    recommended_name: logistics.tracking
+    aliases: []
+    migration_mode: KEEP
+    registration_ticket_ref: null
+    enrichment_ticket_ref: null
+  lifecycle:
+    lifecycle_state: CURRENT
+    current_role: current tracking contract
+    compatibility_role: preferred current implementation family
+    review_gate: HUMAN_REVIEW_BEFORE_RETIREMENT_OR_BREAKING_CHANGE
+  lineage:
+    supersedes: []
+    superseded_by: []
+    predecessors: []
+    successors: []
+    evolution_reason: seeded from verified external inventory and implementation-lineage evidence
+    coexistence_role: current
+  interfaces:
+    inputs: []
+    outputs: []
+    contracts: &id001
+    - docs/architecture/tracking_event_contract.md
+    events: []
+    side_effects: []
+    external_boundaries: []
+  relationships:
+    dependencies:
+    - logistics.provider_boundary
+    consumers:
+    - logistics.notification
+    providers: []
+    related_implementations: []
+    business_flows: []
+  evidence:
+    documentation_refs:
+    - docs/architecture/tracking_event_contract.md
+    test_refs:
+    - tests/unit/domain/test_tracking_event_contract.py
+    - tests/coordination/test_tracking_events_v0_4_evidence.py
+    contract_refs: *id001
+    runtime_evidence_refs: []
+    inventory_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    lineage_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  roadmap:
+    current_roadmap_role: REFERENCE_BASELINE
+    target_state: script-maintained self-knowledge with fresh-context validation
+    final_objective: safe approval-gated AI development runtime
+    known_gaps: []
+  retirement:
+    retirement_candidate: false
+    retirement_conditions: []
+    known_impact: []
+    approval_required: true
+  freshness:
+    last_verified_at: '2026-09-06'
+    last_verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+    freshness_state: FRESH
+    affected_by: []
+  unknowns:
+    items:
+    - exact original introduction prompt/date may require historical archaeology
+    review_required: true
+- identity:
+    module_id: logistics_service
+    capability_id: logistics.tracking
+    implementation_id: logistics.tracking.supported_legacy_v0_1
+    implementation_kind: legacy_compatibility_path
+    significant_surface: true
+    source_paths:
+    - app/domain/tracking.py
+    - app/services/tracking_event_service.py
+    - app/storage/repositories.py
+    - app/storage/in_memory.py
+  purpose_and_provenance:
+    purpose: Preserve tested legacy tracking request/event compatibility while current contract evolves.
+    origin_problem: Avoid breaking historical consumers during migration to current Tracking Events semantics.
+    introduced_at: UNKNOWN_LEGACY
+    introduced_by_prompt: null
+    introduced_by_decision: null
+    provenance_confidence: medium
+  classification:
+    interaction_scope: S2
+    criticality: C2
+    standardization_maturity: OBSERVED
+  semantic_binding:
+    semantic_id: logistics.tracking
+    binding_state: OBSERVED_LOCAL_REFERENCE
+    recommended_name: logistics.tracking
+    aliases: []
+    migration_mode: KEEP
+    registration_ticket_ref: null
+    enrichment_ticket_ref: null
+  lifecycle:
+    lifecycle_state: SUPPORTED_LEGACY
+    current_role: compatibility-only tracking path
+    compatibility_role: supported legacy; do not delete automatically
+    review_gate: HUMAN_REVIEW_BEFORE_RETIREMENT_OR_BREAKING_CHANGE
+  lineage:
+    supersedes: []
+    superseded_by: []
+    predecessors: []
+    successors:
+    - logistics.tracking.current_contract_v0_1
+    evolution_reason: seeded from verified external inventory and implementation-lineage evidence
+    coexistence_role: supported_legacy
+  interfaces:
+    inputs: []
+    outputs: []
+    contracts: &id002
+    - docs/architecture/tracking_event_contract.md
+    events: []
+    side_effects: []
+    external_boundaries: []
+  relationships:
+    dependencies: []
+    consumers:
+    - unknown legacy consumers require review before retirement
+    providers: []
+    related_implementations: []
+    business_flows: []
+  evidence:
+    documentation_refs:
+    - docs/architecture/tracking_event_contract.md
+    test_refs:
+    - tests/unit/domain/test_tracking_event_contract.py
+    contract_refs: *id002
+    runtime_evidence_refs: []
+    inventory_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    lineage_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  roadmap:
+    current_roadmap_role: REFERENCE_BASELINE
+    target_state: script-maintained self-knowledge with fresh-context validation
+    final_objective: safe approval-gated AI development runtime
+    known_gaps: []
+  retirement:
+    retirement_candidate: false
+    retirement_conditions: []
+    known_impact: []
+    approval_required: true
+  freshness:
+    last_verified_at: '2026-09-06'
+    last_verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+    freshness_state: FRESH
+    affected_by: []
+  unknowns:
+    items:
+    - exact original introduction prompt/date may require historical archaeology
+    review_required: true
+- identity:
+    module_id: logistics_service
+    capability_id: logistics.notification
+    implementation_id: logistics.notification.current_projection_v0_1
+    implementation_kind: domain_projection
+    significant_surface: true
+    source_paths:
+    - app/domain/events.py
+  purpose_and_provenance:
+    purpose: Channel-neutral Logistics notification projection for downstream delivery adapters.
+    origin_problem: Keep Logistics semantics separate from channel UX and transport implementation.
+    introduced_at: UNKNOWN_LEGACY
+    introduced_by_prompt: null
+    introduced_by_decision: null
+    provenance_confidence: medium
+  classification:
+    interaction_scope: S3
+    criticality: C2
+    standardization_maturity: OBSERVED
+  semantic_binding:
+    semantic_id: logistics.notification
+    binding_state: OBSERVED_LOCAL_REFERENCE
+    recommended_name: logistics.notification
+    aliases: []
+    migration_mode: KEEP
+    registration_ticket_ref: null
+    enrichment_ticket_ref: null
+  lifecycle:
+    lifecycle_state: CURRENT
+    current_role: current notification projection
+    compatibility_role: preferred semantic projection
+    review_gate: HUMAN_REVIEW_BEFORE_RETIREMENT_OR_BREAKING_CHANGE
+  lineage:
+    supersedes: []
+    superseded_by: []
+    predecessors: []
+    successors: []
+    evolution_reason: seeded from verified external inventory and implementation-lineage evidence
+    coexistence_role: current
+  interfaces:
+    inputs: []
+    outputs: []
+    contracts: &id003
+    - docs/architecture/boundaries/notification_handoff_boundary.md
+    events: []
+    side_effects: []
+    external_boundaries: []
+  relationships:
+    dependencies:
+    - logistics.tracking
+    consumers:
+    - notification/telegram boundary
+    providers: []
+    related_implementations: []
+    business_flows: []
+  evidence:
+    documentation_refs:
+    - docs/architecture/boundaries/notification_handoff_boundary.md
+    test_refs:
+    - tests/unit/domain/test_tracking_event_contract.py
+    contract_refs: *id003
+    runtime_evidence_refs: []
+    inventory_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    lineage_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  roadmap:
+    current_roadmap_role: REFERENCE_BASELINE
+    target_state: script-maintained self-knowledge with fresh-context validation
+    final_objective: safe approval-gated AI development runtime
+    known_gaps: []
+  retirement:
+    retirement_candidate: false
+    retirement_conditions: []
+    known_impact: []
+    approval_required: true
+  freshness:
+    last_verified_at: '2026-09-06'
+    last_verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+    freshness_state: FRESH
+    affected_by: []
+  unknowns:
+    items:
+    - exact original introduction prompt/date may require historical archaeology
+    review_required: true
+- identity:
+    module_id: logistics_service
+    capability_id: logistics.notification
+    implementation_id: logistics.notification.supported_legacy_event_service_v0_1
+    implementation_kind: legacy_compatibility_service
+    significant_surface: true
+    source_paths:
+    - app/domain/events.py
+    - app/services/notification_event_service.py
+  purpose_and_provenance:
+    purpose: Preserve tested legacy LogisticsNotificationEvent and NotificationEventService compatibility.
+    origin_problem: Maintain compatibility while current notification projection becomes authoritative.
+    introduced_at: UNKNOWN_LEGACY
+    introduced_by_prompt: null
+    introduced_by_decision: null
+    provenance_confidence: medium
+  classification:
+    interaction_scope: S2
+    criticality: C2
+    standardization_maturity: OBSERVED
+  semantic_binding:
+    semantic_id: logistics.notification
+    binding_state: OBSERVED_LOCAL_REFERENCE
+    recommended_name: logistics.notification
+    aliases: []
+    migration_mode: KEEP
+    registration_ticket_ref: null
+    enrichment_ticket_ref: null
+  lifecycle:
+    lifecycle_state: SUPPORTED_LEGACY
+    current_role: legacy compatibility notification path
+    compatibility_role: supported legacy; retirement requires consumer evidence
+    review_gate: HUMAN_REVIEW_BEFORE_RETIREMENT_OR_BREAKING_CHANGE
+  lineage:
+    supersedes: []
+    superseded_by: []
+    predecessors: []
+    successors:
+    - logistics.notification.current_projection_v0_1
+    evolution_reason: seeded from verified external inventory and implementation-lineage evidence
+    coexistence_role: supported_legacy
+  interfaces:
+    inputs: []
+    outputs: []
+    contracts: &id004
+    - docs/architecture/boundaries/notification_handoff_boundary.md
+    events: []
+    side_effects: []
+    external_boundaries: []
+  relationships:
+    dependencies:
+    - logistics.tracking
+    consumers:
+    - unknown legacy consumers require review before retirement
+    providers: []
+    related_implementations: []
+    business_flows: []
+  evidence:
+    documentation_refs:
+    - docs/architecture/boundaries/notification_handoff_boundary.md
+    test_refs:
+    - tests/unit/domain/test_tracking_event_contract.py
+    contract_refs: *id004
+    runtime_evidence_refs: []
+    inventory_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    lineage_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  roadmap:
+    current_roadmap_role: REFERENCE_BASELINE
+    target_state: script-maintained self-knowledge with fresh-context validation
+    final_objective: safe approval-gated AI development runtime
+    known_gaps: []
+  retirement:
+    retirement_candidate: false
+    retirement_conditions: []
+    known_impact: []
+    approval_required: true
+  freshness:
+    last_verified_at: '2026-09-06'
+    last_verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+    freshness_state: FRESH
+    affected_by: []
+  unknowns:
+    items:
+    - exact original introduction prompt/date may require historical archaeology
+    review_required: true
+- identity:
+    module_id: logistics_service
+    capability_id: logistics.coordination
+    implementation_id: logistics.coordination.h9_module_runtime_v0_1
+    implementation_kind: coordination_runtime
+    significant_surface: true
+    source_paths:
+    - scripts/coordination/h9_runtime.py
+    - scripts/coordination_sync_check.py
+  purpose_and_provenance:
+    purpose: Read-only Blueprint synchronization, module readiness, WIP and prompt visibility for H9/H10 reference
+      operation.
+    origin_problem: Let Logistics consume Blueprint authority without writing back or silently claiming work.
+    introduced_at: UNKNOWN_LEGACY
+    introduced_by_prompt: null
+    introduced_by_decision: null
+    provenance_confidence: medium
+  classification:
+    interaction_scope: S3
+    criticality: C3
+    standardization_maturity: OBSERVED
+  semantic_binding:
+    semantic_id: logistics.coordination
+    binding_state: OBSERVED_LOCAL_REFERENCE
+    recommended_name: logistics.coordination
+    aliases: []
+    migration_mode: KEEP
+    registration_ticket_ref: null
+    enrichment_ticket_ref: null
+  lifecycle:
+    lifecycle_state: CURRENT
+    current_role: current module-start, sync, status and prompt-read substrate
+    compatibility_role: must remain intact while activation runtime is added centrally
+    review_gate: HUMAN_REVIEW_BEFORE_RETIREMENT_OR_BREAKING_CHANGE
+  lineage:
+    supersedes: []
+    superseded_by: []
+    predecessors: []
+    successors: []
+    evolution_reason: seeded from verified external inventory and implementation-lineage evidence
+    coexistence_role: current
+  interfaces:
+    inputs: []
+    outputs: []
+    contracts: &id005 []
+    events: []
+    side_effects: []
+    external_boundaries: []
+  relationships:
+    dependencies:
+    - forprint_system_blueprint coordination authority
+    consumers:
+    - logistics module operator workflow
+    providers: []
+    related_implementations: []
+    business_flows: []
+  evidence:
+    documentation_refs:
+    - coordination/README.md
+    test_refs:
+    - tests/coordination/test_h9_reference_rollout.py
+    - tests/coordination/test_h9_status_reconciliation.py
+    contract_refs: *id005
+    runtime_evidence_refs: []
+    inventory_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    lineage_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  roadmap:
+    current_roadmap_role: REFERENCE_BASELINE
+    target_state: script-maintained self-knowledge with fresh-context validation
+    final_objective: safe approval-gated AI development runtime
+    known_gaps: []
+  retirement:
+    retirement_candidate: false
+    retirement_conditions: []
+    known_impact: []
+    approval_required: true
+  freshness:
+    last_verified_at: '2026-09-06'
+    last_verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+    freshness_state: FRESH
+    affected_by: []
+  unknowns:
+    items:
+    - exact original introduction prompt/date may require historical archaeology
+    review_required: true
+- identity:
+    module_id: logistics_service
+    capability_id: logistics.provider_boundary
+    implementation_id: logistics.provider_boundary.provider_neutral_adapter_v0_1
+    implementation_kind: provider_adapter_contract
+    significant_surface: true
+    source_paths:
+    - app/adapters/providers/base.py
+    - app/domain/provider_contracts.py
+  purpose_and_provenance:
+    purpose: Keep provider capabilities and failures explicit while live writes remain fail-closed.
+    origin_problem: Prevent provider-specific integrations from leaking into core Logistics semantics.
+    introduced_at: UNKNOWN_LEGACY
+    introduced_by_prompt: null
+    introduced_by_decision: null
+    provenance_confidence: medium
+  classification:
+    interaction_scope: S4
+    criticality: C4
+    standardization_maturity: OBSERVED
+  semantic_binding:
+    semantic_id: logistics.provider_boundary
+    binding_state: OBSERVED_LOCAL_REFERENCE
+    recommended_name: logistics.provider_boundary
+    aliases: []
+    migration_mode: KEEP
+    registration_ticket_ref: null
+    enrichment_ticket_ref: null
+  lifecycle:
+    lifecycle_state: CURRENT
+    current_role: provider-neutral adapter and safety boundary
+    compatibility_role: live writes remain disabled
+    review_gate: HUMAN_REVIEW_BEFORE_RETIREMENT_OR_BREAKING_CHANGE
+  lineage:
+    supersedes: []
+    superseded_by: []
+    predecessors: []
+    successors: []
+    evolution_reason: seeded from verified external inventory and implementation-lineage evidence
+    coexistence_role: current
+  interfaces:
+    inputs: []
+    outputs: []
+    contracts: &id006
+    - docs/architecture/boundaries/local_logistics_model_boundary.md
+    events: []
+    side_effects: []
+    external_boundaries: []
+  relationships:
+    dependencies: []
+    consumers:
+    - logistics.tracking
+    - shipment preview flows
+    providers: []
+    related_implementations: []
+    business_flows: []
+  evidence:
+    documentation_refs:
+    - docs/architecture/boundaries/local_logistics_model_boundary.md
+    test_refs:
+    - tests/unit/domain/test_provider_contracts.py
+    contract_refs: *id006
+    runtime_evidence_refs: []
+    inventory_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    lineage_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  roadmap:
+    current_roadmap_role: REFERENCE_BASELINE
+    target_state: script-maintained self-knowledge with fresh-context validation
+    final_objective: safe approval-gated AI development runtime
+    known_gaps: []
+  retirement:
+    retirement_candidate: false
+    retirement_conditions: []
+    known_impact: []
+    approval_required: true
+  freshness:
+    last_verified_at: '2026-09-06'
+    last_verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+    freshness_state: FRESH
+    affected_by: []
+  unknowns:
+    items:
+    - exact original introduction prompt/date may require historical archaeology
+    review_required: true
+- identity:
+    module_id: logistics_service
+    capability_id: logistics.local_model
+    implementation_id: logistics.local_model.address_snapshot_and_preview_v0_1
+    implementation_kind: noncanonical_local_model
+    significant_surface: true
+    source_paths:
+    - app/domain/address_book.py
+    - app/domain/shipments.py
+    - app/domain/recipients.py
+    - app/services/address_book_service.py
+    - app/services/shipment_draft_service.py
+  purpose_and_provenance:
+    purpose: Provide replaceable non-canonical recipient/address references, shipment-time snapshots and preview-only
+      shipment drafts.
+    origin_problem: Allow safe Logistics development before CRM/canonical recipient authority exists.
+    introduced_at: UNKNOWN_LEGACY
+    introduced_by_prompt: null
+    introduced_by_decision: null
+    provenance_confidence: medium
+  classification:
+    interaction_scope: S2
+    criticality: C2
+    standardization_maturity: OBSERVED
+  semantic_binding:
+    semantic_id: logistics.local_model
+    binding_state: OBSERVED_LOCAL_REFERENCE
+    recommended_name: logistics.local_model
+    aliases: []
+    migration_mode: KEEP
+    registration_ticket_ref: null
+    enrichment_ticket_ref: null
+  lifecycle:
+    lifecycle_state: CURRENT
+    current_role: replaceable local non-canonical model
+    compatibility_role: must not be treated as CRM authority
+    review_gate: HUMAN_REVIEW_BEFORE_RETIREMENT_OR_BREAKING_CHANGE
+  lineage:
+    supersedes: []
+    superseded_by: []
+    predecessors: []
+    successors: []
+    evolution_reason: seeded from verified external inventory and implementation-lineage evidence
+    coexistence_role: current
+  interfaces:
+    inputs: []
+    outputs: []
+    contracts: &id007
+    - docs/architecture/boundaries/local_logistics_model_boundary.md
+    events: []
+    side_effects: []
+    external_boundaries: []
+  relationships:
+    dependencies: []
+    consumers:
+    - shipment preview flows
+    providers: []
+    related_implementations: []
+    business_flows: []
+  evidence:
+    documentation_refs:
+    - docs/architecture/boundaries/local_logistics_model_boundary.md
+    test_refs:
+    - tests/unit/domain/test_local_model_safety.py
+    - tests/unit/services/test_local_model_services.py
+    contract_refs: *id007
+    runtime_evidence_refs: []
+    inventory_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__inventory_completion_evidence_v0_1.yaml
+    lineage_refs:
+    - blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  roadmap:
+    current_roadmap_role: REFERENCE_BASELINE
+    target_state: script-maintained self-knowledge with fresh-context validation
+    final_objective: safe approval-gated AI development runtime
+    known_gaps: []
+  retirement:
+    retirement_candidate: false
+    retirement_conditions: []
+    known_impact: []
+    approval_required: true
+  freshness:
+    last_verified_at: '2026-09-06'
+    last_verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+    freshness_state: FRESH
+    affected_by: []
+  unknowns:
+    items:
+    - exact original introduction prompt/date may require historical archaeology
+    review_required: true

@@ -25,6 +25,10 @@ BLUEPRINT_PROMPT_INDEX := $(BLUEPRINT_ROOT)/coordination/outgoing_prompts/$(MODU
 PROMPT_STATE_SYNC := scripts/coordination/sync_prompt_state.py
 MODULE_COORDINATION_SYNC_CHECK_SCRIPT := scripts/coordination_sync_check.py
 H9_RUNTIME := scripts/coordination/h9_runtime.py
+MODULE_MEMORY_BUILDER := scripts/knowledge/build_module_memory_index.py
+MODULE_MEMORY_VALIDATOR := scripts/validation/validate_module_memory.py
+DOCUMENT_AUTHORITY_VALIDATOR := scripts/validation/validate_document_authority.py
+FRESH_CONTEXT_VALIDATOR := scripts/validation/validate_fresh_context.py
 
 MODULE_POLICY := $(BLUEPRINT_ROOT)/coordination/module_policy/$(MODULE_ID)/module_policy.md
 MODULE_DIRECTIVE_INDEX := $(BLUEPRINT_ROOT)/coordination/directives/modules/$(MODULE_ID)/index.yaml
@@ -71,6 +75,11 @@ help:
 	@echo "  make module-sync"
 	@echo "  make module-status"
 	@echo "  make module-validate"
+	@echo "  make self-knowledge-status"
+	@echo "  make module-memory-build"
+	@echo "  make module-memory-check"
+	@echo "  make document-authority-check"
+	@echo "  make fresh-context-check"
 	@echo ""
 	@echo "Bootstrap and development:"
 	@echo "  make install"
@@ -189,6 +198,9 @@ module-status:
 .PHONY: module-validate
 module-validate:
 	$(MAKE) check-report-full
+	$(MAKE) module-memory-check
+	$(MAKE) document-authority-check
+	$(MAKE) fresh-context-check
 	$(MAKE) governance-check
 	$(MAKE) coordination-check
 
@@ -365,6 +377,35 @@ governance-check:
 
 
 # =============================================================================
+# 03A Module self-knowledge START
+# =============================================================================
+
+.PHONY: module-memory-build
+module-memory-build:
+	$(PYTHON) $(MODULE_MEMORY_BUILDER) build --module-root .
+
+.PHONY: module-memory-check
+module-memory-check:
+	$(PYTHON) $(MODULE_MEMORY_VALIDATOR)
+
+.PHONY: document-authority-check
+document-authority-check:
+	$(PYTHON) $(DOCUMENT_AUTHORITY_VALIDATOR)
+
+.PHONY: fresh-context-check
+fresh-context-check:
+	$(PYTHON) $(FRESH_CONTEXT_VALIDATOR)
+
+.PHONY: self-knowledge-status
+self-knowledge-status:
+	$(PYTHON) $(MODULE_MEMORY_BUILDER) status --module-root .
+
+# =============================================================================
+# 03A Module self-knowledge FINISH
+# =============================================================================
+
+
+# =============================================================================
 # 04 Environment / configuration START
 # =============================================================================
 
@@ -478,6 +519,9 @@ check:
 	$(MAKE) lint
 	$(MAKE) format-check
 	$(MAKE) project-policy-check
+	$(MAKE) module-memory-check
+	$(MAKE) document-authority-check
+	$(MAKE) fresh-context-check
 	$(MAKE) local-model-examples-check
 	$(MAKE) local-model-boundary-check
 	$(MAKE) test-address-book-check

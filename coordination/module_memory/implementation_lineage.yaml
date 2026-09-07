@@ -1,0 +1,56 @@
+schema_version: logistics_implementation_lineage_v0_1
+module_id: logistics_service
+status: MODULE_LOCAL_REFERENCE_BASELINE
+authority: MODULE_OWNED_LINEAGE_SEEDED_FROM_VERIFIED_BLUEPRINT_EVIDENCE
+verified_repository_commit: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+source_evidence:
+  path: blueprint://coordination/internal_work/blueprint/module_inventory/logistics_service/2026-09-05__logistics_service__implementation_lineage_baseline_v0_1.yaml
+  sha256: 1d0395bce46c5d370ad30896ebd2585a75b1772f18e9d76143cb66db26dc793f
+families:
+- capability_id: logistics.tracking
+  current:
+  - ProviderTrackingObservation
+  - ShipmentEventEnvelope
+  - TrackingContractService
+  supported_legacy:
+  - TrackingRequest
+  - TrackingEvent
+  - TrackingEventService
+  - legacy repository tracking persistence path
+  state: CURRENT_PLUS_SUPPORTED_LEGACY_ACTIVE_TEST_PROTECTION
+- capability_id: logistics.notification
+  current:
+  - LogisticsNotificationProjection
+  supported_legacy:
+  - LogisticsNotificationEvent
+  - NotificationEventService
+  state: CURRENT_PLUS_SUPPORTED_LEGACY_ACTIVE_TEST_PROTECTION
+- capability_id: logistics.coordination
+  current:
+  - H9/v0.4.1 startup and prompt-read path
+  - v0.4 packet/outbox completion exchange direction
+  supported_legacy:
+  - v0.2 generic current-local completion compatibility
+  historical_reference:
+  - v0.3 Tracking Events reference completion
+  specialized_current_reference:
+  - Tracking Events-specific v0.4 writer/finalizer
+future_minimum_registry_fields:
+- capability_id
+- implementation_id
+- semantic_role
+- introduced_by_prompt
+- introduced_at
+- source_paths
+- documentation_refs
+- test_refs
+- contract_refs
+- lifecycle_status
+- supersedes
+- superseded_by
+- known_consumers
+- review_gate
+rules:
+  current_and_supported_legacy_may_coexist: true
+  legacy_retirement_requires_consumer_and_test_evidence: true
+  unknown_legacy_provenance: UNKNOWN_LEGACY_LOW_CONFIDENCE_REVIEW_REQUIRED
