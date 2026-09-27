@@ -14,13 +14,12 @@ executed by the module.
 
 `coordination/prompts/archived/` stores previous inactive prompt copies.
 
-`coordination/prompts/index.yaml` stores the local prompt metadata and
-identifies the current active prompt.
+`coordination/prompts/index.yaml` stores local prompt metadata.
 
 ## Standard workflow
 
 ```bash
-make blueprint-pull
+make coordination-sync-check
 make blueprint-prompts-check
 make blueprint-prompts-sync
 make blueprint-prompt-status
@@ -28,13 +27,18 @@ make blueprint-prompt
 make blueprint-prompt-check
 ```
 
-`make blueprint-prompts-sync` reads the Blueprint prompt queue index,
-synchronizes approved prompt files, selects the next executable prompt,
-updates local coordination metadata and activates the prompt.
+`make blueprint-prompts-sync` reads the Blueprint prompt queue and writes only
+module-owned coordination state.
+
+`make blueprint-pull` is deprecated and deliberately fails closed. Blueprint
+must be changed only from the Blueprint repository.
+
+A `READY_PROMPT` observation does not itself authorize worker execution.
+Operator/dispatcher authority remains separate.
 
 ## Safety
 
-The automation reads Blueprint files but writes only inside the module
+The automation may read Blueprint files but must write only inside the module
 repository.
 
 It must never modify the Blueprint prompt queue or Blueprint repository.

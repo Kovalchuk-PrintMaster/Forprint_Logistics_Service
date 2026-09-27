@@ -87,3 +87,13 @@ reports:
   commit_performed: true
   push_performed: true
   remote_containment_verified: true
+
+- report_id: logistics_service_l0_module_snapshot_2026_09_27_v0_1
+  prompt_id: null
+  type: module_analysis_snapshot
+  report_file: coordination/reports/analysis/2026-09-27__forprint_logistics_service__module_snapshot_v0_1.md
+  machine_companion: coordination/reports/analysis/2026-09-27__forprint_logistics_service__roadmap_rebuild_input_v0_1.yaml
+  status: semantic_l0_complete_pending_blueprint_registration
+  created_at: '2026-09-27'
+  source_head: 67bec29e3b1a58dd2a859c57bc178601fb23de91
+  automatic_acceptance: false

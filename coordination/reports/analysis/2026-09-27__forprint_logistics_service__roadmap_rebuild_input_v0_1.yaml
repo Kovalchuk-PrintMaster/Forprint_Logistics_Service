@@ -1,0 +1,62 @@
+schema_version: forprint_logistics_l0_roadmap_rebuild_input_v0_1
+module_id: logistics_service
+status: RECONCILIATION_INPUT_NOT_EXECUTION_AUTHORITY
+snapshot_date: '2026-09-27'
+source:
+  module_head: 67bec29e3b1a58dd2a859c57bc178601fb23de91
+  blueprint_committed_head_observed: f755816c98caf9a28faef9a079a0cf721d8f3991
+  durable_snapshot: coordination/reports/analysis/2026-09-27__forprint_logistics_service__module_snapshot_v0_1.md
+l0:
+  semantic_analysis: COMPLETE
+  canonical_module_local_reconciliation: IN_PROGRESS
+  blueprint_registration: PENDING
+canonical_roadmap:
+  existing_roadmap: logistics_service_commercial_delivery_automation_v0_3
+  current_step_id: logistics_service_authority_lineage_and_module_bootstrap_v0_1
+  current_step_status_observed: planned
+  disposition: ADAPT
+  reason: Required authority/lineage/bootstrap surfaces already exist; do not reimplement them from zero.
+  required_surface_coverage: 8/8
+  automatic_acceptance: false
+  automatic_next_prompt_release: false
+reuse_or_extend:
+- provider-neutral provider adapter boundary
+- provider capability/error contracts
+- non-canonical recipient/address local model
+- shipment-time address snapshots
+- preview-only shipment draft flow
+- provider-neutral Tracking Events contract
+- channel-neutral notification projection
+- supported-legacy tracking compatibility path
+- supported-legacy notification compatibility path
+- module-local coordination/readiness substrate
+future_not_implemented:
+- durable production Logistics persistence
+- persistent event outbox
+- provider polling/reconciliation
+- live shipment creation
+- provider credential runtime for live writes
+- channel delivery runtime
+- approved Logistics/Integration Gateway runtime handoff
+cross_module_reconciliation:
+- subject: canonical client/order references
+  state: EXTERNAL_CANONICAL_SOURCE_REQUIRED
+- subject: canonical address source
+  state: EXACT_OWNER_CONTRACT_NEEDS_CONFIRMATION
+- subject: channel-neutral notification consumption
+  state: PROJECTION_CURRENT_DELIVERY_HANDOFF_FUTURE
+- subject: business stop versus delivery consequence
+  state: OPERATIONS_CONTROL_REGISTRY_TO_LOGISTICS_BOUNDARY
+- subject: Integration Gateway handoff
+  state: REVIEW_CANDIDATE_NOT_IMPLEMENTED
+terminology:
+  new_execution_model: execution_contour_or_work_front
+  historical_wave_terms: PRESERVE_AS_PROVENANCE_ONLY
+forbidden_in_this_reconciliation:
+- new business/runtime implementation
+- automatic roadmap acceptance
+- automatic prompt activation
+- live provider integration
+- production database activation
+- legacy retirement without consumer evidence
+- cross-repository write

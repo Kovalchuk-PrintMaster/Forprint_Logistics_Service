@@ -13,11 +13,17 @@ provider adapter behavior.
 
 ## Current checkpoint
 
-`bootstrap_and_coordination_foundation_v0_1`
+`authority_lineage_and_module_bootstrap_v0_1`
 
-The current implementation is local and preview-oriented.
+L0 semantic analysis is complete and canonical module-knowledge reconciliation
+is in progress. The required authority/lineage/bootstrap surfaces are already
+present and are being reconciled by REUSE/ADAPT rather than reimplemented.
 
-It does not perform live provider writes.
+The worker remains `PAUSED_BY_OPERATOR`; this checkpoint does not claim prompt
+execution, acceptance, release, or next-prompt activation.
+
+The current implementation remains local and preview-oriented. It does not
+perform live provider writes.
 
 ## Safe development workflow
 
@@ -26,7 +32,9 @@ source .venv_logistics_service/bin/activate
 make install
 make governance-check
 make check
-Architectural boundary
+```
+
+## Architectural boundary
 
 The module may own logistics provider adapters, delivery requests, shipment
 drafts, payload previews, tracking status and logistics notification events.
@@ -35,14 +43,14 @@ It must not own canonical clients, canonical orders, product or material
 catalogs, price calculation, accounting documents, payment truth, warehouse
 stock truth, production tasks or channel session state.
 
-Provider safety
+## Provider safety
 
 Provider adapters may validate local data, build payload previews and support
 tracking reads.
 
 Shipment creation and all other live provider mutations are disabled.
 
-Secrets
+## Secrets
 
 Real provider credentials must not be committed.
 
