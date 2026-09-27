@@ -45,3 +45,12 @@ Current self-knowledge reports one `READY_PROMPT`, while worker dispatch remains
    collision-checked Blueprint change.
 4. Reconcile roadmap step 33 against the proven existing outputs without
    automatic acceptance or next-prompt activation.
+
+## L0 registration closeout
+
+- Status: `COMPLETE_REGISTERED`.
+- Durable Logistics snapshot commit: `d6e5eff8cfe4d272facc00b54007adead0a0dc78`; remote-contained.
+- Blueprint registration commit: `5418d5d1e453ebc098cc7cd1c23538d14dc712ef`; remote-contained.
+- Step 33 (`logistics_service_authority_lineage_and_module_bootstrap_v0_1`) remains `planned`.
+- L0 registration did not grant Blueprint acceptance, execution authority, release authority, or automatic next-prompt release.
+- Next governance action is a separate acceptance review of step 33 against its canonical acceptance oracle.
