@@ -71,6 +71,7 @@ def test_fresh_context_manifest_tracks_required_authority_sources():
     assert "coordination/blueprint_snapshot/current_release.yaml" in paths
     assert "coordination/blueprint_snapshot/prompt_queue.yaml" in paths
 
+
 def test_fresh_context_head_is_provenance_not_freshness_key():
     builder = load_builder()
     validator = load_fresh_context_validator()
