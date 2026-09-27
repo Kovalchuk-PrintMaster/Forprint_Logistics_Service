@@ -1,0 +1,7 @@
+schema_version: forprint_module_snapshot_index_v0_1
+module_id: forprint_logistics_service
+snapshots:
+- snapshot_date: '2026-09-27'
+  path: coordination/repository_knowledge/module_snapshots/forprint_logistics_service/2026-09-27
+  manifest: coordination/repository_knowledge/module_snapshots/forprint_logistics_service/2026-09-27/snapshot_manifest.yaml
+  status: built_pending_commit

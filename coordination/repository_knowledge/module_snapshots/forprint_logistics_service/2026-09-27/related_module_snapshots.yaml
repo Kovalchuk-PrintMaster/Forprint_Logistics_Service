@@ -1,0 +1,27 @@
+schema_version: forprint_related_module_snapshots_v0_1
+module_id: forprint_logistics_service
+snapshot_date: '2026-09-27'
+source: /srv/software_development/forprint-project/forprint_system_blueprint/coordination/repository_knowledge/module_knowledge_stabilization/snapshots/index_v0_1.yaml
+source_blueprint_head: f755816c98caf9a28faef9a079a0cf721d8f3991
+source_present: true
+related:
+- module_id: forprint_library
+  snapshot_date: '2026-09-25'
+  status: complete
+  record: coordination/repository_knowledge/module_knowledge_stabilization/snapshots/2026-09-25__forprint_library__snapshot_registration_v0_1.yaml
+  relationship: upstream_or_neighboring_authority_context
+- module_id: forprint_operations_control_registry
+  snapshot_date: '2026-09-26'
+  status: complete
+  record: coordination/repository_knowledge/module_knowledge_stabilization/snapshots/2026-09-26__forprint_operations_control_registry__snapshot_registration_v0_1.yaml
+  relationship: upstream_or_neighboring_authority_context
+- module_id: forprint_accounting_registry_service
+  snapshot_date: '2026-09-26'
+  status: complete
+  record: coordination/repository_knowledge/module_knowledge_stabilization/snapshots/2026-09-26__forprint_accounting_registry_service__snapshot_registration_v0_1.yaml
+  relationship: upstream_or_neighboring_authority_context
+- module_id: forprint_integration_gateway
+  snapshot_date: '2026-09-27'
+  status: complete
+  record: coordination/repository_knowledge/module_knowledge_stabilization/snapshots/2026-09-27__forprint_integration_gateway__snapshot_registration_v0_1.yaml
+  relationship: upstream_or_neighboring_authority_context

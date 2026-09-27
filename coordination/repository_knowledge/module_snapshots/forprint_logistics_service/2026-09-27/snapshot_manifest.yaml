@@ -1,0 +1,51 @@
+schema_version: forprint_module_snapshot_manifest_v0_1
+module_id: forprint_logistics_service
+snapshot_date: '2026-09-27'
+analysis_methodology_revision: module_analysis_lifecycle_methodology_v0_2
+analysis_layers_completed:
+- L0-A
+- L0-B
+- L0-C
+- L0-D
+- L0-E
+- L0-F
+- L0-G
+repository:
+  branch: feature/logistics-tracking-events-contract-v01
+  head: 4d06395ffe308d746468a0c301c3bb58eba3b7d5
+  upstream: origin/feature/logistics-tracking-events-contract-v01
+  upstream_head: 4d06395ffe308d746468a0c301c3bb58eba3b7d5
+  remote_synced: true
+worktree_observation:
+  clean_before_snapshot_build: true
+  clean_at_snapshot_commit: PENDING_COMMIT
+  preexisting_parallel_context: []
+durable_evidence:
+  root: coordination/repository_knowledge/module_snapshots/forprint_logistics_service/2026-09-27
+  file_count_before_manifest: 3
+  aggregate_sha256_before_manifest: d7739d5df44ed0a7296d93521af363030e91777c2a53241ad5b7a62b043e8c6a
+  durable_file_manifest: coordination/repository_knowledge/module_snapshots/forprint_logistics_service/2026-09-27/analysis_evidence/provenance/durable_file_manifest_v0_1.json
+  durable_file_manifest_sha256: 2ec270be8769ffd2a74861f00ff2202c07fdd6f9cd546695db4fc911b009eaaf
+  human_snapshot: coordination/reports/analysis/2026-09-27__forprint_logistics_service__module_snapshot_v0_1.md
+  human_snapshot_sha256: badf53a429372a1b5e5a7f03f23f86b9129d4a66d23a5329c74e15f47b92ce2c
+authority:
+  snapshot_is_historical_evidence: true
+  overrides_module_policy: false
+  overrides_blueprint_policy: false
+  implementation_authority_created: false
+roadmap:
+  reconciliation_status: ROADMAP_REBUILD_INPUT_CREATED_NOT_EXECUTION_AUTHORITY
+  input: coordination/reports/analysis/2026-09-27__forprint_logistics_service__roadmap_rebuild_input_v0_1.yaml
+machine:
+  reconciliation_status: NO_MACHINE_CHANGES_APPLIED
+  deferred_project_level_candidate: Logistics/Integration Gateway runtime handoff contract
+deferred:
+  machine_candidates:
+  - approved Logistics/Integration Gateway runtime handoff
+  unresolved_questions:
+  - formal Blueprint acceptance disposition for authority/lineage/bootstrap step
+  - separate Logistics module-policy alignment
+temporary_evidence:
+  all_required_tmp_promoted: true
+  tmp_safe_to_remove: false
+  reason: await module commit/push and Blueprint snapshot registration

@@ -1,0 +1,53 @@
+{
+  "schema_version": "forprint_durable_file_manifest_v0_1",
+  "module_id": "forprint_logistics_service",
+  "snapshot_date": "2026-09-27",
+  "scope": "compact_l0_durable_evidence",
+  "source_repository_head": "4d06395ffe308d746468a0c301c3bb58eba3b7d5",
+  "files": [
+    {
+      "path": "coordination/reports/analysis/2026-09-27__forprint_logistics_service__module_snapshot_v0_1.md",
+      "sha256": "badf53a429372a1b5e5a7f03f23f86b9129d4a66d23a5329c74e15f47b92ce2c",
+      "bytes": 4718
+    },
+    {
+      "path": "coordination/reports/analysis/2026-09-27__forprint_logistics_service__roadmap_rebuild_input_v0_1.yaml",
+      "sha256": "0135c330359aed0de5159cdecbb1f1b51d233509dd2cd7587fce01edc9a30ead",
+      "bytes": 2610
+    },
+    {
+      "path": "coordination/status/current_status.yaml",
+      "sha256": "9a8d58bf8c2da6c7ffa690125ae58bb3f90488d62170111a81c16ed09b9bb508",
+      "bytes": 11327
+    },
+    {
+      "path": "coordination/status/current_status.md",
+      "sha256": "55771ece88ec3b44c1cf3d865f861e808642356c5a23552dba57b7585c40e080",
+      "bytes": 2106
+    },
+    {
+      "path": "coordination/module_memory/implementation_lineage.yaml",
+      "sha256": "92247af2776bf411eb6aba278fb1650100e350356b83bde8f40ce06f4fc3915d",
+      "bytes": 1923
+    },
+    {
+      "path": "coordination/module_memory/document_authority.yaml",
+      "sha256": "63555c42df4d532efa1453cbf9edb4caba57f5b108fbcaa8e853ef9bfe3065d3",
+      "bytes": 2374
+    },
+    {
+      "path": "coordination/module_memory/module_memory.yaml",
+      "sha256": "606f0938d83d1e4ba15ea82a346a6e72fbfd524eb45cd3641bb975d010616663",
+      "bytes": 23483
+    }
+  ],
+  "file_count": 7,
+  "total_bytes": 48541,
+  "aggregate_sha256": "d7739d5df44ed0a7296d93521af363030e91777c2a53241ad5b7a62b043e8c6a",
+  "authority": {
+    "historical_evidence_only": true,
+    "execution_authority": false,
+    "roadmap_authority": false,
+    "acceptance_authority": false
+  }
+}
