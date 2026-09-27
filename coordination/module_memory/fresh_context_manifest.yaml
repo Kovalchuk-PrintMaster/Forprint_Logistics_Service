@@ -3,7 +3,7 @@ module_id: logistics_service
 authority: DERIVED_FRESHNESS_EVIDENCE_NOT_PROMPT_AUTHORITY
 repository:
   branch: feature/logistics-tracking-events-contract-v01
-  head: 96284d829bb5cdcd564f44c51bdbe681f9d26cae
+  head: 438af211d72d95f8fee1e8f5c8d90708e494b2f8
 prompt:
   state: READY_PROMPT
   prompt_id: logistics_service_authority_lineage_and_module_bootstrap_v0_1
@@ -39,6 +39,6 @@ sources:
 - path: scripts/validation/validate_document_authority.py
   sha256: eb90028ca32668565b647e3c0dd1a93d6d69c7120029e9be1a88e3939e5ac619
 - path: scripts/validation/validate_fresh_context.py
-  sha256: de82c225305c256cf2a12e3eed3417a5b14f70f9421803e574b82ae585cb4cbe
+  sha256: 0bbc04036633557b72ca3f4437f351203b73a8ed65478d22935b3148b005133f
 - path: scripts/validation/validate_module_memory.py
   sha256: 8a1c605647785a3775d5ca7e4d3368982e7b933f7b502a35a9f7da226019af63

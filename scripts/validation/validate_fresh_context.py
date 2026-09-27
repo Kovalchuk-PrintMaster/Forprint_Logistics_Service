@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import importlib.util
 from pathlib import Path
 from typing import Any
@@ -28,6 +29,56 @@ def load_yaml(path: Path) -> dict[str, Any]:
     return data
 
 
+def _normalize_provenance_head(
+    data: dict[str, Any],
+    section: str,
+) -> dict[str, Any] | None:
+    """Return a deep-copied projection with only the Git HEAD value normalized.
+
+    Git HEAD is provenance evidence, not a freshness key. A commit containing
+    freshly generated projections necessarily changes HEAD after generation.
+    Branch, prompt, worker state, dirty-path state, source hashes and all other
+    fields remain strict freshness inputs.
+    """
+    normalized = copy.deepcopy(data)
+    repository = normalized.get(section)
+    if not isinstance(repository, dict):
+        return None
+
+    head = repository.get("head")
+    if not isinstance(head, str) or not head:
+        return None
+
+    repository["head"] = "<PROVENANCE_HEAD>"
+    return normalized
+
+
+def current_state_matches_for_freshness(
+    observed: dict[str, Any],
+    expected: dict[str, Any],
+) -> bool:
+    observed_normalized = _normalize_provenance_head(observed, "git")
+    expected_normalized = _normalize_provenance_head(expected, "git")
+    return (
+        observed_normalized is not None
+        and expected_normalized is not None
+        and observed_normalized == expected_normalized
+    )
+
+
+def manifest_matches_for_freshness(
+    observed: dict[str, Any],
+    expected: dict[str, Any],
+) -> bool:
+    observed_normalized = _normalize_provenance_head(observed, "repository")
+    expected_normalized = _normalize_provenance_head(expected, "repository")
+    return (
+        observed_normalized is not None
+        and expected_normalized is not None
+        and observed_normalized == expected_normalized
+    )
+
+
 def validate() -> list[str]:
     issues: list[str] = []
     if not CURRENT_STATE.is_file():
@@ -39,12 +90,12 @@ def validate() -> list[str]:
 
     expected_state = builder.build_current_state(ROOT)
     observed_state = load_yaml(CURRENT_STATE)
-    if observed_state != expected_state:
+    if not current_state_matches_for_freshness(observed_state, expected_state):
         issues.append("current_state.yaml is stale; run make module-memory-build")
 
     expected_manifest = builder.build_fresh_context_manifest(ROOT)
     observed_manifest = load_yaml(MANIFEST)
-    if observed_manifest != expected_manifest:
+    if not manifest_matches_for_freshness(observed_manifest, expected_manifest):
         issues.append("fresh_context_manifest.yaml is stale; run make module-memory-build")
 
     unclassified = expected_manifest.get("unclassified_dirty_paths")
